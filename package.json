@@ -1,0 +1,123 @@
+{
+  "name": "guxing-electron-template",
+  "version": "1.0.0",
+  "private": true,
+  "author": "guxing",
+  "main": "electron/electron.js",
+  "scripts": {
+    "dev": "vite --mode development",
+    "build": "vite build",
+    "serve": "vite preview",
+    "electron": "wait-on tcp:3000 && cross-env IS_DEV=true electron .",
+    "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn run dev\" \"yarn run electron\"",
+    "electron:build.win": "yarn run build && electron-builder --win --dir",
+    "electron:build.linux": "yarn run build && electron-builder --linux appImage",
+    "electron:build.test": "yarn run build && electron-builder --dir",
+    "electron:build.exe": "yarn run build && electron-builder --win"
+  },
+  "packageManager": "yarn@1.22.17",
+  "build": {
+    "appId": "guxing.electron.template",
+    "productName": "孤星electron示例",
+    "copyright": "Copyright © 2022 ${author}",
+    "mac": {
+      "category": "public.app-category.utilities"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "directories": {
+      "buildResources": "assets",
+      "output": "dist_electron"
+    }
+  },
+  "dependencies": {
+    "@element-plus/icons": "^0.0.11",
+    "@element-plus/icons-vue": "^0.2.7",
+    "@types/spark-md5": "^3.0.2",
+    "axios": "0.21.4",
+    "consola": "^2.15.3",
+    "default-passive-events": "^2.0.0",
+    "element-plus": "2.0.1",
+    "querystring": "^0.2.1",
+    "spark-md5": "^3.0.2",
+    "url": "^0.11.0",
+    "vue": "^3.2.25",
+    "vue-router": "4.0.12",
+    "vuex": "4.0.2",
+    "xlsx": "^0.17.5"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.12",
+    "@vitejs/plugin-vue": "^2.2.0",
+    "@vue/compiler-sfc": "^3.0.5",
+    "concurrently": "^7.0.0",
+    "cross-env": "^7.0.3",
+    "electron": "^17.0.1",
+    "electron-builder": "^22.14.13",
+    "node-sass": "^6.0.1",
+    "sass": "^1.35.1",
+    "sass-loader": "12.3.0",
+    "script-loader": "^0.7.2",
+    "scss": "^0.2.4",
+    "typescript": "^4.5.4",
+    "unplugin-auto-import": "0.5.11",
+    "unplugin-vue-components": "^0.17.18",
+    "vite": "^2.8.0",
+    "vite-plugin-components": "0.13.3",
+    "vite-plugin-compression": "^0.3.6",
+    "vite-plugin-optimize-persist": "^0.1.2",
+    "vite-plugin-package-config": "^0.1.1",
+    "vite-plugin-style-import": "1.4.1",
+    "vue-tsc": "^0.29.8",
+    "wait-on": "^6.0.1"
+  },
+  "vite": {
+    "optimizeDeps": {
+      "include": [
+        "@element-plus/icons-vue",
+        "axios",
+        "default-passive-events",
+        "element-plus",
+        "element-plus/es",
+        "element-plus/es/components/button/style/css",
+        "element-plus/es/components/card/style/css",
+        "element-plus/es/components/checkbox-group/style/css",
+        "element-plus/es/components/checkbox/style/css",
+        "element-plus/es/components/config-provider/style/css",
+        "element-plus/es/components/date-picker/style/css",
+        "element-plus/es/components/dialog/style/css",
+        "element-plus/es/components/divider/style/css",
+        "element-plus/es/components/form-item/style/css",
+        "element-plus/es/components/form/style/css",
+        "element-plus/es/components/icon/style/css",
+        "element-plus/es/components/image/style/css",
+        "element-plus/es/components/input/style/css",
+        "element-plus/es/components/menu-item/style/css",
+        "element-plus/es/components/menu/style/css",
+        "element-plus/es/components/option/style/css",
+        "element-plus/es/components/pagination/style/css",
+        "element-plus/es/components/popover/style/css",
+        "element-plus/es/components/radio-group/style/css",
+        "element-plus/es/components/radio/style/css",
+        "element-plus/es/components/select/style/css",
+        "element-plus/es/components/tab-pane/style/css",
+        "element-plus/es/components/table-column/style/css",
+        "element-plus/es/components/table/style/css",
+        "element-plus/es/components/tabs/style/css",
+        "element-plus/es/components/upload/style/css",
+        "element-plus/lib/locale/lang/zh-cn",
+        "querystring",
+        "vue",
+        "vue-router",
+        "vuex",
+        "xlsx"
+      ]
+    }
+  }
+}

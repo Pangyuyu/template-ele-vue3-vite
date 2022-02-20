@@ -1,0 +1,18 @@
+import Main from "@/layouts/main.vue";
+const home = {
+  path: "/home",
+  name: "home",
+  component:Main,
+  redirect: '/home/index',
+  meta: {
+    title: "首页",
+  },
+  children: [
+    {
+      path: "/home/index",
+      name: "menuHome",
+      component: () => import("@/view/home/index.vue")
+    },
+  ],
+};
+export default home;

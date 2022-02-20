@@ -1,0 +1,153 @@
+@import './var.scss';
+body {
+    overflow: hidden;
+    padding: 0px !important;
+    margin: 0px;
+}
+
+.normal-content {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    flex-direction: column;
+}
+
+.tabContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: auto;
+    .tabCard {
+        width: $cardWidthPer;
+        min-width: $cardMinWidth;
+        margin: 10px;
+        .titleBar {
+            display: flex;
+            align-items: center;
+            .title {
+                flex-grow: 1;
+            }
+            .barCtrl {
+                margin-left: 10px !important;
+            }
+        }
+        .searchInput {
+            width: 125px;
+            margin-right: 10px;
+        }
+        .propValue {
+            letter-spacing: 2px;
+            border: 1px solid rgba(0, 0, 0, 0.082);
+            border-radius: 10px;
+            display: flex;
+            padding-left: 10px;
+            align-items: center;
+            margin-right: 20px;
+            min-height: 38px;
+            max-height: 38px;
+            height: 38px;
+            flex-grow: 1;
+        }
+        .textleft {
+            justify-content: flex-start;
+        }
+        .textcenter {
+            justify-content: center;
+        }
+    }
+    .btnCtrl {
+        width: 420px;
+    }
+}
+
+.formItem {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    .input {
+        margin-right: 10px;
+        width: 100%;
+        display: flex;
+    }
+}
+
+.footer {
+    display: flex;
+    margin-top: 25px;
+    .btn {
+        width: 120px;
+    }
+}
+
+.formAreaItem {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.areaRegion {
+    border: 1px solid rgba(0, 0, 0, 0.199);
+    border-radius: 5px;
+    min-height: 48px;
+    overflow-x: auto;
+    padding: 2px 5px 5px 5px;
+    display: flex;
+    margin-top: 5px;
+    flex-wrap: wrap;
+    overflow-y: auto;
+    max-height: 220px;
+    .areaItem {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.199);
+        min-width: 130px;
+        height: 45px;
+        margin: 0px 2px 2px 2px;
+        border-radius: 8px;
+        font-size: xx-small;
+        background-color: rgb(175, 222, 250);
+        color: black;
+    }
+    .delImg {
+        height: 16px;
+        width: 16px;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+        cursor: pointer;
+    }
+}
+
+.valueReadOnly {
+    background-color: rgba(194, 193, 191, 0.2);
+}
+
+.empty {
+    flex-grow: 1;
+}
+
+.fill-all {
+    flex-grow: 1;
+    border-right: 1px solid $lineColor;
+}
+
+.login-bg {
+    background-image: linear-gradient(to bottom right, #323a5f, #FFFFFF);
+}
+
+.btnCtrl {
+    width: 120px !important;
+}
+
+.ctrl-region {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: $headerHeight;
+    padding-left: 15px;
+    padding-right: 15px;
+    background-color: aliceblue;
+}

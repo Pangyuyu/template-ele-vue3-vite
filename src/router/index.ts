@@ -1,0 +1,31 @@
+import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
+import home from "./modules/home";
+import manager from "./modules/manager";
+// import Logger from '@/common/logger/logger';
+const routes: Array<RouteRecordRaw> = [
+  // **********登录**********
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("@/view/login/login.vue").catch(() => {}),
+  },
+  {
+    path: "/",
+    redirect: "/home",
+    component: () => import("@/view/login/login.vue").catch(() => {}),
+  },
+  home,
+  manager,
+  // **********404**********
+  {
+    path: "/:catchAll(.*)",
+    name: "404",
+    component: () => import("@/layouts/error.vue").catch(() => {}),
+  },
+];
+
+const Router = createRouter({
+  history: createWebHashHistory(),
+  routes,
+});
+export default Router;
