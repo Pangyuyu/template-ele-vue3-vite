@@ -1,33 +1,9 @@
 <template>
   <div class="home">
-    <el-card class="box-card">
+    <el-card class="box-card" v-for="(item,index) in cardList" :key="index">
       <template #header>
         <div class="card-header">
-          <span>Electron</span>
-        </div>
-      </template>
-      <div></div>
-    </el-card>
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header">
-          <span>vite</span>
-        </div>
-      </template>
-      <div></div>
-    </el-card>
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header">
-          <span>Vue3</span>
-        </div>
-      </template>
-      <div></div>
-    </el-card>
-    <el-card class="box-card">
-      <template #header>
-        <div class="card-header">
-          <span>Element-plus</span>
+          <span>{{item.name}}</span>
         </div>
       </template>
       <div></div>
@@ -36,12 +12,26 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent,ref } from "vue";
 export default defineComponent({
   components: {},
   setup() {
+    const cardList=ref([
+      {
+        name:'Element',
+      },
+      {
+        name:'Vite',
+      },
+      {
+        name:'Vue3',
+      },
+      {
+        name:'Element Plus',
+      }
+    ])
     return {
-
+      cardList
     };
   },
 });
