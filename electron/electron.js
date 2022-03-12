@@ -57,8 +57,6 @@ app.on("activate", () => {
 
 
 function createWindow() {
-  console.log("==createWindow==")
-  console.log(appStart)
   win=appStart.initWindow()
   appStart.initWinLoad(win)
 }
