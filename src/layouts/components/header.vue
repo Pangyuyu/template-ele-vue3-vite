@@ -53,7 +53,7 @@ export default defineComponent({
     onMounted(() => {
       title.value = sysConst.APP_TITLE;
       setMenuImgState();
-      title.value = "Vue3+vite+(Electron)模板";
+      title.value = "Electron+Vue3+vite+Element-Plus模板";
     });
     watch(
       () => store.getters.menuIsCollapse,
