@@ -1537,10 +1537,10 @@ electron@17.1.2:
     "@types/node" "^14.6.2"
     extract-zip "^1.0.3"
 
-element-plus@2.1.0:
-  version "2.1.0"
-  resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.1.0.tgz#ac46b4e0f92c9f028b43bd561b7f0f03e61c81cf"
-  integrity sha512-PQM3LMv5qKf0sS/k+PXuBcmKl1Eb3b7fxKPyFHZ6eodZcNykbEMcpLZefQkvmDr6calVnuQ7TUnTm7Tm9LJXvg==
+element-plus@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.npmmirror.com/element-plus/-/element-plus-2.1.1.tgz#b06581e3e506d63a4c536341ed45a2813dd300a1"
+  integrity sha512-XG6XBo9tLYzfW1MNTgGoBOoPGnfMAkFWJSsCaS5M7ekOCszC4HKCj4OqIkusGemLvzR8O96S06swzQwzNBe2uA==
   dependencies:
     "@ctrl/tinycolor" "^3.4.0"
     "@element-plus/icons-vue" "^1.0.1"

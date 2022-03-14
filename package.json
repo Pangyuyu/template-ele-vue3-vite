@@ -15,7 +15,7 @@
     "electron:build.linux": "yarn run build && electron-builder --linux appImage",
     "electron:build.test": "yarn run build && electron-builder --dir",
     "electron:build.exe": "yarn run build && electron-builder --win",
-    "loadhint":"bash ./loadhint.bash"
+    "loadhint": "bash ./loadhint.bash"
   },
   "packageManager": "yarn@1.22.17",
   "build": {
@@ -45,7 +45,7 @@
     "axios": "0.26.1",
     "consola": "^2.15.3",
     "default-passive-events": "^2.0.0",
-    "element-plus": "2.1.0",
+    "element-plus": "2.1.1",
     "querystring": "^0.2.1",
     "spark-md5": "^3.0.2",
     "url": "^0.11.0",
