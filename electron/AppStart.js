@@ -64,8 +64,6 @@ module.exports.AppStart = function () {
             win.show()
             if (!process.env.IS_TEST) win.webContents.openDevTools()
         } else {
-            // createProtocol("app")
-            // Load the index.html when not in development
             win.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`)
             win.maximize()
             win.show()

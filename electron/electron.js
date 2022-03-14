@@ -1,9 +1,11 @@
 // electron/electron.js
 const { app } = require('electron');
 const {AppStart} =require("./AppStart")
+const {AppMenu}=require("./AppMenu")
 const isDev = process.env.IS_DEV == "true" ? true : false;
 const shouldQuit = app.requestSingleInstanceLock() //单实例
 const appStart=new AppStart()
+const appMenu=new AppMenu()
 /*在开发模式下，应父进程（parent process）的要求完全退出。 */
 if (isDev) {
   if (process.platform === "win32") {
@@ -33,7 +35,7 @@ if (!shouldQuit) {
       // protocolUtil.interceptFile()
       // appStart.installDevtools()
       createWindow()
-      // menuUtil.initMenu(win)
+      appMenu.initMenu(win)
       // ipcMain.register(win)
   })
 }
