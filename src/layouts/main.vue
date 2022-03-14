@@ -84,7 +84,7 @@ export default defineComponent({
     watch(
       () => active.value,
       (newValue: string, oldValue: string) => {
-        log.debug("菜单选项改变", newValue);
+        
       }
     );
     // 判断是否有菜单
@@ -120,7 +120,6 @@ export default defineComponent({
     watch(
       () => store.getters.owenProjectId,
       (newValue: string, oldValue: string) => {
-        log.debug("watch owenProjectId", newValue);
         displayTabTitle();
       }
     );
@@ -134,7 +133,6 @@ export default defineComponent({
       let tabTitle = SysConst.APP_TITLE;
       if (store.getters.login.isLogin) {
         const project = stgProject.getProject();
-        log.debug("owenProject", project);
         if (project && utils.isNotEmpty(project.id)) {
           tabTitle = project.name;
         }
