@@ -7,7 +7,7 @@ import path from "path";
 import ViteComponents, { ElementPlusResolver } from "vite-plugin-components";
 import styleImport from "vite-plugin-style-import";
 export default defineConfig({
-  base: "/", // 访问路径
+  base: "./", // 访问路径
   plugins: [
     PkgConfig(),
     OptimizationPersist(),
@@ -30,7 +30,7 @@ export default defineConfig({
     }),
   ],
   server: {
-    host: "localhost",
+    host: "0.0.0.0",
     port: 3000,
   },
   resolve: {
