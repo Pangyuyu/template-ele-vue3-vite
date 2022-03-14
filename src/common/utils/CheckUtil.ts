@@ -31,7 +31,6 @@ export default class CheckUtil {
     var mod = sum % 11;
     var mx = [1, 0, "X", 9, 8, 7, 6, 5, 4, 3, 2];
     let checkCode = mx[mod];
-    log.debug("运算值：", checkCode);
     if (checkCode != idNumber[17]) {
       return Errors.newNormalError("身份证号不正确!");
     }
@@ -53,8 +52,6 @@ export default class CheckUtil {
   static session(): Boolean {
     const expireAt = stgLogin.getExpireAt();
     const now = time.unixNow();
-    log.debug("expireAt", expireAt);
-    log.debug("now", now);
     return now < expireAt;
   }
 }

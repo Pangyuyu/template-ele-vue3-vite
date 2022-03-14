@@ -8,7 +8,7 @@
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,    
+    "esModuleInterop": true,   
     "lib": [
       "esnext",
       "dom"
@@ -25,6 +25,7 @@
       "@/assets": ["src/assets"],
     },
     "allowSyntheticDefaultImports":true,
+    "forceConsistentCasingInFileNames":true
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]

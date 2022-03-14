@@ -7,6 +7,7 @@ import "@/common/beforeRouter";
 import ApiPub from '@/common/net/public/ApiPub';
 import "@/styles/main.scss"; //重置样式
 import 'default-passive-events'
+
 if (import.meta.env.MODE === "release") {
   Logger.setGlobalLevel(EnLogLevel.INFO);
 } else {
