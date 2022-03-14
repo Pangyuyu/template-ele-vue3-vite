@@ -9,12 +9,13 @@
     "dev": "vite --mode development",
     "build": "vite build",
     "serve": "vite preview",
-    "electron": "wait-on tcp:3000 && cross-env IS_DEV=true electron .",
+    "electron": "yarn run loadhint && wait-on tcp:3000 && cross-env IS_DEV=true electron .",
     "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn run dev\" \"yarn run electron\"",
     "electron:build.win": "yarn run build && electron-builder --win --dir",
     "electron:build.linux": "yarn run build && electron-builder --linux appImage",
     "electron:build.test": "yarn run build && electron-builder --dir",
-    "electron:build.exe": "yarn run build && electron-builder --win"
+    "electron:build.exe": "yarn run build && electron-builder --win",
+    "loadhint":"bash ./loadhint.bash"
   },
   "packageManager": "yarn@1.22.17",
   "build": {

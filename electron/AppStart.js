@@ -59,7 +59,8 @@ module.exports.AppStart = function () {
     this.initWinLoad = async function (win) {
         const isDev = process.env.IS_DEV == "true" ? true : false;
         if (isDev) {
-            await win.loadURL("http://localhost:3000")
+            const localUrl = "http://localhost:3000"
+            await win.loadURL(localUrl)
             win.maximize()
             win.show()
             if (!process.env.IS_TEST) win.webContents.openDevTools()

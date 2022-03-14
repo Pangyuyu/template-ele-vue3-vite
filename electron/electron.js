@@ -7,6 +7,7 @@ const shouldQuit = app.requestSingleInstanceLock() //单实例
 const appStart=new AppStart()
 const appMenu=new AppMenu()
 /*在开发模式下，应父进程（parent process）的要求完全退出。 */
+
 if (isDev) {
   if (process.platform === "win32") {
       process.on("message", (data) => {
