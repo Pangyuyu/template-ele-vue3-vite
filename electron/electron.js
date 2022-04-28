@@ -10,6 +10,9 @@ const appMenu=new AppMenu()
 
 if (isDev) {
   if (process.platform === "win32") {
+      process.throwDeprecation=true  //用于控制是否将弃用警告作为异常抛出。将此设置为true会引发弃用错误。使用此属性代替
+      process.traceDeprecation=true //用于控制是否打印弃警告的堆栈跟踪到stderr。将此设置为true将打印废弃警告的堆栈跟踪
+      process.traceProcessWarnings=true //用于控制是否打印进程警告及其堆栈跟踪到stderr。将此设置为true将会为进程警告（包括弃用）打印堆栈跟踪
       process.on("message", (data) => {
           if (data === "graceful-exit") {
               app.quit()
