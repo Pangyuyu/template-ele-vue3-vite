@@ -47,6 +47,8 @@ module.exports.AppStart = function () {
                 // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
                 webSecurity: false,
                 // allowRunningInsecureContent:true,
+                contextIsolation: true,
+                sandbox: true,
                 preload: path.join(__dirname, 'preload.js'), //预加载脚本，注入ipc所需对象
                 // enableRemoteModule: true
             },

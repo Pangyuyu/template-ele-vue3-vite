@@ -1,7 +1,7 @@
 <template>
   <div class="header">
     <div class="menuStateOuter">
-      <el-image @click="onClickMenuState" fit="scale-down" class="stateImg" :src="menuImgState"></el-image>
+      <el-image @click="onClickMenuState" @click.stop="" fit="scale-down" class="stateImg" :src="menuImgState"></el-image>
     </div>
 
     <div class="title">{{ title }}</div>
