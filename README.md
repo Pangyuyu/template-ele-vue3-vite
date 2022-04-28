@@ -17,7 +17,7 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 
 ## 未解决异常
 
-- [Manifest version 2 is deprecated](https://techdows.com/2021/09/chrome-manifest-v2-extensions.html)
+- [Manifest version 2 is deprecated](https://techdows.com/2021/09/chrome-manifest-v2-extensions.html)  
   浏览器插件Manifest V2 扩展程序将停止工作，异常信息如下：
 
   ```error
