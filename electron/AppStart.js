@@ -24,8 +24,9 @@ module.exports.AppStart = function () {
                     session
                 } = require("electron");
                 const path = require("path");
-                let loadPath = path.resolve(__dirname, "../devTools/chrome")
-                await session.defaultSession.loadExtension(loadPath);
+                session.defaultSession.loadExtension(
+                    path.resolve(__dirname, "../shell-chrome")  //这个是刚刚build好的插件目录
+                );
             } catch (e) {
                 console.error("Vue Devtools failed to install:", e.toString())
             }
@@ -59,6 +60,7 @@ module.exports.AppStart = function () {
     this.initWinLoad = async function (win) {
         const isDev = process.env.IS_DEV == "true" ? true : false;
         if (isDev) {
+            this.installDevtools()
             const localUrl = "http://localhost:3000"
             await win.loadURL(localUrl)
             win.maximize()
