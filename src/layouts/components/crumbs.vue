@@ -4,14 +4,10 @@
       <template v-for="(item, index) in children" :key="item">
         <span>
           <span v-if="index != 0">/</span>
-          <span
-            class="ove"
-            @click="jumpRouter(item.path)"
-            v-if="index != children.length - 1"
-          >{{ item.title }}</span>
+          <span class="ove" @click="jumpRouter(item.path)" v-if="index != children.length - 1">{{ item.title }}</span>
           <span v-if="index === children.length - 1" class="ove bu">
             {{
-              item.title
+                item.title
             }}
           </span>
         </span>
@@ -89,6 +85,7 @@ export default defineComponent({
 
 <style lang="scss" scoped>
 @import "@/styles/var.scss";
+
 .crumbs {
   height: $headerHeight;
   font-size: 14px;
@@ -99,15 +96,19 @@ export default defineComponent({
   border-bottom: 1px solid $lineColor;
   display: flex;
   align-items: center;
+
   .full {
     flex-grow: 1;
   }
+
   .ove {
     cursor: pointer;
   }
+
   .bu {
     color: #252631;
   }
+
   .ctrlbtn {
     width: 135px;
     height: 35px !important;
