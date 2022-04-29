@@ -9,7 +9,7 @@
 import { defineComponent, ref, onMounted } from "vue";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import config from "../package.json";
-import { useStore } from "vuex";
+import { useLoginStore } from '@/store/login'
 import CheckUtil from "@/common/utils/CheckUtil";
 import sysConst from '@/common/model/SysConst'
 import {
@@ -55,11 +55,11 @@ export default defineComponent({
   },
   setup() {
     const version = ref("");
-    const store = useStore<any>();
+    const loginStore = useLoginStore()
     onMounted(() => {
       version.value =`${sysConst.APP_TITLE} v${config.version}`;
       if (CheckUtil.session()) {
-        store.commit("LOGIN_KEEP");
+        loginStore.loginKeep()
       }
     });
 
