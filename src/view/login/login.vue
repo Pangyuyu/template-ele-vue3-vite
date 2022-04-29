@@ -54,6 +54,7 @@ export default defineComponent({
 
     }
     async function loginSuccess() {
+      loginStore.login({})
       router.push({ path: "/home", replace: true });
     }
     return {

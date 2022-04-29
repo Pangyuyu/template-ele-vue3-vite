@@ -4,7 +4,7 @@
   "description": "electron+ts+vue3+vite模板",
   "private": true,
   "author": "guxing",
-  "main": "electron/electron.js",
+  "main": "electron/main.js",
   "license": "MIT",
   "scripts": {
     "dev": "vite --mode development",
@@ -67,7 +67,7 @@
     "@vue/compiler-sfc": "3.2.31",
     "concurrently": "^7.0.0",
     "cross-env": "^7.0.3",
-    "electron": "18.1.0",
+    "electron": "18.2.0",
     "electron-builder": "^22.14.13",
     "pinia": "^2.0.13",
     "sass": "^1.35.1",

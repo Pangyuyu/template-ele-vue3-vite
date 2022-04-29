@@ -2,6 +2,8 @@ const {
     Menu, dialog
 } = require('electron')
 const appPackage = require("../package.json") //当前package包内容
+const { Log } = require("./logUtil")
+const log = new Log()
 
 module.exports.AppMenu = function () {
     this.win = null;
@@ -83,11 +85,16 @@ module.exports.AppMenu = function () {
     }
     this.showAbout = function () {
         let appVersion = appPackage.version
+        let detailMsg = `本软件：${appVersion}`;
+        const infoList=["chrome","node","electron","v8","openssl"]        
+        infoList.forEach(item=>{
+            detailMsg += `\n${item}:${process.versions[item]}`
+        })
         dialog.showMessageBox(this.win, {
             title: "关于",
             type: "info",
             message: "孤星",
-            detail: `Electron+Vue3示例：${appVersion}`,
+            detail: detailMsg,
         })
     }
     this.sendCheckVersion = function () {

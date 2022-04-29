@@ -1,5 +1,7 @@
 const { BrowserWindow } = require('electron')
 const path = require('path');
+const { Log } = require("./logUtil")
+const log = new Log()
 /**
  * APP启动时的方法封装
  */
@@ -24,11 +26,11 @@ module.exports.AppStart = function () {
                     session
                 } = require("electron");
                 const path = require("path");
-                session.defaultSession.loadExtension(
-                    path.resolve(__dirname, "../shell-chrome")  //这个是刚刚build好的插件目录
-                );
+                const extPath = path.resolve(__dirname, "../shell-chrome")
+                log.d("vue-devtools地址", extPath)
+                session.defaultSession.loadExtension(extPath);
             } catch (e) {
-                console.error("Vue Devtools failed to install:", e.toString())
+                log.e("Vue Devtools failed to install:", e.toString())
             }
         }
     }
@@ -36,6 +38,8 @@ module.exports.AppStart = function () {
      * 初始化窗体
      */
     this.initWindow = function () {
+        const preLoadPath = path.join(__dirname, 'preload.js')
+        log.d("预加载文件地址", preLoadPath)
         return new BrowserWindow({
             width: 1600,
             height: 1200,
@@ -49,7 +53,7 @@ module.exports.AppStart = function () {
                 // allowRunningInsecureContent:true,
                 contextIsolation: true,
                 sandbox: true,
-                preload: path.join(__dirname, 'preload.js'), //预加载脚本，注入ipc所需对象
+                preload: preLoadPath, //预加载脚本，注入ipc所需对象
                 // enableRemoteModule: true
             },
             show: false,
@@ -64,6 +68,7 @@ module.exports.AppStart = function () {
         if (isDev) {
             this.installDevtools()
             const localUrl = "http://localhost:3000"
+            log.l("加载地址", localUrl)
             await win.loadURL(localUrl)
             win.maximize()
             win.show()
