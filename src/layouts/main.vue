@@ -4,10 +4,10 @@
     <div class="main">
       <!-- menu左侧菜单 -->
       <div class="menu">
-        <el-menu default-active="home" background-color="#323a5f" text-color="#848BAD" active-text-color="#fff"
+        <el-menu default-active="home" router="true" background-color="#323a5f" text-color="#848BAD" active-text-color="#fff"
           :collapse="isCollapse" class="el-menu-vertical-demo">
           <template v-for="item in menuList" :key="item.index">
-            <el-menu-item v-if="!item.hide&&!item.hasSubs" :index="item.index">
+            <el-menu-item v-if="!item.hide && !item.hasSubs" :index="item.index" :route="item.path">
               <el-icon color="#ffffff" class="no-inherit">
                 <edit />
               </el-icon>
@@ -20,12 +20,14 @@
                 </el-icon>
                 <span>{{ item.title }}</span>
               </template>
-              <el-menu-item v-for="itemSub in item.subs" :key="itemSub.index" :index="itemSub.index">
-                <el-icon>
+              <template v-for="itemSub in item.subs" :key="itemSub.index" :index="itemSub.index">
+                <el-menu-item v-if="!itemSub.hide" :index="itemSub.index" :route="itemSub.path">
+                  <el-icon>
                     <document />
                   </el-icon>
                   <span>{{ itemSub.title }}</span>
-              </el-menu-item>
+                </el-menu-item>
+              </template>
             </el-sub-menu>
           </template>
         </el-menu>

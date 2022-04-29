@@ -1,5 +1,5 @@
 <template>
-    <div></div>
+    <div>Element-plus 示例</div>
 </template>
 
 <script lang="ts">

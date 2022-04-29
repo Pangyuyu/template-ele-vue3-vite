@@ -1,7 +1,8 @@
 [
     {
         "title":"首页",
-        "index":"home"
+        "index":"/home",
+        "path":"/home"
     },
     {
         "title":"构建工具",
@@ -14,11 +15,13 @@
         "subs":[
             {
                 "title":"Electron",
-                "index":"example_electron"
+                "index":"/techExample/ex_electron",
+                "path":"/techExample/ex_electron"
             },
             {
                 "title":"Element-Plus",
-                "index":"example_element"
+                "index":"/techExample/ex_elementPlus",
+                "path":"/techExample/ex_elementPlus"
             }
         ]
     }
