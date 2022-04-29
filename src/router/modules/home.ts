@@ -4,9 +4,6 @@ const home = {
   name: "home",
   component:Main,
   redirect: '/home/index',
-  meta: {
-    title: "首页",
-  },
   children: [
     {
       path: "/home/index",

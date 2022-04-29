@@ -1,0 +1,28 @@
+[
+    {
+        "title":"首页",
+        "index":"home",
+        "path":"/home"
+    },
+    {
+        "title":"构建工具",
+        "index":"buildtools",
+        "hide":true
+    },
+    {
+        "title":"功能示例",
+        "index":"example",
+        "subs":[
+            {
+                "title":"Electron",
+                "index":"/techExample/ex_electron",
+                "path":"/techExample/ex_electron"
+            },
+            {
+                "title":"Element-Plus",
+                "index":"/techExample/ex_elementPlus",
+                "path":"/techExample/ex_elementPlus"
+            }
+        ]
+    }
+]

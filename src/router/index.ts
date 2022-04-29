@@ -1,6 +1,6 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import home from "./modules/home";
-import manager from "./modules/manager";
+import techExample from "./modules/techExample";
 // import Logger from '@/common/logger/logger';
 const routes: Array<RouteRecordRaw> = [
   // **********登录**********
@@ -15,7 +15,7 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import("@/view/login/login.vue").catch(() => {}),
   },
   home,
-  manager,
+  techExample,
   // **********404**********
   {
     path: "/:catchAll(.*)",

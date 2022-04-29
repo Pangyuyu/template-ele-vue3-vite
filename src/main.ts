@@ -7,6 +7,7 @@ import "@/common/beforeRouter";
 import ApiPub from '@/common/net/public/ApiPub';
 import "@/styles/main.scss"; //重置样式
 import 'default-passive-events'
+import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 if (import.meta.env.MODE === "release") {
   Logger.setGlobalLevel(EnLogLevel.INFO);
@@ -16,6 +17,9 @@ if (import.meta.env.MODE === "release") {
 const app = createApp(App);
 app.use(Router);
 app.use(store);
+for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+  app.component(key, component)
+}
 
 // 挂载API
 app.config.globalProperties.$APIPUB = ApiPub;

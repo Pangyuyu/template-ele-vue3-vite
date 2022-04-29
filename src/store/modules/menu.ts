@@ -21,6 +21,12 @@ const state: STATE = {
       path: "/home",
       icon: icon_home,
       roles:[]
+    },
+    {
+      name: "技术示例",
+      path: "/techExample",
+      icon: icon_home,
+      roles:[]
     }
   ],
 };
