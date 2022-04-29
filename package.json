@@ -4,7 +4,7 @@
   "description": "electron+ts+vue3+vite模板",
   "private": true,
   "author": "guxing",
-  "main": "electron/electron.js",
+  "main": "electron/main.js",
   "license": "MIT",
   "scripts": {
     "dev": "vite --mode development",
