@@ -4,23 +4,29 @@
     <div class="main">
       <!-- menu左侧菜单 -->
       <div class="menu">
-        <el-menu
-          :uniqueOpened="true"
-          :default-active="active"
-          background-color="#323a5f"
-          text-color="#848BAD"
-          active-text-color="#fff"
-          :router="true"
-          :collapse="isCollapse"
-          class="el-menu-vertical-demo"
-        >
-          <template v-for="(item, index) in menuList" :key="index">
-            <el-menu-item :index="item.path">
-              <el-icon>
-                <img class="menu-icon" :src="item.icon" />
+        <el-menu default-active="home" background-color="#323a5f" text-color="#848BAD" active-text-color="#fff"
+          :collapse="isCollapse" class="el-menu-vertical-demo">
+          <template v-for="item in menuList" :key="item.index">
+            <el-menu-item v-if="!item.hide&&!item.hasSubs" :index="item.index">
+              <el-icon color="#ffffff" class="no-inherit">
+                <edit />
               </el-icon>
-              <template #title style="flex-grow: 1">{{ item.name }}</template>
+              <span>{{ item.title }}</span>
             </el-menu-item>
+            <el-sub-menu v-else-if="!item.hide" :index="item.index">
+              <template #title>
+                <el-icon color="#ffffff" class="no-inherit">
+                  <location />
+                </el-icon>
+                <span>{{ item.title }}</span>
+              </template>
+              <el-menu-item v-for="itemSub in item.subs" :key="itemSub.index" :index="itemSub.index">
+                <el-icon>
+                    <document />
+                  </el-icon>
+                  <span>{{ itemSub.title }}</span>
+              </el-menu-item>
+            </el-sub-menu>
           </template>
         </el-menu>
       </div>
@@ -32,7 +38,8 @@
         <!-- <Crumbs></Crumbs> -->
         <div class="pagec">
           <router-view v-slot="{ Component }">
-            <transition name="fade-transform" mode="out-in">
+            <transition>
+              <!-- 此处的红色警告没法消除 -->
               <component :is="Component" />
             </transition>
           </router-view>
@@ -52,9 +59,7 @@ import {
   onBeforeMount,
   watch,
 } from "vue";
-import { useRouter, useRoute } from "vue-router";
 import { useStore } from "vuex";
-import "./Interface/main";
 import Header from "@/layouts/components/header.vue";
 import Crumbs from "@/layouts/components/crumbs.vue";
 import { HomeFilled } from "@element-plus/icons-vue";
@@ -63,6 +68,7 @@ import stgProject from "@/common/storage/project";
 import stgLogin from '@/common/storage/login'
 import SysConst from "@/common/model/SysConst";
 import utils from "@/common/utils/utils";
+import localDataMenus from '@/common/data/menus.json';
 export default defineComponent({
   name: "Main",
   components: {
@@ -74,42 +80,22 @@ export default defineComponent({
     const log = new Logger("main.vue");
     const active = ref<string>(""); // 左侧菜单默认选中项
     const store = useStore<any>(); // 使用vuex
-    const data: MainDataType = reactive({
-      router: useRouter(),
-      route: useRoute(),
-      menuList: [], //菜单列表
-    });
-    const isCollapse = ref<boolean>(false);
-    const refData = toRefs(data); // 包裹data数据
-    watch(
-      () => active.value,
-      (newValue: string, oldValue: string) => {
-        
-      }
-    );
-    // 判断是否有菜单
-    async function displayMenuList() {
-      active.value = data.route.path;
-      if (data.menuList.length == 0) {
-        let menuList = filterUserMenus()
-        data.menuList = menuList.map((item: any) => {
-          return {
-            ...item
-          }
-        })
-      } else {
-        data.menuList = [];
-      }
-      if (active.value.indexOf("home") > -1) {
-        active.value = data.menuList[0].path;
-      }
+    const isCollapse = ref<boolean>(false) //是否水平折叠菜单
+    const menuList = ref(new Array())
+    function displayMenus() {
+      menuList.value = localDataMenus.map(item => {
+        return {
+          ...item,
+          hasSubs: item.subs && item.subs.length > 0
+        }
+      })
     }
 
     onBeforeMount(() => {
-      displayMenuList();
+      displayMenus()
     });
     onMounted(() => {
-      displayTabTitle();
+      displayMenus()
     });
     watch(
       () => store.getters.menuIsCollapse,
@@ -160,9 +146,9 @@ export default defineComponent({
     }
     // 返回数据
     return {
-      ...refData,
       active,
       isCollapse,
+      menuList
     };
   },
 });
@@ -170,39 +156,30 @@ export default defineComponent({
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 400px;
+  min-height: 800px;
+  height: 100%;
 }
 </style>
 <style lang="scss">
 @import "@/styles/var.scss";
+
+.child-rootview {
+  height: calc(100% - #{$titleBarHeight});
+  max-height: cacl(100%-#{$titleBarHeight});
+  padding: 5px;
+  overflow: hidden;
+}
+
 .main {
   // height: calc(100vh - $headerHeight);
   height: 100vh;
   display: flex;
   background-color: #f5f7fd;
-  .menu {
-    .el-menu {
-      height: 100%;
-      overflow-y: auto;
-      .el-menu-item {
-        padding: 0 45px 0 10px !important;
-        height: $headerHeight;
-      }
-      .is-active {
-        font-weight: 500;
-        background-color: #5473e8 !important;
-        border-right: 0px solid #5473e8;
-      }
-      .menu-icon {
-        width: 18px;
-        height: 18px;
-        margin-right: 5px;
-      }
-    }
-  }
+
   .content {
     width: 100%;
     background-color: #fff;
+
     .pagec {
       overflow-y: auto;
       height: calc(100vh - $headerHeight); //模块主显示区域的高度
@@ -211,6 +188,7 @@ export default defineComponent({
     }
   }
 }
+
 /* fade-transform */
 .fade-transform-leave-active,
 .fade-transform-enter-active {

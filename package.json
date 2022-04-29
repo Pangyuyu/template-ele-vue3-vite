@@ -1,7 +1,7 @@
 {
   "name": "guxing-electron-template",
   "version": "0.0.1",
-  "description":"electron+ts+vue3+vite模板",
+  "description": "electron+ts+vue3+vite模板",
   "private": true,
   "author": "guxing",
   "main": "electron/electron.js",
@@ -23,8 +23,8 @@
     "appId": "guxing.electron.template",
     "productName": "孤星electron示例",
     "copyright": "Copyright © 2022 ${author}",
-    "win":{
-      "icon":"./src/assets/logo.png"
+    "win": {
+      "icon": "./src/assets/logo.png"
     },
     "mac": {
       "category": "public.app-category.utilities",
@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@element-plus/icons": "^0.0.11",
-    "@element-plus/icons-vue": "1.1.1",
+    "@element-plus/icons-vue": "1.1.4",
     "@types/spark-md5": "^3.0.2",
     "axios": "0.26.1",
     "consola": "^2.15.3",
