@@ -4,8 +4,10 @@
     <div class="main">
       <!-- menu左侧菜单 -->
       <div class="menu">
-        <el-menu default-active="home" router="true" background-color="#323a5f" text-color="#848BAD" active-text-color="#fff"
-          :collapse="isCollapse" class="el-menu-vertical-demo">
+        <el-menu :default-active="menuDefaultActive" background-color="#323a5f" text-color="#848BAD"
+          active-text-color="#fff" :collapse="isCollapse" class="el-menu-vertical-demo" 
+          :router="true"
+          @select="elMenuSelect">
           <template v-for="item in menuList" :key="item.index">
             <el-menu-item v-if="!item.hide && !item.hasSubs" :index="item.index" :route="item.path">
               <el-icon color="#ffffff" class="no-inherit">
@@ -20,7 +22,7 @@
                 </el-icon>
                 <span>{{ item.title }}</span>
               </template>
-              <template v-for="itemSub in item.subs" :key="itemSub.index" :index="itemSub.index">
+              <template v-for="itemSub in item.subs" :key="itemSub.index">
                 <el-menu-item v-if="!itemSub.hide" :index="itemSub.index" :route="itemSub.path">
                   <el-icon>
                     <document />
@@ -34,10 +36,7 @@
       </div>
       <!-- content页面内容 -->
       <div class="content">
-        <!-- header头部 -->
         <Header></Header>
-        <!-- 面包屑 注释掉的原因：当前菜单没有多级-->
-        <!-- <Crumbs></Crumbs> -->
         <div class="pagec">
           <router-view v-slot="{ Component }">
             <transition>
@@ -63,20 +62,12 @@ import {
 } from "vue";
 import { useStore } from "vuex";
 import Header from "@/layouts/components/header.vue";
-import Crumbs from "@/layouts/components/crumbs.vue";
-import { HomeFilled } from "@element-plus/icons-vue";
 import Logger from "@/common/logger/logger";
-import stgProject from "@/common/storage/project";
-import stgLogin from '@/common/storage/login'
-import SysConst from "@/common/model/SysConst";
-import utils from "@/common/utils/utils";
 import localDataMenus from '@/common/data/menus.json';
 export default defineComponent({
   name: "Main",
   components: {
     Header,
-    Crumbs,
-    HomeFilled,
   },
   setup() {
     const log = new Logger("main.vue");
@@ -84,6 +75,7 @@ export default defineComponent({
     const store = useStore<any>(); // 使用vuex
     const isCollapse = ref<boolean>(false) //是否水平折叠菜单
     const menuList = ref(new Array())
+    const menuDefaultActive=ref("home")
     function displayMenus() {
       menuList.value = localDataMenus.map(item => {
         return {
@@ -105,52 +97,18 @@ export default defineComponent({
         isCollapse.value = store.getters.menuIsCollapse;
       }
     );
-    watch(
-      () => store.getters.owenProjectId,
-      (newValue: string, oldValue: string) => {
-        displayTabTitle();
-      }
-    );
-    watch(
-      () => store.getters.isLogin,
-      (newValue: string, oldValue: string) => {
-        displayTabTitle();
-      }
-    );
-    function displayTabTitle() {
-      let tabTitle = SysConst.APP_TITLE;
-      if (store.getters.login.isLogin) {
-        const project = stgProject.getProject();
-        if (project && utils.isNotEmpty(project.id)) {
-          tabTitle = project.name;
-        }
-      }
-      document.title = tabTitle;
-    }
-    function filterUserMenus() {
-      let menuList = store.state.menu.menus.filter((menu: any) => {
-        let has = false;
-        const menuRoles = menu.roles
-        if (stgLogin.isRoot() || menuRoles.length == 0) {
-          has = true
-        } else {
-          const userRoles = stgProject.getProject().roles
-          for (let i = 0; i < menuRoles.length; i++) {
-            has = userRoles.indexOf(menuRoles[i]) > -1
-            if (has) {
-              break
-            }
-          }
-        }
-        return has;
-      })
-      return menuList
+    function elMenuSelect(index:string,indexPath:string,item:any,routeResult:any) {
+      log.debug("elMenuSelect::index",index)
+      log.debug("elMenuSelect::indexPath",indexPath)
+      // menuDefaultActive.value=index
     }
     // 返回数据
     return {
       active,
       isCollapse,
-      menuList
+      menuList,
+      menuDefaultActive,
+      elMenuSelect
     };
   },
 });
