@@ -53,14 +53,12 @@
 <script lang="ts">
 import {
   defineComponent,
-  reactive,
-  toRefs,
   ref,
   onMounted,
   onBeforeMount,
   watch,
 } from "vue";
-import { useStore } from "vuex";
+import {useMenuStore} from "@/store/menu"
 import Header from "@/layouts/components/header.vue";
 import Logger from "@/common/logger/logger";
 import localDataMenus from '@/common/data/menus.json';
@@ -72,7 +70,7 @@ export default defineComponent({
   setup() {
     const log = new Logger("main.vue");
     const active = ref<string>(""); // 左侧菜单默认选中项
-    const store = useStore<any>(); // 使用vuex
+    const menuStore=useMenuStore()
     const isCollapse = ref<boolean>(false) //是否水平折叠菜单
     const menuList = ref(new Array())
     const menuDefaultActive=ref("home")
@@ -92,14 +90,14 @@ export default defineComponent({
       displayMenus()
     });
     watch(
-      () => store.getters.menuIsCollapse,
+      () => menuStore.isCollapse,
       (newValue, oldValue) => {
-        isCollapse.value = store.getters.menuIsCollapse;
+        isCollapse.value = menuStore.isCollapse;
       }
     );
     function elMenuSelect(index:string,indexPath:string,item:any,routeResult:any) {
-      log.debug("elMenuSelect::index",index)
-      log.debug("elMenuSelect::indexPath",indexPath)
+      // log.debug("elMenuSelect::index",index)
+      // log.debug("elMenuSelect::indexPath",indexPath)
       // menuDefaultActive.value=index
     }
     // 返回数据
@@ -116,13 +114,10 @@ export default defineComponent({
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 800px;
-  height: 100%;
 }
 </style>
 <style lang="scss">
 @import "@/styles/var.scss";
-
 .child-rootview {
   height: calc(100% - #{$titleBarHeight});
   max-height: cacl(100%-#{$titleBarHeight});
@@ -131,11 +126,12 @@ export default defineComponent({
 }
 
 .main {
-  // height: calc(100vh - $headerHeight);
   height: 100vh;
   display: flex;
   background-color: #f5f7fd;
-
+  .menu{
+    background-color:#323a5f
+  }
   .content {
     width: 100%;
     background-color: #fff;

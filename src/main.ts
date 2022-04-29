@@ -2,7 +2,7 @@ import { createApp } from "vue";
 import App from "@/App.vue";
 import Logger, { EnLogLevel } from "@/common/logger/logger";
 import Router from "@/router";
-import store from "@/store";
+import { createPinia } from 'pinia'
 import "@/common/beforeRouter";
 import ApiPub from '@/common/net/public/ApiPub';
 import "@/styles/main.scss"; //重置样式
@@ -14,9 +14,11 @@ if (import.meta.env.MODE === "release") {
 } else {
   Logger.setGlobalLevel(EnLogLevel.DEBUG);
 }
+const pinia = createPinia()
 const app = createApp(App);
-app.use(Router);
-app.use(store);
+app.use(Router);//注册路由
+app.use(pinia);//注册状态相应组件
+//注册Element-plus中的图标库
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
 }

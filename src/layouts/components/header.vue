@@ -30,7 +30,7 @@
 
 <script lang="ts">
 import { defineComponent,ref, onMounted, watch,computed } from "vue";
-import { useStore } from "vuex";
+import { useMenuStore } from "@/store/menu"
 import { useRouter } from "vue-router";
 import { ArrowDown } from "@element-plus/icons-vue";
 import Logger from "@/common/logger/logger";
@@ -39,6 +39,9 @@ import modalTool from "@/common/ui/ModalTool";
 import imgLoginout from "@/assets/images/loginout.png";
 import imgSwitch from "@/assets/images/swich.png";
 import defaultavatar from '@/assets/images/defaultavatar.png'
+import img_logo from "@/assets/images/logo.png"
+import img_menu_expand from "@/assets/images/menu_expand.png"
+import img_menu_shrink from "@/assets/images/menu_shrink.png"
 export default defineComponent({
   name: "Header",
   components: {
@@ -46,7 +49,7 @@ export default defineComponent({
   },
   setup() {
     const log = new Logger("header.vue");
-    const store = useStore<any>(); // 使用vuex
+    const menuStore=useMenuStore()
     const router: any = useRouter();
     const menuImgState = ref("");
     const title = ref("");
@@ -56,7 +59,7 @@ export default defineComponent({
       title.value = "Electron+Vue3+vite+Element-Plus模板";
     });
     watch(
-      () => store.getters.menuIsCollapse,
+      () => menuStore.isCollapse,
       (newValue, oldValue) => {
         log.debug("watch menuIsCollapse", newValue);
         setMenuImgState();
@@ -72,20 +75,20 @@ export default defineComponent({
       });
     }
     async function runSignOut() {
-      await store.dispatch("LOGINOUT");
-      router.push({ path: "/login" });
+      // await store.dispatch("LOGINOUT");
+      // router.push({ path: "/login" });
     }
     async function setMenuImgState() {
-      let tempImg: any = await import("@/assets/images/logo.png");
-      if (store.getters.menuIsCollapse) {
-        tempImg = await import("@/assets/images/menu_expand.png");
+      let tempImg = img_logo;
+      if (menuStore.isCollapse) {
+        tempImg = img_menu_expand;
       } else {
-        tempImg = await import("@/assets/images/menu_shrink.png");
+        tempImg = img_menu_shrink;
       }
-      menuImgState.value = tempImg.default;
+      menuImgState.value = tempImg;
     }
     function onClickMenuState() {
-      store.commit("CHANGE_COLLOPSE_STATE");
+      menuStore.changeCollopseState()
     }
     return {
       menuImgState,

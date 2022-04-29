@@ -25,7 +25,7 @@
 <script lang="ts">
 import { defineComponent, getCurrentInstance, ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
-import { useStore } from "vuex";
+import { useLoginStore } from '@/store/login'
 import modalTool from "@/common/ui/ModalTool";
 import sysConst from "@/common/model/SysConst";
 import Logger from "@/common/logger/logger";
@@ -34,7 +34,7 @@ export default defineComponent({
   setup() {
     const log = new Logger("Login.vue");
     const { proxy }: any = getCurrentInstance(); //获取当前实例
-    const store = useStore<any>(); // 使用vuex
+    const loginStore = useLoginStore()
     const router = useRouter();
     const title = ref("");
     const LoginData = ref({
