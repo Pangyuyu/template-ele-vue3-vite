@@ -11,21 +11,21 @@
           <template v-for="item in menuList" :key="item.index">
             <el-menu-item v-if="!item.hide && !item.hasSubs" :index="item.index" :route="item.path">
               <el-icon color="#ffffff" class="no-inherit">
-                <edit />
+                 <component class="comp_icon" :is="item.icon"></component>
               </el-icon>
               <span>{{ item.title }}</span>
             </el-menu-item>
             <el-sub-menu v-else-if="!item.hide" :index="item.index">
               <template #title>
                 <el-icon color="#ffffff" class="no-inherit">
-                  <location />
+                  <component class="comp_icon" :is="item.icon"></component>
                 </el-icon>
                 <span>{{ item.title }}</span>
               </template>
               <template v-for="itemSub in item.subs" :key="itemSub.index">
                 <el-menu-item v-if="!itemSub.hide" :index="itemSub.index" :route="itemSub.path">
                   <el-icon>
-                    <document />
+                    <component class="comp_icon" :is="itemSub.icon"></component>
                   </el-icon>
                   <span>{{ itemSub.title }}</span>
                 </el-menu-item>
@@ -40,7 +40,6 @@
         <div class="pagec">
           <router-view v-slot="{ Component }">
             <transition>
-              <!-- 此处的红色警告没法消除 -->
               <component :is="Component" />
             </transition>
           </router-view>
@@ -116,7 +115,7 @@ export default defineComponent({
   width: 200px;
 }
 </style>
-<style lang="scss">
+<style lang="scss" scoped>
 @import "@/styles/var.scss";
 .child-rootview {
   height: calc(100% - #{$titleBarHeight});
@@ -159,5 +158,9 @@ export default defineComponent({
 .fade-transform-leave-to {
   opacity: 0;
   transform: translateX(30px);
+}
+.comp_icon{
+  width: 18px;
+  height: 18px;
 }
 </style>
