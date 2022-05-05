@@ -12,7 +12,7 @@
         <el-divider></el-divider>
         <div class="link-plat">
           <div class="link-item" v-for="(itemLink, linkIndex) in item.websites" :key="linkIndex">
-            <el-button class="btn" type="text">{{ itemLink.desc }}</el-button>
+            <el-button class="btn" type="text" @click="onClickItemLink(itemLink)">{{ itemLink.desc }}</el-button>
           </div>
         </div>
       </div>
@@ -27,6 +27,7 @@ import IconElectron from '@/assets/osc/electron.png';
 import IconElementPlus from '@/assets/osc/element-plus.png';
 import IconVite from '@/assets/osc/vite.svg';
 import IconVue from '@/assets/osc/vue.png';
+import RenderCmd from '@/../electron/RenderCmd'
 export default defineComponent({
   components: {},
   setup() {
@@ -47,8 +48,16 @@ export default defineComponent({
       if (cardName == 'Vue3') return IconVue
       return ""
     }
+    function onClickItemLink(itemLink: any) {
+      console.log("onClickItemLink", itemLink)
+      RenderCmd.childWinSend({
+        title: itemLink.desc,
+        url: itemLink.url,
+      })
+    }
     return {
-      cardList
+      cardList,
+      onClickItemLink
     };
   },
 });
@@ -76,23 +85,28 @@ export default defineComponent({
   .box-card {
     width: 45%;
     margin: 10px;
+
     .card-header {
       display: flex;
       flex-direction: row;
       align-items: center;
+
       .icon {
         width: 32px;
         height: 32px;
       }
+
       .title {
         padding-left: 10px;
       }
     }
+
     .content {
       display: flex;
       flex-direction: column;
       flex-grow: 1;
       height: 320px;
+
       .brief {
         flex-grow: 1;
         display: flex;
@@ -100,14 +114,16 @@ export default defineComponent({
         align-items: center;
         font-size: 22px;
       }
+
       .link-plat {
         display: flex;
         height: 55px;
-        .btn{
+
+        .btn {
           margin-right: 15px;
         }
       }
-      
+
     }
   }
 }

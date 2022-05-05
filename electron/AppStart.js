@@ -48,13 +48,13 @@ module.exports.AppStart = function () {
             webPreferences: {
                 // Use pluginOptions.nodeIntegration, leave this alone
                 // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
-                // nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
+                nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
                 webSecurity: false,
                 // allowRunningInsecureContent:true,
-                contextIsolation: true,
-                sandbox: true,
+                contextIsolation: false,
+                sandbox: false,
                 preload: preLoadPath, //预加载脚本，注入ipc所需对象
-                // enableRemoteModule: true
+                enableRemoteModule: true
             },
             show: false,
         })
