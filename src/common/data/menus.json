@@ -2,26 +2,31 @@
     {
         "title":"首页",
         "index":"home",
-        "path":"/home"
+        "path":"/home",
+        "icon":"home-filled"
     },
     {
         "title":"构建工具",
         "index":"buildtools",
-        "hide":true
+        "hide":true,
+        "icon":"odometer"
     },
     {
         "title":"功能示例",
         "index":"example",
+        "icon":"aim",
         "subs":[
             {
                 "title":"Electron",
                 "index":"/techExample/ex_electron",
-                "path":"/techExample/ex_electron"
+                "path":"/techExample/ex_electron",
+                "icon":"alarm-clock"
             },
             {
                 "title":"Element-Plus",
                 "index":"/techExample/ex_elementPlus",
-                "path":"/techExample/ex_elementPlus"
+                "path":"/techExample/ex_elementPlus",
+                "icon":"baseball"
             }
         ]
     }
