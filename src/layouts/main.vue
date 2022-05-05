@@ -4,8 +4,8 @@
     <div class="main">
       <!-- menu左侧菜单 -->
       <div class="menu">
-        <el-menu :default-active="menuDefaultActive" background-color="#323a5f" text-color="#848BAD"
-          active-text-color="#fff" :collapse="isCollapse" class="el-menu-vertical-demo" 
+        <el-menu :default-active="menuDefaultActive" background-color="#778899" text-color="#FFFFFF"
+          active-text-color="#000080" :collapse="isCollapse" class="el-menu-vertical-demo" 
           :router="true"
           @select="elMenuSelect">
           <template v-for="item in menuList" :key="item.index">
@@ -129,7 +129,7 @@ export default defineComponent({
   display: flex;
   background-color: #f5f7fd;
   .menu{
-    background-color:#323a5f
+    background-color:#778899
   }
   .content {
     width: 100%;
