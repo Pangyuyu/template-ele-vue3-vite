@@ -51,8 +51,8 @@ module.exports.AppStart = function () {
                 nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
                 webSecurity: false,
                 // allowRunningInsecureContent:true,
-                contextIsolation: false,
-                sandbox: false,
+                contextIsolation: true,//启用上下文隔离
+                sandbox: true,//启用沙盒
                 preload: preLoadPath, //预加载脚本，注入ipc所需对象
                 enableRemoteModule: true
             },

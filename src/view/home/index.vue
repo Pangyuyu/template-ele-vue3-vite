@@ -50,10 +50,7 @@ export default defineComponent({
     }
     function onClickItemLink(itemLink: any) {
       console.log("onClickItemLink", itemLink)
-      RenderCmd.childWinSend({
-        title: itemLink.desc,
-        url: itemLink.url,
-      })
+      RenderCmd.childWinSend(itemLink.desc,itemLink.url)
     }
     return {
       cardList,

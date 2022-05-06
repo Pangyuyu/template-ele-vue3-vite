@@ -12,6 +12,7 @@ module.exports.AppMenu = function () {
         const template = [
             ...this.getCommonCustomMenu(),
             ...this.getCustomMenu(),
+            ...this.getExampleMenu()
         ]
         const menu = Menu.buildFromTemplate(template)
         Menu.setApplicationMenu(menu)
@@ -86,8 +87,8 @@ module.exports.AppMenu = function () {
     this.showAbout = function () {
         let appVersion = appPackage.version
         let detailMsg = `本软件：${appVersion}`;
-        const infoList=["chrome","node","electron","v8","openssl"]        
-        infoList.forEach(item=>{
+        const infoList = ["chrome", "node", "electron", "v8", "openssl"]
+        infoList.forEach(item => {
             detailMsg += `\n${item}:${process.versions[item]}`
         })
         dialog.showMessageBox(this.win, {
@@ -146,5 +147,22 @@ module.exports.AppMenu = function () {
             }
             ],
         }]
+    }
+    this.getExampleMenu = function () {
+        return [
+            {
+                label: "示例",
+                submenu: [
+                    {
+                        click: () => this.win.webContents.send('update-counter', 1),
+                        label: '加 1',
+                    },
+                    {
+                        click: () => this.win.webContents.send('update-counter', -1),
+                        label: '减 1',
+                    }
+                ]
+            }
+        ]
     }
 }
