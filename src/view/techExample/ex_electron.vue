@@ -6,7 +6,11 @@
                 <el-button class="ex-btn" type="success" @click="chooseFile()">双向通信：渲染器进程&lt;-->主进程</el-button>
                 <el-button class="ex-btn" type="info">主进程到渲染器进程</el-button>
             </div>
-
+            <div class="ipc-warn">
+                <div class="item">1.出于 <a href="javascript:void(0);" @click="onClickcontextIsolation()">安全原因</a>，务必启用上下文隔离；</div>
+                <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
+                <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
+            </div>
         </el-tab-pane>
     </el-tabs>
 </template>
@@ -41,10 +45,14 @@ export default defineComponent({
                 type: type,
             })
         }
+        function onClickcontextIsolation() {
+            RenderCmd.childWinSend("安全原因", "https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations")
+        }
         return {
             activeName,
             setMainWinTitle,
-            chooseFile
+            chooseFile,
+            onClickcontextIsolation
         }
     }
 })
@@ -74,6 +82,19 @@ export default defineComponent({
 
     .ex-btn {
         min-width: 320px;
+    }
+}
+
+.ipc-warn {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid olive;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 10px;
+    .item{
+        line-height: 35px;
     }
 }
 </style>
