@@ -132,7 +132,10 @@ export default defineComponent({
   .menu{
     // background-color:#4169E1
     width: auto;
-    background-image: linear-gradient(to bottom, $color_DarkSlateBlue, $color_CornflowerBlue);
+    // background-image: linear-gradient(to bottom, $color_DarkSlateBlue,$color_CornflowerBlue);
+    background-image: linear-gradient(to bottom, hsl(219, 74%, 26%), $color_CornflowerBlue);
+    // https://developer.mozilla.org/zh-CN/docs/Web/CSS/gradient/linear-gradient
+    // background-image: linear-gradient(red 0%, orange 25%, yellow 50%, green 75%, blue 100%);
   }
   .content {
     width: 100%;
