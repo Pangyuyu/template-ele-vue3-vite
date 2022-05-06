@@ -7,5 +7,6 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true' /*去掉控制台关�
 contextBridge.exposeInMainWorld('EleApi',{
     openChildWin:(args)=>ipcRenderer.send('open-child-win',args),
     setTitle:(args)=>ipcRenderer.send('ipc-example-set-title',args),
-    openFile:()=>ipcRenderer.invoke('ipc-example-file-choose')
+    openFile:()=>ipcRenderer.invoke('ipc-example-file-choose'),
+    onUpdateCounter:(callback)=>ipcRenderer.on('update-counter',callback)
 })

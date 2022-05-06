@@ -4,12 +4,15 @@
             <div class="ipc-content">
                 <el-button class="ex-btn" type="primary" @click="setMainWinTitle()">单项通信：渲染器进程-->主进程</el-button>
                 <el-button class="ex-btn" type="success" @click="chooseFile()">双向通信：渲染器进程&lt;-->主进程</el-button>
-                <el-button class="ex-btn" type="info">主进程到渲染器进程</el-button>
+                <el-button class="ex-btn" type="info" @click="onClickUpdateCounter()">主进程到渲染器进程:{{ testValue }}
+                </el-button>
             </div>
             <div class="ipc-warn">
-                <div class="item">1.出于 <a href="javascript:void(0);" @click="onClickcontextIsolation()">安全原因</a>，务必启用上下文隔离；</div>
+                <div class="item">1.出于 <a href="javascript:void(0);"
+                        @click="onClickcontextIsolation()">安全原因</a>，务必启用上下文隔离；</div>
                 <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
                 <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
+                <div class="item">4.主进程向渲染进程发送消息时，需使用webContents.send方法</div>
             </div>
         </el-tab-pane>
     </el-tabs>
@@ -19,10 +22,19 @@
 // @ts-nocheck
 import { defineComponent, getCurrentInstance, ref, onMounted } from "vue";
 import RenderCmd from '@/../electron/RenderCmd'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 export default defineComponent({
     name: 'exElectron',
     setup() {
+        onMounted(() => {
+            registerEvents()
+        })
+        const testValue = ref(100)
+        function registerEvents() {
+            window.EleApi.onUpdateCounter((_event, value) => {
+                testValue.value += value
+            })
+        }
         const activeName = ref("ex_ipc")
         let i = 0
         function setMainWinTitle() {
@@ -48,11 +60,21 @@ export default defineComponent({
         function onClickcontextIsolation() {
             RenderCmd.childWinSend("安全原因", "https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations")
         }
+        function onClickUpdateCounter() {
+            ElMessageBox.alert('请单击菜单栏中的“示例”子菜单', '提醒', {
+                confirmButtonText: 'OK',
+                callback: (action: Action) => {
+                    
+                },
+            })
+        }
         return {
             activeName,
             setMainWinTitle,
             chooseFile,
-            onClickcontextIsolation
+            onClickcontextIsolation,
+            testValue,
+            onClickUpdateCounter
         }
     }
 })
@@ -93,7 +115,8 @@ export default defineComponent({
     padding: 10px;
     font-size: 14px;
     margin-top: 10px;
-    .item{
+
+    .item {
         line-height: 35px;
     }
 }
