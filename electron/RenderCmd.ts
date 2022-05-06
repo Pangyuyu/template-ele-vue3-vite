@@ -20,4 +20,7 @@ export default class RenderCmd {
             title: title
         })
     }
+    static openFile(){
+        return window.EleApi.openFile
+    }
 }
