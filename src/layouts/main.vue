@@ -4,18 +4,18 @@
     <div class="main">
       <!-- menu左侧菜单 -->
       <div class="menu">
-        <el-menu :default-active="menuDefaultActive" background-color="#778899" text-color="#FFFFFF"
-          active-text-color="#000080" :collapse="isCollapse" class="el-menu-vertical-demo" 
+        <el-menu :default-active="menuDefaultActive" background-color="#00000000" text-color="#F0FFFF"
+          :collapse="isCollapse" class="el-menu-vertical-demo" active-text-color="#98FB98"
           :router="true"
           @select="elMenuSelect">
           <template v-for="item in menuList" :key="item.index">
-            <el-menu-item v-if="!item.hide && !item.hasSubs" :index="item.index" :route="item.path">
+            <el-menu-item v-if="!item.hide && !item.hasSubs" :index="item.index" :route="item.path" style="background-color: transparent;">
               <el-icon color="#ffffff" class="no-inherit">
                  <component class="comp_icon" :is="item.icon"></component>
               </el-icon>
               <span>{{ item.title }}</span>
             </el-menu-item>
-            <el-sub-menu v-else-if="!item.hide" :index="item.index">
+            <el-sub-menu v-else-if="!item.hide" :index="item.index" style="background-color: transparent;">
               <template #title>
                 <el-icon color="#ffffff" class="no-inherit">
                   <component class="comp_icon" :is="item.icon"></component>
@@ -23,7 +23,7 @@
                 <span>{{ item.title }}</span>
               </template>
               <template v-for="itemSub in item.subs" :key="itemSub.index">
-                <el-menu-item v-if="!itemSub.hide" :index="itemSub.index" :route="itemSub.path">
+                <el-menu-item v-if="!itemSub.hide" :index="itemSub.index" :route="itemSub.path" style="background-color: transparent;">
                   <el-icon>
                     <component class="comp_icon" :is="itemSub.icon"></component>
                   </el-icon>
@@ -112,14 +112,15 @@ export default defineComponent({
 </script>
 <style>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
-  width: 200px;
+  width: 210px;
 }
 </style>
 <style lang="scss" scoped>
 @import "@/styles/var.scss";
+@import "@/styles/color.scss";
 .child-rootview {
   height: calc(100% - #{$titleBarHeight});
-  max-height: cacl(100%-#{$titleBarHeight});
+  max-height: cacl(100% - #{$titleBarHeight});
   padding: 5px;
   overflow: hidden;
 }
@@ -129,7 +130,9 @@ export default defineComponent({
   display: flex;
   background-color: #f5f7fd;
   .menu{
-    background-color:#778899
+    // background-color:#4169E1
+    width: auto;
+    background-image: linear-gradient(to bottom, $color_DarkSlateBlue, $color_CornflowerBlue);
   }
   .content {
     width: 100%;
