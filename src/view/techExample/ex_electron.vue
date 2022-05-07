@@ -72,6 +72,18 @@
                 <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a></div>
             </div>
         </el-tab-pane>
+        <el-tab-pane name="ex_progress">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_progress')">进度条</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickProgressStart()" style="width:200px">启动进度条</el-button>
+                <el-button type="warning" @click="onClickProgressCancel()" style="width:200px">取消进度条</el-button>
+                <el-button type="info" @click="onClickProgressUnkown()" style="width:200px">设置进度条为不确定</el-button>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_more">
             <template #label>
                 <span class="custom-tabs-label">
@@ -251,6 +263,18 @@ function onClickNotifyMain(){
 }
 //#endregion
 
+//#region 进度条
+function onClickProgressStart(){
+    window.EleApi.progressStart()
+}
+function onClickProgressCancel(){
+    window.EleApi.progressCancel()
+}
+function onClickProgressUnkown(){
+    window.EleApi.progressUnkown()
+}
+//#endregion
+
 //#region 更多
 const moreOptions = ref([
     {
@@ -268,6 +292,10 @@ const moreOptions = ref([
     {
         label:'离屏渲染',
         url:"https://www.electronjs.org/zh/docs/latest/tutorial/offscreen-rendering"
+    },
+    {
+        label:"在线/离线事件探测",
+        url:"https://www.electronjs.org/zh/docs/latest/tutorial/online-offline-events"
     }
 ])
 //#endregion

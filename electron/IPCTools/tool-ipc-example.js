@@ -30,7 +30,39 @@ async function handleThemeChange(event, args) {
     }
     return nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 }
-
+const INCREMENT = 0.05
+const INTERVAL_DELAY = 200 // ms
+let c_pro_value = 0
+let progressInterval = -1
+function handelProgressStart(mainWin) {
+    if (progressInterval == -1) {//只有等于-1的时候才执行
+        progressInterval = setInterval(() => {
+            if (c_pro_value >= 1) {
+                c_pro_value = 1
+            }
+            mainWin.setProgressBar(c_pro_value)
+            c_pro_value = c_pro_value + INCREMENT //每次进5%
+            if (c_pro_value >= 1) {
+                c_pro_value = 1
+                progressInterval == -1
+            }
+        }, INTERVAL_DELAY)
+    }
+}
+function handelProgressCancel(mainWin) {
+    if (progressInterval > -1) {
+        clearInterval(progressInterval)
+        progressInterval = -1
+    }    
+    mainWin.setProgressBar(-1)
+}
+function handelProgressUnkown(mainWin){
+    if (progressInterval > -1) {
+        clearInterval(progressInterval)
+        progressInterval = -1
+    }
+    mainWin.setProgressBar(2)
+}
 module.exports.ToolIpcExample = function () {
     this.registerOn = function (ipcMain, mainWin) {
         ipcMain.on("ipc-example-set-title", (event, args) => {
@@ -39,13 +71,15 @@ module.exports.ToolIpcExample = function () {
         ipcMain.handle('ipc-example-file-choose', handleFileOpen)
         ipcMain.handle('ipc-example-theme-change', handleThemeChange)
         ipcMain.on('ipc-example-on-drag-start', (event, filePath) => {
-            const iconName = path.join(process.cwd(),"src", "assets", "images", 'drag.png');
+            const iconName = path.join(process.cwd(), "src", "assets", "images", 'drag.png');
             log.d("iconName", iconName)
             event.sender.startDrag({
                 file: filePath,
                 icon: iconName,
             })
         })
-        
+        ipcMain.on('ipc-example-progress-start', (event, filePath) => { handelProgressStart(mainWin) })
+        ipcMain.on('ipc-example-progress-cancel', (event, filePath) => { handelProgressCancel(mainWin) })
+        ipcMain.on('ipc-example-progress-unkown', (event, filePath) => { handelProgressUnkown(mainWin) })
     }
 }

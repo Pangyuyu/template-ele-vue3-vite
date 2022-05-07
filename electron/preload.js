@@ -17,5 +17,8 @@ contextBridge.exposeInMainWorld('EleApi', {
         const filePath = path.join(process.cwd(), "src", "assets", "files", fileName)
         console.log("filePath", filePath)
         ipcRenderer.send("ipc-example-on-drag-start", filePath)
-    }
+    },
+    progressStart: () => ipcRenderer.send('ipc-example-progress-start'),
+    progressCancel: () => ipcRenderer.send('ipc-example-progress-cancel'),
+    progressUnkown: () => ipcRenderer.send('ipc-example-progress-unkown')
 })
