@@ -66,10 +66,27 @@
                 <el-button type="primary" @click="onClickNotifyMain()">主进程显示通知</el-button>
             </div>
             <div class="panel-warn">
-                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况；详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a></div>
-                <div class="item">2.electron-notification-stateU+002c此模块可以检测是否允许发送通知；</div>
+                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况U+003b详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a></div>
+                <div class="item">2.electron-notification-stateU+002c此模块可以检测是否允许发送通知U+003b</div>
                 <div class="item">3.windows上合理设置app.setAppUserModelId</div>
                 <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a></div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_progress">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_progress')">进度条</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickProgressStart()" style="width:200px">启动进度条</el-button>
+                <el-button type="warning" @click="onClickProgressCancel()" style="width:200px">取消进度条</el-button>
+                <el-button type="info" @click="onClickProgressUnkown()" style="width:200px">设置进度条为不确定</el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.进度条的值在0~1之间；</div>
+                <div class="item">2.值为“-1”是取消进度条；</div>
+                <div class="item">3.值大于“1”显示一个不确定的状态；</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
@@ -251,6 +268,18 @@ function onClickNotifyMain(){
 }
 //#endregion
 
+//#region 进度条
+function onClickProgressStart(){
+    window.EleApi.progressStart()
+}
+function onClickProgressCancel(){
+    window.EleApi.progressCancel()
+}
+function onClickProgressUnkown(){
+    window.EleApi.progressUnkown()
+}
+//#endregion
+
 //#region 更多
 const moreOptions = ref([
     {
@@ -268,6 +297,10 @@ const moreOptions = ref([
     {
         label:'离屏渲染',
         url:"https://www.electronjs.org/zh/docs/latest/tutorial/offscreen-rendering"
+    },
+    {
+        label:"在线/离线事件探测",
+        url:"https://www.electronjs.org/zh/docs/latest/tutorial/online-offline-events"
     }
 ])
 //#endregion
