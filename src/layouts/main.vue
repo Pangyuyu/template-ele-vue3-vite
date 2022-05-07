@@ -1,5 +1,5 @@
 <template>
-  <div style="overflow: hidden">
+  <div style="overflow: hidden;">
     <!-- main主体 -->
     <div class="main">
       <!-- menu左侧菜单 -->
@@ -7,7 +7,8 @@
         <el-menu :default-active="menuDefaultActive" background-color="#00000000" text-color="#F0FFFF"
           :collapse="isCollapse" class="el-menu-vertical-demo" active-text-color="#98FB98"
           :router="true"
-          @select="elMenuSelect">
+          @select="elMenuSelect"
+          style="padding:0;margin:0">
           <template v-for="item in menuList" :key="item.index">
             <el-menu-item v-if="!item.hide && !item.hasSubs" :index="item.index" :route="item.path" style="background-color: transparent;">
               <el-icon color="#ffffff" class="no-inherit">
@@ -128,23 +129,16 @@ export default defineComponent({
 .main {
   height: 100vh;
   display: flex;
-  background-color: #f5f7fd;
   .menu{
-    // background-color:#4169E1
     width: auto;
-    // background-image: linear-gradient(to bottom, $color_DarkSlateBlue,$color_CornflowerBlue);
     background-image: linear-gradient(to bottom, hsl(219, 74%, 26%), $color_CornflowerBlue);
-    // background-image: linear-gradient(red 0%, orange 25%, yellow 50%, green 75%, blue 100%);
   }
   .content {
     width: 100%;
-    background-color: #fff;
-
     .pagec {
       overflow-y: auto;
       height: calc(100vh - $headerHeight); //模块主显示区域的高度
       margin: 0;
-      border-radius: 4px;
     }
   }
 }
@@ -168,4 +162,5 @@ export default defineComponent({
   width: 18px;
   height: 18px;
 }
+
 </style>
