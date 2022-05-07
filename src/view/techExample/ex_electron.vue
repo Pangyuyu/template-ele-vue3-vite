@@ -67,7 +67,9 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.渲染进程使用Notification完成通知，此方式需要检验通知授权情况；</div>
-                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容，务必在主线程中处理；</div>
+                <div class="item">2.electron-notification-state，此模块可以检测是否允许发送通知；</div>
+                <div class="item">3.windows上合理设置app.setAppUserModelId</div>
+                <div class="item">4.操作系统对通知正文字数有限制，详情参见<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a></div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
