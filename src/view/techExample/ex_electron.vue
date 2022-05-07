@@ -1,6 +1,6 @@
 <template>
     <el-tabs v-model="activeName" class="demo-tabs" type="card">
-        <el-tab-pane label="进程间通信" name="ex_ipc">
+        <el-tab-pane name="ex_ipc">
             <template #label>
                 <span class="custom-tabs-label">
                     <span :class="getPanelLabelClass('ex_ipc')">进程间通信</span>
@@ -14,7 +14,8 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.出于 <a href="javascript:void(0);"
-                        @click="onClickcontextIsolation()">安全原因</a>，务必启用上下文隔离；</div>
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>，务必启用上下文隔离；
+                </div>
                 <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
                 <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
                 <div class="item">4.主进程向渲染进程发送消息时，需使用webContents.send方法</div>
@@ -23,7 +24,6 @@
         <el-tab-pane name="ex_darkmode">
             <template #label>
                 <span class="custom-tabs-label">
-                    <!-- <span >主题样式</span> -->
                     <span :class="getPanelLabelClass('ex_darkmode')">主题样式</span>
                 </span>
             </template>
@@ -32,6 +32,39 @@
                 <el-select v-model="appTheme" placeholder="请选择" size="large">
                     <el-option v-for="item in themeOptions" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_drag_drop">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_drag_drop')">原生文件拖 & 放</span>
+                </span>
+            </template>
+            <div class="div_drag" draggable="true" @dragstart="onDragStartFile">拖动我</div>
+
+            <div class="div_drop" @drop="onDropFiles" @dragover.prevent>
+                <div>把文件拖动到此处</div>
+                <el-table :data="dropFiles" style="width: 100%">
+                    <el-table-column prop="name" label="name" width="220" />                    
+                    <el-table-column prop="size" label="size" width="180"/>
+                    <el-table-column prop="path" label="path"/>
+                </el-table>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.从窗体拖动文件暂时只支持开发模式；</div>
+                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容，务必在主线程中处理；</div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_more">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_more')">更多</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <template v-for="(item, index) in moreOptions" :key="index">
+                    <a href="javascript:void(0);" @click="onClickOpenWindowByUrl(item.url)">{{ item.label }}</a>
+                </template>
             </div>
         </el-tab-pane>
     </el-tabs>
@@ -75,8 +108,9 @@ async function chooseFile() {
         type: type,
     })
 }
-function onClickcontextIsolation() {
-    RenderCmd.childWinSend("安全原因", "https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations")
+
+function onClickOpenWindowByUrl(url: string) {
+    RenderCmd.childWinSend("...", url)
 }
 function onClickUpdateCounter() {
     ElMessageBox.alert('请单击菜单栏中的“示例”子菜单', '提醒', {
@@ -86,14 +120,14 @@ function onClickUpdateCounter() {
         },
     })
 }
-function getPanelLabelClass(lableName:string){
-    if(activeName.value==lableName){
+function getPanelLabelClass(lableName: string) {
+    if (activeName.value == lableName) {
         return 'panel-active'
     }
-    if(useTheme.value=='dark'){
+    if (useTheme.value == 'dark') {
         return 'dark-text'
     }
-    if(useTheme.value=='light'){
+    if (useTheme.value == 'light') {
         return 'light-text'
     }
     return 'system-text'
@@ -118,16 +152,53 @@ const themeOptions = ref([
     }
 ])
 watch(() => appTheme.value, (newValue: string, oldValue: string) => {
-    console.log(appTheme.value)
     onThemeChange()
-
 })
 async function onThemeChange() {
     const themeName = await window.EleApi.themeChange(appTheme.value)
-    console.log("选择的样式", themeName)
     useTheme.value = themeName
 }
-//endreigon
+//#endregion
+
+//#region 拖动文件
+function onDragStartFile(_event) {
+    _event.preventDefault()
+    window.EleApi.startDrag('drag-and-drop.md')
+}
+const dropFiles = ref(new Array())
+function onDropFiles(_event) {
+    _event.preventDefault()
+    const files = _event.dataTransfer.files;
+    console.log("onDropFiles", files)
+    if (files.length > 0) {
+        for(let i=0;i<files.length;i++){
+            const fileItem=files[i]
+            dropFiles.value.push({
+                name: fileItem.name,
+                path: fileItem.path,
+                size: fileItem.size
+            })
+        }
+    }
+}
+//#endregion
+
+//#region 更多
+const moreOptions = ref([
+    {
+        label: '设备访问：蓝牙设备、键盘、游戏机等',
+        url: 'https://www.electronjs.org/zh/docs/latest/tutorial/devices'
+    },
+    {
+        label: '键盘快捷键',
+        url: 'https://www.electronjs.org/zh/docs/latest/tutorial/keyboard-shortcuts'
+    },
+    {
+        label: '多线程',
+        url: 'https://www.electronjs.org/zh/docs/latest/tutorial/multithreading'
+    }
+])
+//#endregion
 </script>
 
 <style>
@@ -155,6 +226,11 @@ async function onThemeChange() {
 
     .ex-btn {
         min-width: 320px;
+    }
+
+    a {
+        margin-left: 10px;
+        margin-right: 10px;
     }
 }
 
@@ -184,7 +260,34 @@ async function onThemeChange() {
     color: black;
 }
 
-.system-text{
+.system-text {
     color: rgb(86, 89, 90);
+}
+
+.div_drag {
+    border: 2px solid black;
+    border-radius: 3px;
+    padding: 5px;
+    width: 160px;
+    height: 95px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.div_drop {
+    border: 1px solid rgb(226, 201, 201);
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.div_drop:hover {
+    border: 2px solid rgb(223, 159, 159);
 }
 </style>

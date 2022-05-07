@@ -52,7 +52,7 @@ module.exports.AppStart = function () {
                 webSecurity: false,
                 // allowRunningInsecureContent:true,
                 contextIsolation: true,//启用上下文隔离
-                sandbox: true,//启用沙盒
+                sandbox: false,//启用沙盒
                 preload: preLoadPath, //预加载脚本，注入ipc所需对象
                 enableRemoteModule: true
             },

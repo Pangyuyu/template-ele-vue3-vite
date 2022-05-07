@@ -3,8 +3,8 @@
 */
 const { Log } = require("../logUtil")
 const log = new Log()
-const { dialog,nativeTheme } = require('electron')
-// const path = require('path')
+const { dialog, nativeTheme } = require('electron')
+const path = require('path')
 
 /**
  * 打开文件选择框
@@ -12,7 +12,7 @@ const { dialog,nativeTheme } = require('electron')
  */
 async function handleFileOpen() {
     const { canceled, filePaths } = await dialog.showOpenDialog()
-    log.d("handleFileOpen",filePaths)
+    log.d("handleFileOpen", filePaths)
     if (canceled) {
         return
     } else {
@@ -20,15 +20,15 @@ async function handleFileOpen() {
     }
 }
 
-async function handleThemeChange(event,args){
-    if(args.themeName=='theme-sys'){
+async function handleThemeChange(event, args) {
+    if (args.themeName == 'theme-sys') {
         nativeTheme.themeSource = 'system'
-    }else if(args.themeName=='theme-dark'){
+    } else if (args.themeName == 'theme-dark') {
         nativeTheme.themeSource = 'dark'
-    }else if(args.themeName=='theme-light'){
+    } else if (args.themeName == 'theme-light') {
         nativeTheme.themeSource = 'light'
-    }    
-    return nativeTheme.shouldUseDarkColors?'dark':'light'
+    }
+    return nativeTheme.shouldUseDarkColors ? 'dark' : 'light'
 }
 
 module.exports.ToolIpcExample = function () {
@@ -37,6 +37,15 @@ module.exports.ToolIpcExample = function () {
             mainWin.setTitle(args.title)
         })
         ipcMain.handle('ipc-example-file-choose', handleFileOpen)
-        ipcMain.handle('ipc-example-theme-change',handleThemeChange)
+        ipcMain.handle('ipc-example-theme-change', handleThemeChange)
+        ipcMain.on('ipc-example-on-drag-start', (event, filePath) => {
+            const iconName = path.join(process.cwd(),"src", "assets", "images", 'drag.png');
+            log.d("iconName", iconName)
+            event.sender.startDrag({
+                file: filePath,
+                icon: iconName,
+            })
+        })
+        
     }
 }
