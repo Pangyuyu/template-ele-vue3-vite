@@ -46,5 +46,6 @@ module.exports.ToolIpcExample = function () {
                 icon: iconName,
             })
         })
+        
     }
 }

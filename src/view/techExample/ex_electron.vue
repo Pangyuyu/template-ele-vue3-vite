@@ -40,7 +40,20 @@
                     <span :class="getPanelLabelClass('ex_drag_drop')">原生文件拖 & 放</span>
                 </span>
             </template>
-            <div class="div_drag" draggable="true" @dragstart="onDragStartFile" @dragend="onDragEndFile">拖动我</div>
+            <div class="div_drag" draggable="true" @dragstart="onDragStartFile">拖动我</div>
+
+            <div class="div_drop" @drop="onDropFiles" @dragover.prevent>
+                <div>把文件拖动到此处</div>
+                <el-table :data="dropFiles" style="width: 100%">
+                    <el-table-column prop="name" label="name" width="220" />                    
+                    <el-table-column prop="size" label="size" width="180"/>
+                    <el-table-column prop="path" label="path"/>
+                </el-table>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.从窗体拖动文件暂时只支持开发模式；</div>
+                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容，务必在主线程中处理；</div>
+            </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
             <template #label>
@@ -50,7 +63,7 @@
             </template>
             <div class="panel-content">
                 <template v-for="(item, index) in moreOptions" :key="index">
-                    <a href="javascript:void(0);" @click="onClickOpenWindowByUrl(item.url)">{{item.label}}</a>
+                    <a href="javascript:void(0);" @click="onClickOpenWindowByUrl(item.url)">{{ item.label }}</a>
                 </template>
             </div>
         </el-tab-pane>
@@ -148,12 +161,25 @@ async function onThemeChange() {
 //#endregion
 
 //#region 拖动文件
-function onDragStartFile(_event){
+function onDragStartFile(_event) {
     _event.preventDefault()
     window.EleApi.startDrag('drag-and-drop.md')
 }
-function onDragEndFile(_event){
-    console.log("onDragEndFile",_event)
+const dropFiles = ref(new Array())
+function onDropFiles(_event) {
+    _event.preventDefault()
+    const files = _event.dataTransfer.files;
+    console.log("onDropFiles", files)
+    if (files.length > 0) {
+        for(let i=0;i<files.length;i++){
+            const fileItem=files[i]
+            dropFiles.value.push({
+                name: fileItem.name,
+                path: fileItem.path,
+                size: fileItem.size
+            })
+        }
+    }
 }
 //#endregion
 
@@ -238,14 +264,30 @@ const moreOptions = ref([
     color: rgb(86, 89, 90);
 }
 
-.div_drag{
-    border:2px solid black;
-    border-radius:3px;
-    padding:5px;
+.div_drag {
+    border: 2px solid black;
+    border-radius: 3px;
+    padding: 5px;
     width: 160px;
     height: 95px;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.div_drop {
+    border: 1px solid rgb(226, 201, 201);
+    border-radius: 5px;
+    padding: 5px;
+    width: 100%;
+    height: 650px;
+    display: flex;
+    flex-direction: column;
+    margin-top: 5px;
+    font-size: 16px;
+}
+
+.div_drop:hover {
+    border: 2px solid rgb(223, 159, 159);
 }
 </style>
