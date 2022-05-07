@@ -14,11 +14,11 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.出于 <a href="javascript:void(0);"
-                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>，务必启用上下文隔离；
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>U+002c务必启用上下文隔离；
                 </div>
                 <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
                 <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
-                <div class="item">4.主进程向渲染进程发送消息时，需使用webContents.send方法</div>
+                <div class="item">4.主进程向渲染进程发送消息时U+002c需使用webContents.send方法</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_darkmode">
@@ -45,14 +45,31 @@
             <div class="div_drop" @drop="onDropFiles" @dragover.prevent>
                 <div>把文件拖动到此处</div>
                 <el-table :data="dropFiles" style="width: 100%">
-                    <el-table-column prop="name" label="name" width="220" />                    
-                    <el-table-column prop="size" label="size" width="180"/>
-                    <el-table-column prop="path" label="path"/>
+                    <el-table-column prop="name" label="name" width="220" />
+                    <el-table-column prop="size" label="size" width="180" />
+                    <el-table-column prop="path" label="path" />
                 </el-table>
             </div>
             <div class="panel-warn">
                 <div class="item">1.从窗体拖动文件暂时只支持开发模式；</div>
-                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容，务必在主线程中处理；</div>
+                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容U+002c务必在主线程中处理；</div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_notify">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_notify')">通知</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickNotifyRenderer()">渲染进程显示通知</el-button>
+                <el-button type="primary" @click="onClickNotifyMain()">主进程显示通知</el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况；详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a></div>
+                <div class="item">2.electron-notification-stateU+002c此模块可以检测是否允许发送通知；</div>
+                <div class="item">3.windows上合理设置app.setAppUserModelId</div>
+                <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a></div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
@@ -171,8 +188,8 @@ function onDropFiles(_event) {
     const files = _event.dataTransfer.files;
     console.log("onDropFiles", files)
     if (files.length > 0) {
-        for(let i=0;i<files.length;i++){
-            const fileItem=files[i]
+        for (let i = 0; i < files.length; i++) {
+            const fileItem = files[i]
             dropFiles.value.push({
                 name: fileItem.name,
                 path: fileItem.path,
@@ -180,6 +197,57 @@ function onDropFiles(_event) {
             })
         }
     }
+}
+//#endregion
+
+//#region 显示通知
+function onClickNotifyRenderer() {
+    //检测是否同意接受通知
+    if (!("Notification" in window)) {
+        ElMessage({
+            message: "此浏览器不支持桌面通知",
+            type: "warning",
+        })
+        return
+    }
+    if (Notification.permission === 'granted') {
+        showNotify()
+        return
+    }
+    if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(function (permission) {
+            if (permission === 'granted') {
+                showNotify()
+            }
+        })
+    }
+    // 最后U+002c如果执行到这里U+002c说明用户已经拒绝对相关通知进行授权
+    // 出于尊重U+002c我们不应该再打扰他们了
+    ElMessage({
+        message: "用户已拒绝通知U+002c请勿打扰!",
+        type: "warning",
+    })
+
+}
+function showNotify() {
+    const NOTIFICATION_TITLE = '提醒'
+    const NOTIFICATION_BODY = '请于明天下午进行核酸检测~~'
+    const CLICK_MESSAGE = '您已阅读了此通知!'
+    new Notification(NOTIFICATION_TITLE, { body: NOTIFICATION_BODY })
+        .onclick = () => {
+            ElMessage({
+                message: CLICK_MESSAGE,
+                type: "success",
+            })
+        }
+}
+function onClickNotifyMain(){
+    ElMessageBox.alert('请单击菜单栏中的“示例”子菜单“主进程显示通知”', '提醒', {
+        confirmButtonText: 'OK',
+        callback: (action: Action) => {
+
+        },
+    })
 }
 //#endregion
 
@@ -196,6 +264,10 @@ const moreOptions = ref([
     {
         label: '多线程',
         url: 'https://www.electronjs.org/zh/docs/latest/tutorial/multithreading'
+    },
+    {
+        label:'离屏渲染',
+        url:"https://www.electronjs.org/zh/docs/latest/tutorial/offscreen-rendering"
     }
 ])
 //#endregion

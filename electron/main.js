@@ -60,6 +60,7 @@ app.on("window-all-closed", () => {
 
 
 function createWindow() {
+  app.setAppUserModelId("Electron示例")
   mainWin = appStart.initWindow()
   appStart.initWinLoad(mainWin)  
   appMenu.initMenu(mainWin)
