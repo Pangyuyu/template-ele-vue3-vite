@@ -3,8 +3,8 @@
 */
 const { Log } = require("../logUtil")
 const log = new Log()
-const { app, BrowserWindow, ipcMain, dialog } = require('electron')
-const path = require('path')
+const { dialog,nativeTheme } = require('electron')
+// const path = require('path')
 
 /**
  * 打开文件选择框
@@ -20,11 +20,23 @@ async function handleFileOpen() {
     }
 }
 
+async function handleThemeChange(event,args){
+    if(args.themeName=='theme-sys'){
+        nativeTheme.themeSource = 'system'
+    }else if(args.themeName=='theme-dark'){
+        nativeTheme.themeSource = 'dark'
+    }else if(args.themeName=='theme-light'){
+        nativeTheme.themeSource = 'light'
+    }    
+    return nativeTheme.shouldUseDarkColors?'dark':'light'
+}
+
 module.exports.ToolIpcExample = function () {
     this.registerOn = function (ipcMain, mainWin) {
         ipcMain.on("ipc-example-set-title", (event, args) => {
             mainWin.setTitle(args.title)
         })
         ipcMain.handle('ipc-example-file-choose', handleFileOpen)
+        ipcMain.handle('ipc-example-theme-change',handleThemeChange)
     }
 }

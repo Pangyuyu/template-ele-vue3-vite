@@ -1,8 +1,24 @@
 @import './var.scss';
+
+
 body {
     overflow: hidden;
     padding: 0px !important;
     margin: 0px;
+}
+
+@media (prefers-color-scheme: dark) {
+    body {
+        background: #333;
+        color: white;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    body {
+        background: white;
+        color: #333;
+    }
 }
 
 .normal-content {
@@ -18,24 +34,30 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-x: auto;
+
     .tabCard {
         width: $cardWidthPer;
         min-width: $cardMinWidth;
         margin: 10px;
+
         .titleBar {
             display: flex;
             align-items: center;
+
             .title {
                 flex-grow: 1;
             }
+
             .barCtrl {
                 margin-left: 10px !important;
             }
         }
+
         .searchInput {
             width: 125px;
             margin-right: 10px;
         }
+
         .propValue {
             letter-spacing: 2px;
             border: 1px solid rgba(0, 0, 0, 0.082);
@@ -49,13 +71,16 @@ body {
             height: 38px;
             flex-grow: 1;
         }
+
         .textleft {
             justify-content: flex-start;
         }
+
         .textcenter {
             justify-content: center;
         }
     }
+
     .btnCtrl {
         width: 420px;
     }
@@ -65,6 +90,7 @@ body {
     display: flex;
     align-items: center;
     width: 100%;
+
     .input {
         margin-right: 10px;
         width: 100%;
@@ -75,6 +101,7 @@ body {
 .footer {
     display: flex;
     margin-top: 25px;
+
     .btn {
         width: 120px;
     }
@@ -97,6 +124,7 @@ body {
     flex-wrap: wrap;
     overflow-y: auto;
     max-height: 220px;
+
     .areaItem {
         display: flex;
         justify-content: center;
@@ -111,6 +139,7 @@ body {
         background-color: rgb(175, 222, 250);
         color: black;
     }
+
     .delImg {
         height: 16px;
         width: 16px;

@@ -8,5 +8,6 @@ contextBridge.exposeInMainWorld('EleApi',{
     openChildWin:(args)=>ipcRenderer.send('open-child-win',args),
     setTitle:(args)=>ipcRenderer.send('ipc-example-set-title',args),
     openFile:()=>ipcRenderer.invoke('ipc-example-file-choose'),
-    onUpdateCounter:(callback)=>ipcRenderer.on('update-counter',callback)
+    onUpdateCounter:(callback)=>ipcRenderer.on('update-counter',callback),
+    themeChange:(themeName)=>ipcRenderer.invoke('ipc-example-theme-change',{themeName:themeName})
 })
