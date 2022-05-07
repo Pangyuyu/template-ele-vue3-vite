@@ -1,6 +1,6 @@
 <template>
     <el-tabs v-model="activeName" class="demo-tabs" type="card">
-        <el-tab-pane label="进程间通信" name="ex_ipc">
+        <el-tab-pane name="ex_ipc">
             <template #label>
                 <span class="custom-tabs-label">
                     <span :class="getPanelLabelClass('ex_ipc')">进程间通信</span>
@@ -14,7 +14,8 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.出于 <a href="javascript:void(0);"
-                        @click="onClickcontextIsolation()">安全原因</a>，务必启用上下文隔离；</div>
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>，务必启用上下文隔离；
+                </div>
                 <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
                 <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
                 <div class="item">4.主进程向渲染进程发送消息时，需使用webContents.send方法</div>
@@ -23,7 +24,6 @@
         <el-tab-pane name="ex_darkmode">
             <template #label>
                 <span class="custom-tabs-label">
-                    <!-- <span >主题样式</span> -->
                     <span :class="getPanelLabelClass('ex_darkmode')">主题样式</span>
                 </span>
             </template>
@@ -32,6 +32,18 @@
                 <el-select v-model="appTheme" placeholder="请选择" size="large">
                     <el-option v-for="item in themeOptions" :key="item.value" :label="item.label" :value="item.value" />
                 </el-select>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_more">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_more')">更多</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <template v-for="(item, index) in moreOptions" :key="index">
+                    <a href="javascript:void(0);" @click="onClickOpenWindowByUrl(item.url)">{{item.label}}</a>
+                </template>
             </div>
         </el-tab-pane>
     </el-tabs>
@@ -75,8 +87,9 @@ async function chooseFile() {
         type: type,
     })
 }
-function onClickcontextIsolation() {
-    RenderCmd.childWinSend("安全原因", "https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations")
+
+function onClickOpenWindowByUrl(url: string) {
+    RenderCmd.childWinSend("...", url)
 }
 function onClickUpdateCounter() {
     ElMessageBox.alert('请单击菜单栏中的“示例”子菜单', '提醒', {
@@ -86,14 +99,14 @@ function onClickUpdateCounter() {
         },
     })
 }
-function getPanelLabelClass(lableName:string){
-    if(activeName.value==lableName){
+function getPanelLabelClass(lableName: string) {
+    if (activeName.value == lableName) {
         return 'panel-active'
     }
-    if(useTheme.value=='dark'){
+    if (useTheme.value == 'dark') {
         return 'dark-text'
     }
-    if(useTheme.value=='light'){
+    if (useTheme.value == 'light') {
         return 'light-text'
     }
     return 'system-text'
@@ -118,16 +131,30 @@ const themeOptions = ref([
     }
 ])
 watch(() => appTheme.value, (newValue: string, oldValue: string) => {
-    console.log(appTheme.value)
     onThemeChange()
-
 })
 async function onThemeChange() {
     const themeName = await window.EleApi.themeChange(appTheme.value)
-    console.log("选择的样式", themeName)
     useTheme.value = themeName
 }
-//endreigon
+//#endregion
+
+//#region 更多
+const moreOptions = ref([
+    {
+        label: '设备访问：蓝牙设备、键盘、游戏机等',
+        url: 'https://www.electronjs.org/zh/docs/latest/tutorial/devices'
+    },
+    {
+        label: '键盘快捷键',
+        url: 'https://www.electronjs.org/zh/docs/latest/tutorial/keyboard-shortcuts'
+    },
+    {
+        label: '多线程',
+        url: 'https://www.electronjs.org/zh/docs/latest/tutorial/multithreading'
+    }
+])
+//#endregion
 </script>
 
 <style>
@@ -155,6 +182,11 @@ async function onThemeChange() {
 
     .ex-btn {
         min-width: 320px;
+    }
+
+    a {
+        margin-left: 10px;
+        margin-right: 10px;
     }
 }
 
@@ -184,7 +216,7 @@ async function onThemeChange() {
     color: black;
 }
 
-.system-text{
+.system-text {
     color: rgb(86, 89, 90);
 }
 </style>
