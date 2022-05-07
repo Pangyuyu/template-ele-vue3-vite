@@ -301,6 +301,14 @@ const moreOptions = ref([
     {
         label:"在线/离线事件探测",
         url:"https://www.electronjs.org/zh/docs/latest/tutorial/online-offline-events"
+    },
+    {
+        label:"最近的文件",
+        url:"https://www.electronjs.org/zh/docs/latest/tutorial/recent-documents"
+    },
+    {
+        label:"拼写检查器",
+        url:"https://www.electronjs.org/zh/docs/latest/tutorial/spellchecker"
     }
 ])
 //#endregion

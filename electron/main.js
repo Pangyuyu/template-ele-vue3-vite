@@ -1,13 +1,14 @@
 // electron/electron.js
-const { app } = require('electron');
+const { app,Tray,Menu,nativeImage } = require('electron');
 const { AppStart } = require("./AppStart")
 const { AppMenu } = require("./AppMenu")
-const {IpcEntrance} =require("./IPCTools/IpcEntrance")
+const { IpcEntrance } = require("./IPCTools/IpcEntrance")
+const path=require('path')
 const isDev = process.env.IS_DEV == "true" ? true : false;
 const shouldQuit = app.requestSingleInstanceLock() //单实例
 const appStart = new AppStart()
 const appMenu = new AppMenu()
-const ipcTools =new IpcEntrance()
+const ipcTools = new IpcEntrance()
 let mainWin = null //窗口
 /*在开发模式下，应父进程（parent process）的要求完全退出。 */
 
@@ -62,7 +63,25 @@ app.on("window-all-closed", () => {
 function createWindow() {
   app.setAppUserModelId("Electron示例")
   mainWin = appStart.initWindow()
-  appStart.initWinLoad(mainWin)  
+  appStart.initWinLoad(mainWin)
   appMenu.initMenu(mainWin)
   ipcTools.register(mainWin)
+  createTray()
+}
+
+let tray
+function createTray() {
+  const iconPath=path.join(__dirname,"assets",'logo.png')
+  console.debug("iconPath",iconPath)
+  const icon = nativeImage.createFromPath(iconPath)
+  tray = new Tray(icon)
+  const contextMenu = Menu.buildFromTemplate([
+    { label: 'Item1', type: 'radio' },
+    { label: 'Item2', type: 'radio' },
+    { label: 'Item3', type: 'radio', checked: true },
+    { label: 'Item4', type: 'radio' }
+  ])
+  tray.setContextMenu(contextMenu)
+  tray.setToolTip('Electron示例')
+  tray.setTitle('胖鱼')
 }
