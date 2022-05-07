@@ -34,6 +34,14 @@
                 </el-select>
             </div>
         </el-tab-pane>
+        <el-tab-pane name="ex_drag_drop">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_drag_drop')">原生文件拖 & 放</span>
+                </span>
+            </template>
+            <div class="div_drag" draggable="true" @dragstart="onDragStartFile" @dragend="onDragEndFile">拖动我</div>
+        </el-tab-pane>
         <el-tab-pane name="ex_more">
             <template #label>
                 <span class="custom-tabs-label">
@@ -139,6 +147,16 @@ async function onThemeChange() {
 }
 //#endregion
 
+//#region 拖动文件
+function onDragStartFile(_event){
+    _event.preventDefault()
+    window.EleApi.startDrag('drag-and-drop.md')
+}
+function onDragEndFile(_event){
+    console.log("onDragEndFile",_event)
+}
+//#endregion
+
 //#region 更多
 const moreOptions = ref([
     {
@@ -218,5 +236,16 @@ const moreOptions = ref([
 
 .system-text {
     color: rgb(86, 89, 90);
+}
+
+.div_drag{
+    border:2px solid black;
+    border-radius:3px;
+    padding:5px;
+    width: 160px;
+    height: 95px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 </style>
