@@ -45,13 +45,28 @@
             <div class="div_drop" @drop="onDropFiles" @dragover.prevent>
                 <div>把文件拖动到此处</div>
                 <el-table :data="dropFiles" style="width: 100%">
-                    <el-table-column prop="name" label="name" width="220" />                    
-                    <el-table-column prop="size" label="size" width="180"/>
-                    <el-table-column prop="path" label="path"/>
+                    <el-table-column prop="name" label="name" width="220" />
+                    <el-table-column prop="size" label="size" width="180" />
+                    <el-table-column prop="path" label="path" />
                 </el-table>
             </div>
             <div class="panel-warn">
                 <div class="item">1.从窗体拖动文件暂时只支持开发模式；</div>
+                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容，务必在主线程中处理；</div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_notify">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_notify')">通知</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickNotifyRenderer()">渲染进程显示通知</el-button>
+                <el-button type="primary" @click="onClickNotifyMain()">主进程显示通知</el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.渲染进程使用Notification完成通知，此方式需要检验通知授权情况；</div>
                 <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容，务必在主线程中处理；</div>
             </div>
         </el-tab-pane>
@@ -171,8 +186,8 @@ function onDropFiles(_event) {
     const files = _event.dataTransfer.files;
     console.log("onDropFiles", files)
     if (files.length > 0) {
-        for(let i=0;i<files.length;i++){
-            const fileItem=files[i]
+        for (let i = 0; i < files.length; i++) {
+            const fileItem = files[i]
             dropFiles.value.push({
                 name: fileItem.name,
                 path: fileItem.path,
@@ -180,6 +195,57 @@ function onDropFiles(_event) {
             })
         }
     }
+}
+//#endregion
+
+//#region 显示通知
+function onClickNotifyRenderer() {
+    //检测是否同意接受通知
+    if (!("Notification" in window)) {
+        ElMessage({
+            message: "此浏览器不支持桌面通知",
+            type: "warning",
+        })
+        return
+    }
+    if (Notification.permission === 'granted') {
+        showNotify()
+        return
+    }
+    if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(function (permission) {
+            if (permission === 'granted') {
+                showNotify()
+            }
+        })
+    }
+    // 最后，如果执行到这里，说明用户已经拒绝对相关通知进行授权
+    // 出于尊重，我们不应该再打扰他们了
+    ElMessage({
+        message: "用户已拒绝通知，请勿打扰!",
+        type: "warning",
+    })
+
+}
+function showNotify() {
+    const NOTIFICATION_TITLE = '提醒'
+    const NOTIFICATION_BODY = '请于明天下午进行核酸检测~~'
+    const CLICK_MESSAGE = '您已阅读了此通知!'
+    new Notification(NOTIFICATION_TITLE, { body: NOTIFICATION_BODY })
+        .onclick = () => {
+            ElMessage({
+                message: CLICK_MESSAGE,
+                type: "success",
+            })
+        }
+}
+function onClickNotifyMain(){
+    ElMessageBox.alert('请单击菜单栏中的“示例”子菜单“主进程显示通知”', '提醒', {
+        confirmButtonText: 'OK',
+        callback: (action: Action) => {
+
+        },
+    })
 }
 //#endregion
 

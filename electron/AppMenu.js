@@ -1,5 +1,5 @@
 const {
-    Menu, dialog
+    Menu, dialog,Notification
 } = require('electron')
 const appPackage = require("../package.json") //当前package包内容
 const { Log } = require("./logUtil")
@@ -160,9 +160,21 @@ module.exports.AppMenu = function () {
                     {
                         click: () => this.win.webContents.send('update-counter', -1),
                         label: '减 1',
+                    },
+                    {
+                        click: (event, focusedWindow, focusedWebContents) => {
+                            this.showNotify()
+                        },
+                        label: '主进程显示通知',
                     }
                 ]
             }
         ]
     }
+    const NOTIFICATION_TITLE = '来自主进程的通知'
+    const NOTIFICATION_BODY = '明天要放假啦，工作做完了吗？'
+    this.showNotify = function () {
+        new Notification({ title: NOTIFICATION_TITLE, body: NOTIFICATION_BODY }).show()
+    }
+
 }
