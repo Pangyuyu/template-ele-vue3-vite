@@ -21,7 +21,6 @@ async function handleFileOpen() {
 }
 
 async function handleThemeChange(event,args){
-    log.d("handleThemeChange",args)
     if(args.themeName=='theme-sys'){
         nativeTheme.themeSource = 'system'
     }else if(args.themeName=='theme-dark'){
@@ -29,7 +28,7 @@ async function handleThemeChange(event,args){
     }else if(args.themeName=='theme-light'){
         nativeTheme.themeSource = 'light'
     }    
-    return nativeTheme.themeSource
+    return nativeTheme.shouldUseDarkColors?'dark':'light'
 }
 
 module.exports.ToolIpcExample = function () {
