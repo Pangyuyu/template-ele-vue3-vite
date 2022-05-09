@@ -66,10 +66,14 @@
                 <el-button type="primary" @click="onClickNotifyMain()">主进程显示通知</el-button>
             </div>
             <div class="panel-warn">
-                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况;详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a></div>
+                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况;详情参见：<a href="javascript:void(0)"
+                        @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a>
+                </div>
                 <div class="item">2.electron-notification-stateU+002c此模块可以检测是否允许发送通知;</div>
                 <div class="item">3.windows上合理设置app.setAppUserModelId</div>
-                <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)" @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a></div>
+                <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)"
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a>
+                </div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_progress">
@@ -87,6 +91,23 @@
                 <div class="item">1.进度条的值在0~1之间；</div>
                 <div class="item">2.值为“-1”是取消进度条；</div>
                 <div class="item">3.值大于“1”显示一个不确定的状态；</div>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_serialport">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_serialport')">串口通信</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickSerialPortFilter()" style="width:200px">查找\打开串口</el-button>
+                <el-button type="primary" @click="onClickSerialPortSend()" style="width:200px">发送</el-button>
+                <el-button type="primary" @click="onClickSerialPortClose()" style="width:200px">关闭串口</el-button>
+            </div>
+            <div class="panel-content">
+                <div>接收数据</div>
+                <div class="serial-accept">{{ serialPortMsg }}</div>
+                <el-button type="primary" @click="onClickClear()">清空</el-button>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
@@ -192,7 +213,7 @@ async function onThemeChange() {
     const themeName = await window.EleApi.themeChange(appTheme.value)
     useTheme.value = themeName
 }
-//#endregion
+// #endregion
 
 //#region 拖动文件
 function onDragStartFile(_event) {
@@ -258,7 +279,7 @@ function showNotify() {
             })
         }
 }
-function onClickNotifyMain(){
+function onClickNotifyMain() {
     ElMessageBox.alert('请单击菜单栏中的“示例”子菜单“主进程显示通知”', '提醒', {
         confirmButtonText: 'OK',
         callback: (action: Action) => {
@@ -269,16 +290,103 @@ function onClickNotifyMain(){
 //#endregion
 
 //#region 进度条
-function onClickProgressStart(){
+function onClickProgressStart() {
     window.EleApi.progressStart()
 }
-function onClickProgressCancel(){
+function onClickProgressCancel() {
     window.EleApi.progressCancel()
 }
-function onClickProgressUnkown(){
+function onClickProgressUnkown() {
     window.EleApi.progressUnkown()
 }
 //#endregion
+
+//#region 串口通信
+const filters = [
+    { usbVendorId: 0x2341, usbProductId: 0x0043 },
+    { usbVendorId: 0x2341, usbProductId: 0x0001 }
+]
+/*使用 Web Serial API 在浏览器上实现基于 WEB 的串口通信:https://blog.csdn.net/weixin_41231535/article/details/115218293*/
+let keepReading = true;
+let reader;
+let writer;
+// all data parsed are stored in a list ordered by received time of the data frame.
+let receivedframe = [];
+
+async function onClickSerialPortFilter() {
+    // 提示用户选择一个串口。
+    // const port = await navigator.serial.requestPort();
+    // 获取用户之前授予该网站访问权限的所有串口。
+    //const ports = await navigator.serial.getPorts();
+    try {
+        /*https://developer.mozilla.org/en-US/docs/Web/API/Serial/requestPort*/
+        console.log("start")
+        const port = await navigator.serial.requestPort();
+        console.log("等待串口打开")
+        // 等待串口打开
+        await port.open({ baudRate: 9600 });
+        console.log("串口已打开")
+        keepReading = true;
+        reader = port.readable.getReader();
+        writer = port.writable.getWriter();
+        // set how to write to device intervally
+        // const writeInt = setInterval(async () => {
+        //     const commandframe = new Uint8Array([
+        //         0x00,
+        //         0xff /*...some bytes to be sent*/,
+        //     ]);
+        //     await writer.write(commandframe);
+        // }, 3000); // send a frame every 3000ms
+        while (port.readable && keepReading) {
+            try {
+                while (true) {
+                    const { value, done } = await reader.read();
+                    if (done) {
+                        // Allow the serial port to be closed later.
+                        reader.releaseLock();
+                        // Allow the serial port to be closed later.
+                        writer.releaseLock();
+                        break;
+                    }
+                    if (value) {
+                        /*** TODO: deal with the data value ***/
+                        dealWithData(value);
+                    }
+                }
+            } catch (error) {
+                // Handle non-fatal read error.
+                console.error(error);
+            } finally {
+                console.log(port.readable, keepReading);
+            }
+        }
+        clearInterval(writeInt);
+        await port.close();
+        console.log("port closed");
+    } catch (ex) {
+        console.error("串口设备查询失败", ex)
+    }
+}
+//TODO 解析帧
+const serialPortMsg = ref("")
+function dealWithData(value) {
+    console.log("接收数据：" + value)
+    serialPortMsg.value += `${value}\r\n`
+}
+function onClickSerialPortClose() {
+    keepReading = false
+}
+async function onClickSerialPortSend() {
+    const commandframe = new Uint8Array([
+        0x00,
+        0xff /*...some bytes to be sent*/,
+    ]);
+    await writer.write(commandframe);
+}
+function onClickClear() {
+    serialPortMsg.value = ""
+}
+//#endregion 
 
 //#region 更多
 const moreOptions = ref([
@@ -295,23 +403,24 @@ const moreOptions = ref([
         url: 'https://www.electronjs.org/zh/docs/latest/tutorial/multithreading'
     },
     {
-        label:'离屏渲染',
-        url:"https://www.electronjs.org/zh/docs/latest/tutorial/offscreen-rendering"
+        label: '离屏渲染',
+        url: "https://www.electronjs.org/zh/docs/latest/tutorial/offscreen-rendering"
     },
     {
-        label:"在线/离线事件探测",
-        url:"https://www.electronjs.org/zh/docs/latest/tutorial/online-offline-events"
+        label: "在线/离线事件探测",
+        url: "https://www.electronjs.org/zh/docs/latest/tutorial/online-offline-events"
     },
     {
-        label:"最近的文件",
-        url:"https://www.electronjs.org/zh/docs/latest/tutorial/recent-documents"
+        label: "最近的文件",
+        url: "https://www.electronjs.org/zh/docs/latest/tutorial/recent-documents"
     },
     {
-        label:"拼写检查器",
-        url:"https://www.electronjs.org/zh/docs/latest/tutorial/spellchecker"
+        label: "拼写检查器",
+        url: "https://www.electronjs.org/zh/docs/latest/tutorial/spellchecker"
     }
 ])
 //#endregion
+
 </script>
 
 <style>
@@ -402,5 +511,17 @@ const moreOptions = ref([
 
 .div_drop:hover {
     border: 2px solid rgb(223, 159, 159);
+}
+
+.serial-accept {
+    height: 620px;
+    width: 420px;
+    border: 1px solid rgb(226, 201, 201);
+    border-radius: 5px;
+    padding: 5px;
+    margin: 10px;
+    white-space: normal;
+    word-break: break-all;
+    word-wrap: break-word;
 }
 </style>
