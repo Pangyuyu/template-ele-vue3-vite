@@ -110,6 +110,24 @@
                 <el-button type="primary" @click="onClickClear()">清空</el-button>
             </div>
         </el-tab-pane>
+        <el-tab-pane name="ex_dll">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_dll')">调用DLL</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickDllMethods('num_add')" style="width:200px">方法:num_add</el-button>
+            </div>
+            <div class="panel-content">
+                <el-input-number v-model="dll_add_ret" :min="1" :max="1000" style="width:200px"/>
+                <el-button type="primary" @click="onClickDllMethods('num_add_ret')" style="width:200px;margin-left: 10px;">方法:num_add_ret</el-button>
+            </div>
+            <div class="panel-content">
+                <el-input v-model="dll_str_echo" placeholder="Please input"  style="width:200px"/>
+                <el-button type="primary" @click="onClickDllMethods('str_echo')" style="width:200px;margin-left: 10px;">方法:str_echo</el-button>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_more">
             <template #label>
                 <span class="custom-tabs-label">
@@ -259,10 +277,10 @@ function onClickNotifyRenderer() {
             }
         })
     }
-    // 最后U+002c如果执行到这里U+002c说明用户已经拒绝对相关通知进行授权
-    // 出于尊重U+002c我们不应该再打扰他们了
+    // 最后如果执行到这里,说明用户已经拒绝对相关通知进行授权
+    // 出于尊重我们不应该再打扰他们了
     ElMessage({
-        message: "用户已拒绝通知U+002c请勿打扰!",
+        message: "用户已拒绝通知;请勿打扰!",
         type: "warning",
     })
 
@@ -388,6 +406,24 @@ function onClickClear() {
 }
 //#endregion 
 
+//#region 调用第三方DLL
+const dll_add_ret=ref(1)
+const dll_str_echo=ref("Hello World")
+async function onClickDllMethods(methodName:string) {
+    let aValue=""
+    if(methodName=='num_add_ret'){
+        aValue=dll_add_ret.value
+    }else if(methodName=='str_echo'){
+        aValue=dll_str_echo.value
+    }
+    const methodRes =await window.EleApi.dllMethod({ name: methodName, params: { a: aValue} })
+    ElMessage({
+        message: methodRes,
+        type: "success",
+    })
+}
+//#endregion
+
 //#region 更多
 const moreOptions = ref([
     {
@@ -445,6 +481,7 @@ const moreOptions = ref([
     display: flex;
     font-size: 16px;
     align-items: center;
+    margin-bottom: 5px;
 
     .ex-btn {
         min-width: 320px;
