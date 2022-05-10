@@ -55,11 +55,11 @@ module.exports.AppStart = function () {
                 sandbox: false,//启用沙盒
                 preload: preLoadPath, //预加载脚本，注入ipc所需对象
                 enableRemoteModule: true,//
-                disableHtmlFullscreenWindowResize:true,//
-                v8CacheOptions:"bypassHeatCheckAndEagerCompile" //强制 blink 使用 v8 代码缓存策略
+                // disableHtmlFullscreenWindowResize:true,//
+                // v8CacheOptions:"bypassHeatCheckAndEagerCompile" //强制 blink 使用 v8 代码缓存策略
             },
-            fullscreen: true,//窗口为全屏
-            fullscreenable: true,//窗口是否可以进入全屏状态
+            // fullscreen: true,//窗口为全屏
+            // fullscreenable: true,//窗口是否可以进入全屏状态
             skipTaskbar: true,//是否在任务栏中显示窗口。 默认值为 false
             show: false,
             // 

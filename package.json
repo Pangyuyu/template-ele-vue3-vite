@@ -48,8 +48,8 @@
       "output": "dist_electron"
     },
     "extraResources": {
-      "from": "./resources/dll",
-      "to": "./dll"
+      "from": "./resources",
+      "to": "./"
     }
   },
   "dependencies": {
