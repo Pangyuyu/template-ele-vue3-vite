@@ -1,9 +1,11 @@
 // electron/electron.js
-const { app,Tray,Menu,nativeImage } = require('electron');
+const { Log } = require("./logUtil")
+const log = new Log()
+const { app, Tray, Menu, nativeImage, dialog } = require('electron');
 const { AppStart } = require("./AppStart")
 const { AppMenu } = require("./AppMenu")
 const { IpcEntrance } = require("./IPCTools/IpcEntrance")
-const path=require('path')
+const path = require('path')
 const isDev = process.env.IS_DEV == "true" ? true : false;
 const shouldQuit = app.requestSingleInstanceLock() //单实例
 const appStart = new AppStart()
@@ -36,6 +38,7 @@ if (!shouldQuit) {
   /*事件：second-instance 监听第二个实例是否已启动*/
   app.on("second-instance", (event, commandLine, workingDirectory) => {
     // 当运行第二个实例时,将会聚焦到myWindow这个窗口
+    log.d("====second-instance===")
     appStart.winRestoreFocus(mainWin)
   })
   //只有ready之后才可以初始化窗体
@@ -49,16 +52,36 @@ if (!shouldQuit) {
     })
   })
 }
-/*window-all-closed:当所有窗体关闭时，退出应用*/
+
+app.on('will-finish-launching', () => {
+  log.d("====will-finish-launching===")
+})
 app.on("window-all-closed", () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
+  log.d("====window-all-closed===")
   if (process.platform !== "darwin") {
     app.quit()
   }
 })
 
-
+app.on('before-quit', (event) => {
+  event.preventDefault()
+  const nativeImage = require('electron').nativeImage
+  dialog.showMessageBox({
+    title: "提醒",
+    type: 'question',
+    buttons: ["确定", "取消"],
+    defaultId: 1,
+    detail: '您确定要退出应用吗?',
+    noLink:true,
+    icon:nativeImage.createFromPath("./resources/images/logo.png")
+  }).then(result => {
+    if (result.response == 0) {
+      app.exit(0)
+    }
+  }).catch(err => [
+    log.e(err)
+  ])
+})
 
 function createWindow() {
   app.setAppUserModelId("Electron示例")
@@ -71,8 +94,8 @@ function createWindow() {
 
 let tray
 function createTray() {
-  const iconPath=path.join(__dirname,"assets",'logo.png')
-  console.debug("iconPath",iconPath)
+  const iconPath = path.join(__dirname, "assets", 'logo.png')
+  console.debug("iconPath", iconPath)
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([
