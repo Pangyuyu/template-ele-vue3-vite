@@ -152,6 +152,7 @@
                 <div class="item">3.若DLL是32位，会报错“win32 error 193 ”，需要使用 32位的electron;</div>
                 <div class="item">4.32位的electron需要在.npmrc或者.yarnrc中对arch配置为 ia32;</div>
                 <div class="item">5.指针类型使用：pointer 声明</div>
+                <div class="item">6.当前只适用于windows系统且Electron是32位；</div>
             </div>
         </el-tab-pane>
 
