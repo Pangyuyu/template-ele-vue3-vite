@@ -45,6 +45,7 @@
       ],
       "icon": "./build/icons"
     },
+    "asar": true,
     "nsis": {
       "oneClick": false,
       "allowToChangeInstallationDirectory": true

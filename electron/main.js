@@ -91,6 +91,7 @@ function createWindow() {
   appMenu.initMenu(mainWin)
   ipcTools.register(mainWin)
   createTray()
+  mainWin.setIcon(nativeImage.createFromPath("./resources/images/logo.png"))
 }
 
 let tray
