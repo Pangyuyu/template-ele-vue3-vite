@@ -20,7 +20,7 @@
     "electron:build.exe_x86": "yarn run build && electron-builder --win --ia32",
     "loadhint": "bash ./loadhint.bash"
   },
-  "packageManager": "yarn@1.22.17",
+  "packageManager": "yarn@1.22.18",
   "build": {
     "appId": "guxing.electron.template",
     "productName": "孤星electron示例",
