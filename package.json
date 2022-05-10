@@ -41,12 +41,15 @@
     },
     "files": [
       "dist/**/*",
-      "electron/**/*",
-      "dll/**/*"
+      "electron/**/*"
     ],
     "directories": {
       "buildResources": "assets",
       "output": "dist_electron"
+    },
+    "extraResources": {
+      "from": "./resources/dll",
+      "to": "./dll"
     }
   },
   "dependencies": {
