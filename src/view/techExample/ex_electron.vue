@@ -22,7 +22,11 @@
             <div class="panel-content">
                 <el-button class="ex-btn" type="primary" @click="onClickGetSysWin()">获取系统及窗体信息</el-button>
             </div>
-            <el-table @data="sysWinAttrList" style="width:100%;height:420px"></el-table>
+            <el-table :data="sysWinAttrList" border style="width:100%;height:420px">
+                <el-table-column prop="name" label="名称" width="220" />
+                <el-table-column prop="desc" label="描述" width="220" />
+                <el-table-column prop="value" label="值" />
+            </el-table>
         </el-tab-pane>
         <el-tab-pane name="ex_ipc">
             <template #label>
@@ -55,7 +59,7 @@
             <div class="div_drag" draggable="true" @dragstart="onDragStartFile">拖动我</div>
 
             <div class="div_drop" @drop="onDropFiles" @dragover.prevent>
-                <div>把文件拖动到此处</div>
+                <div style="margin:10px">把文件拖动到此处</div>
                 <el-table :data="dropFiles" style="width: 100%">
                     <el-table-column prop="name" label="name" width="220" />
                     <el-table-column prop="size" label="size" width="180" />
@@ -173,17 +177,55 @@ import RenderCmd from '@/../electron/RenderCmd'
 import { ElMessage, ElMessageBox } from 'element-plus'
 onMounted(() => {
     onThemeChange()
+    initSysWinAttrs()
     registerEvents()
 })
 
 //#region 系统&窗体
-const sysWinAttrList = ref([
-    {
-
-    }
-])
+const sysWinAttrList = ref(new Array())
+function initSysWinAttrs() {
+    sysWinAttrList.value = [
+        {
+            name: 'process.versions.chrome',
+            desc: 'Chrome 版本号',
+            value: ''
+        },
+        {
+            name: 'process.versions.electron',
+            desc: 'Electron 版本号',
+            value: ''
+        },
+        {
+            name: 'process.platform',
+            desc: '操作系统',
+            value: ''
+        },
+        {
+            name: 'process.arch',
+            desc: '操作系统位数',
+            value: ''
+        },
+        {
+            name: 'process.getSystemVersion()',
+            desc: '操作系统的版本',
+            value: ''
+        },
+        {
+            name: 'process.resourcesPath',
+            desc: 'resources 目录的路径',
+            value: ''
+        },
+    ]
+    onClickGetSysWin()
+}
 async function onClickGetSysWin() {
-    const res = await window.EleApi.querySysWin()
+    const atrrValues = await window.EleApi.querySysWin()
+    sysWinAttrList.value.forEach(item=>{
+        const attrItem=atrrValues.find(attr=>{return attr.name==item.name})
+        if(attrItem){
+            item.value=attrItem.value
+        }
+    })
 }
 //#endregion
 
