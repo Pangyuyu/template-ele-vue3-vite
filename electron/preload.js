@@ -24,4 +24,5 @@ contextBridge.exposeInMainWorld('EleApi', {
     progressUnkown: () => ipcRenderer.send('ipc-example-progress-unkown'),
     dllMethod:(args)=>ipcRenderer.invoke('dll-method',args),
     querySystemInfo:()=>ipcRenderer.invoke("tool-system-info"),
+    windowChangeBgColor:()=>{ipcRenderer.send('window:change-bgcolor')}
 })

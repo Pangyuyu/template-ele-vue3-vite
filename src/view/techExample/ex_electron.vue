@@ -34,10 +34,10 @@
                 </el-select>
             </div>
         </el-tab-pane>
-        <el-tab-pane name="ex_sys_win">
+        <el-tab-pane name="ex_system">
             <template #label>
                 <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_sys_win')">系统信息</span>
+                    <span :class="getPanelLabelClass('ex_system')">系统信息</span>
                 </span>
             </template>
             <div class="panel-content">
@@ -49,7 +49,16 @@
                 <el-table-column prop="value" label="值" />
             </el-table>
         </el-tab-pane>
-
+        <el-tab-pane name="ex_window">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_window')">窗体操作</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button class="ex-btn" type="primary" @click="onClickCtrlBgColor()">设置窗体背景颜色</el-button>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_drag_drop">
             <template #label>
                 <span class="custom-tabs-label">
@@ -182,7 +191,7 @@ onMounted(() => {
     registerEvents()
 })
 
-//#region 系统&窗体
+//#region 系统信息
 const sysWinAttrList = ref(new Array())
 function initSysWinAttrs() {
     sysWinAttrList.value = [
@@ -499,6 +508,12 @@ async function onClickDllMethods(methodName: string) {
         message: methodRes,
         type: "success",
     })
+}
+//#endregion
+
+//#region 窗体(BrowerWindow)操作
+function onClickCtrlBgColor(){
+    window.EleApi.windowChangeBgColor()
 }
 //#endregion
 

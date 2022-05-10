@@ -4,11 +4,13 @@ const {ToolIpcExample} = require('./tool-ipc-example')
 const {ToolSerialPort} = require('./tool-serial-port')
 const {ToolDllExample} = require('./tool-dll-example')
 const {ToolSystemInfo}=require('./tool-system-info')
+const {ToolWindowExample}=require('./tool-window-example')
 const toolOpenChildWin=new ToolOpenChildwin()
 const toolIpcExample=new ToolIpcExample()
 const toolSerialPort=new ToolSerialPort()
 const toolDllExample=new ToolDllExample()
 const toolSystemInfo=new ToolSystemInfo()
+const toolWindowExample=new ToolWindowExample()
 module.exports.IpcEntrance=function(){
     this.mainWin=null;
     this.register=function(mainWin){
@@ -18,5 +20,6 @@ module.exports.IpcEntrance=function(){
         toolSerialPort.registerOn(ipcMain,this.mainWin)
         toolDllExample.registerOn(ipcMain,this.mainWin)
         toolSystemInfo.registerOn(ipcMain,this.mainWin)
+        toolWindowExample.registerOn(ipcMain,this.mainWin)
     }
 }
