@@ -8,19 +8,24 @@ const log = new Log()
 module.exports.ToolDllExample = function () {
     this.registerOn = function (ipcMain, mainWin) {
         let libm = null
-        try {
-            const ffi = require('ffi-napi')
-            const path = require('path')
-            const lib = path.resolve('./resources/dll/example.dll')
-            log.d("地址", lib)
-            libm = ffi.Library(lib, {
-                'num_add': ['int', []],
-                'num_add_ret': ['int', ['int']],
-                'str_echo': ['string', ['string', 'pointer']]
-            })
-        } catch (ex) {
-            log.e("加载dll异常", ex)
+        if(process.platform=='win32'&&process.arch=='ia32'){
+            try {
+                const ffi = require('ffi-napi')
+                const path = require('path')
+                const lib = path.resolve('./resources/dll/example.dll')
+                log.d("地址", lib)
+                libm = ffi.Library(lib, {
+                    'num_add': ['int', []],
+                    'num_add_ret': ['int', ['int']],
+                    'str_echo': ['string', ['string', 'pointer']]
+                })
+            } catch (ex) {
+                log.e("加载dll异常", ex)
+            }
+        }else{
+            log.d("远程调用DLL:只适用于windows系统且Electron是32位")
         }
+        
 
         ipcMain.handle('dll-method', (event, args) => {
             log.d("参数",args)
@@ -46,7 +51,7 @@ module.exports.ToolDllExample = function () {
             }
             return {
                 code:-1,
-                msg:"加载DLL异常!"
+                msg:"只适用于windows系统且Electron是32位!"
             }
         })
     }

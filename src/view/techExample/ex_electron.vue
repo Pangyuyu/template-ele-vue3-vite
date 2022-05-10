@@ -197,12 +197,12 @@ function initSysWinAttrs() {
         },
         {
             name: 'process.platform',
-            desc: '操作系统',
+            desc: '操作系统(Electron)',
             value: ''
         },
         {
             name: 'process.arch',
-            desc: '操作系统位数',
+            desc: '操作系统位数(Electron)',
             value: ''
         },
         {
