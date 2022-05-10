@@ -1,5 +1,26 @@
 <template>
     <el-tabs v-model="activeName" class="demo-tabs" type="card">
+        <el-tab-pane name="ex_ipc">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_ipc')">进程间通信</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button class="ex-btn" type="primary" @click="setMainWinTitle()">单项通信：渲染器进程-->主进程</el-button>
+                <el-button class="ex-btn" type="success" @click="chooseFile()">双向通信：渲染器进程&lt;-->主进程</el-button>
+                <el-button class="ex-btn" type="info" @click="onClickUpdateCounter()">主进程到渲染器进程:{{ testValue }}
+                </el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.出于 <a href="javascript:void(0);"
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>U+002c务必启用上下文隔离；
+                </div>
+                <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
+                <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
+                <div class="item">4.主进程向渲染进程发送消息时U+002c需使用webContents.send方法</div>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_darkmode">
             <template #label>
                 <span class="custom-tabs-label">
@@ -27,27 +48,6 @@
                 <el-table-column prop="desc" label="描述" width="220" />
                 <el-table-column prop="value" label="值" />
             </el-table>
-        </el-tab-pane>
-        <el-tab-pane name="ex_ipc">
-            <template #label>
-                <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_ipc')">进程间通信</span>
-                </span>
-            </template>
-            <div class="panel-content">
-                <el-button class="ex-btn" type="primary" @click="setMainWinTitle()">单项通信：渲染器进程-->主进程</el-button>
-                <el-button class="ex-btn" type="success" @click="chooseFile()">双向通信：渲染器进程&lt;-->主进程</el-button>
-                <el-button class="ex-btn" type="info" @click="onClickUpdateCounter()">主进程到渲染器进程:{{ testValue }}
-                </el-button>
-            </div>
-            <div class="panel-warn">
-                <div class="item">1.出于 <a href="javascript:void(0);"
-                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>U+002c务必启用上下文隔离；
-                </div>
-                <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
-                <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
-                <div class="item">4.主进程向渲染进程发送消息时U+002c需使用webContents.send方法</div>
-            </div>
         </el-tab-pane>
 
         <el-tab-pane name="ex_drag_drop">
