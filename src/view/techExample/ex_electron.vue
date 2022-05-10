@@ -16,11 +16,11 @@
         <el-tab-pane name="ex_sys_win">
             <template #label>
                 <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_sys_win')">系统&窗体</span>
+                    <span :class="getPanelLabelClass('ex_sys_win')">系统信息</span>
                 </span>
             </template>
             <div class="panel-content">
-                <el-button class="ex-btn" type="primary" @click="onClickGetSysWin()">获取系统及窗体信息</el-button>
+                <el-button class="ex-btn" type="primary" @click="onClickGetSystemInfo()">获取系统信息</el-button>
             </div>
             <el-table :data="sysWinAttrList" border style="width:100%;height:420px">
                 <el-table-column prop="name" label="名称" width="220" />
@@ -217,10 +217,10 @@ function initSysWinAttrs() {
             value: ''
         },
     ]
-    onClickGetSysWin()
+    onClickGetSystemInfo()
 }
-async function onClickGetSysWin() {
-    const atrrValues = await window.EleApi.querySysWin()
+async function onClickGetSystemInfo() {
+    const atrrValues = await window.EleApi.querySystemInfo()
     sysWinAttrList.value.forEach(item=>{
         const attrItem=atrrValues.find(attr=>{return attr.name==item.name})
         if(attrItem){

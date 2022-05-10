@@ -23,5 +23,5 @@ contextBridge.exposeInMainWorld('EleApi', {
     progressCancel: () => ipcRenderer.send('ipc-example-progress-cancel'),
     progressUnkown: () => ipcRenderer.send('ipc-example-progress-unkown'),
     dllMethod:(args)=>ipcRenderer.invoke('dll-method',args),
-    querySysWin:()=>ipcRenderer.invoke("tool-get-syswin"),
+    querySystemInfo:()=>ipcRenderer.invoke("tool-system-info"),
 })

@@ -1,9 +1,9 @@
 /*获取窗体或操作系统基本信息*/
 const { Log } = require("../logUtil")
 const log = new Log()
-module.exports.ToolSysWinExample=function(){
+module.exports.ToolSystemInfo=function(){
     this.registerOn=function(ipcMain,mainWin){
-        ipcMain.handle('tool-get-syswin',(event,args)=>{
+        ipcMain.handle('tool-system-info',(event,args)=>{
             log.d("process.resourcesPath",process.resourcesPath)
             let attrList=[
                 {
