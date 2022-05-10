@@ -72,8 +72,9 @@ app.on('before-quit', (event) => {
     buttons: ["确定", "取消"],
     defaultId: 1,
     detail: '您确定要退出应用吗?',
-    noLink:true,
-    icon:nativeImage.createFromPath("./resources/images/logo.png")
+    noLink: true,
+    //TODO Linux下打包图标显示不出来
+    icon: nativeImage.createFromPath("./resources/images/logo.png")
   }).then(result => {
     if (result.response == 0) {
       app.exit(0)
@@ -94,7 +95,8 @@ function createWindow() {
 
 let tray
 function createTray() {
-  const iconPath = path.join(__dirname, "assets", 'logo.png')
+  //TODO Linux下打包图标显示不出来
+  const iconPath = path.join(process.cwd(), "resources", 'images', 'logo.png')
   console.debug("iconPath", iconPath)
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
