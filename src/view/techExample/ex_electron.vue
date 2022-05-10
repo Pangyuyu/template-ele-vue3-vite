@@ -1,5 +1,29 @@
 <template>
     <el-tabs v-model="activeName" class="demo-tabs" type="card">
+        <el-tab-pane name="ex_darkmode">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_darkmode')">主题样式</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <div>选择主题样式：</div>
+                <el-select v-model="appTheme" placeholder="请选择" size="large">
+                    <el-option v-for="item in themeOptions" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_sys_win">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_sys_win')">系统&窗体</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button class="ex-btn" type="primary" @click="onClickGetSysWin()">获取系统及窗体信息</el-button>
+            </div>
+            <el-table @data="sysWinAttrList" style="width:100%;height:420px"></el-table>
+        </el-tab-pane>
         <el-tab-pane name="ex_ipc">
             <template #label>
                 <span class="custom-tabs-label">
@@ -21,19 +45,7 @@
                 <div class="item">4.主进程向渲染进程发送消息时U+002c需使用webContents.send方法</div>
             </div>
         </el-tab-pane>
-        <el-tab-pane name="ex_darkmode">
-            <template #label>
-                <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_darkmode')">主题样式</span>
-                </span>
-            </template>
-            <div class="panel-content">
-                <div>选择主题样式：</div>
-                <el-select v-model="appTheme" placeholder="请选择" size="large">
-                    <el-option v-for="item in themeOptions" :key="item.value" :label="item.label" :value="item.value" />
-                </el-select>
-            </div>
-        </el-tab-pane>
+
         <el-tab-pane name="ex_drag_drop">
             <template #label>
                 <span class="custom-tabs-label">
@@ -117,15 +129,18 @@
                 </span>
             </template>
             <div class="panel-content">
-                <el-button type="primary" @click="onClickDllMethods('num_add')" style="width:200px">方法:num_add</el-button>
+                <el-button type="primary" @click="onClickDllMethods('num_add')" style="width:200px">方法:num_add
+                </el-button>
             </div>
             <div class="panel-content">
-                <el-input-number v-model="dll_add_ret" :min="1" :max="1000" style="width:200px"/>
-                <el-button type="primary" @click="onClickDllMethods('num_add_ret')" style="width:200px;margin-left: 10px;">方法:num_add_ret</el-button>
+                <el-input-number v-model="dll_add_ret" :min="1" :max="1000" style="width:200px" />
+                <el-button type="primary" @click="onClickDllMethods('num_add_ret')"
+                    style="width:200px;margin-left: 10px;">方法:num_add_ret</el-button>
             </div>
             <div class="panel-content">
-                <el-input v-model="dll_str_echo" placeholder="Please input"  style="width:200px"/>
-                <el-button type="primary" @click="onClickDllMethods('str_echo')" style="width:200px;margin-left: 10px;">方法:str_echo</el-button>
+                <el-input v-model="dll_str_echo" placeholder="Please input" style="width:200px" />
+                <el-button type="primary" @click="onClickDllMethods('str_echo')" style="width:200px;margin-left: 10px;">
+                    方法:str_echo</el-button>
             </div>
             <div class="panel-warn">
                 <div class="item">1.调用第三方DLL需使用ffi-napi;</div>
@@ -135,6 +150,7 @@
                 <div class="item">5.指针类型使用：pointer 声明</div>
             </div>
         </el-tab-pane>
+
         <el-tab-pane name="ex_more">
             <template #label>
                 <span class="custom-tabs-label">
@@ -156,8 +172,20 @@ import { ref, onMounted, watch } from "vue";
 import RenderCmd from '@/../electron/RenderCmd'
 import { ElMessage, ElMessageBox } from 'element-plus'
 onMounted(() => {
+    onThemeChange()
     registerEvents()
 })
+
+//#region 系统&窗体
+const sysWinAttrList = ref([
+    {
+
+    }
+])
+async function onClickGetSysWin() {
+    const res = await window.EleApi.querySysWin()
+}
+//#endregion
 
 //#region 进程间通信
 const testValue = ref(100)
@@ -166,7 +194,7 @@ function registerEvents() {
         testValue.value += value
     })
 }
-const activeName = ref("ex_ipc")
+const activeName = ref("ex_darkmode")
 let i = 0
 function setMainWinTitle() {
     i++
@@ -215,7 +243,7 @@ function getPanelLabelClass(lableName: string) {
 //#endregion
 
 //#region 设置主题样式
-const appTheme = ref("")
+const appTheme = ref("theme-sys")
 const useTheme = ref("")
 const themeOptions = ref([
     {
@@ -414,16 +442,16 @@ function onClickClear() {
 //#endregion 
 
 //#region 调用第三方DLL
-const dll_add_ret=ref(1)
-const dll_str_echo=ref("Hello World")
-async function onClickDllMethods(methodName:string) {
-    let aValue=""
-    if(methodName=='num_add_ret'){
-        aValue=dll_add_ret.value
-    }else if(methodName=='str_echo'){
-        aValue=dll_str_echo.value
+const dll_add_ret = ref(1)
+const dll_str_echo = ref("Hello World")
+async function onClickDllMethods(methodName: string) {
+    let aValue = ""
+    if (methodName == 'num_add_ret') {
+        aValue = dll_add_ret.value
+    } else if (methodName == 'str_echo') {
+        aValue = dll_str_echo.value
     }
-    const methodRes =await window.EleApi.dllMethod({ name: methodName, params: { a: aValue} })
+    const methodRes = await window.EleApi.dllMethod({ name: methodName, params: { a: aValue } })
     ElMessage({
         message: methodRes,
         type: "success",
@@ -515,11 +543,12 @@ const moreOptions = ref([
 }
 
 .panel-active {
-    color: hsl(214, 93%, 49%);
+    color: hsl(214, 89%, 57%);
+    font-weight: 700;
 }
 
 .dark-text {
-    color: white;
+    color: rgb(195, 214, 228);
 }
 
 .light-text {
