@@ -3,13 +3,17 @@
   "id": "guxing-electron-template",
   "version": "0.0.2",
   "description": "electron+ts+vue3+vite模板",
-  "private": true,
+  "private": false,
   "author": "guxing",
   "email": "813102522@qq.com",
   "url": "https://gitee.com/pangyu_yanyan/template-ele-vue3-vite/issues",
   "homepage": "https://pangyu_yanyan.gitee.io/know/",
   "main": "electron/main.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://gitee.com/pangyu_yanyan/template-ele-vue3-vite.git"
+  },
   "scripts": {
     "dev": "vite --mode development",
     "build": "vite build",
@@ -17,6 +21,7 @@
     "electron": "yarn run loadhint && wait-on tcp:3000 && cross-env IS_DEV=true electron . --trace-warnings ...",
     "electron:dev": "concurrently -k \"cross-env BROWSER=none yarn run dev\" \"yarn run electron\"",
     "electron:build.win": "yarn run build && electron-builder --win --dir",
+    "electron:build.linux": "yarn run build && electron-builder --linux",
     "electron:build.linux.appImage": "yarn run build && electron-builder --linux appImage",
     "electron:build.linux.deb": "yarn run build && electron-builder --linux deb",
     "electron:build.test": "yarn run build && electron-builder --dir",
@@ -26,7 +31,7 @@
   },
   "packageManager": "yarn@1.22.18",
   "build": {
-    "appId": "guxing.electron.template",
+    "appId": "com.guxing.template",
     "productName": "孤星electron示例",
     "copyright": "Copyright © 2022 ${author}",
     "win": {
@@ -40,8 +45,10 @@
       "icon": "./src/assets/icons/logo.png"
     },
     "linux": {
+      "category": "Utility",
       "target": [
-        "AppImage"
+        "AppImage",
+        "deb"
       ],
       "icon": "./build/icons"
     },
