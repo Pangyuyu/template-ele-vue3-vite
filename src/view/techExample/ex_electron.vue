@@ -66,12 +66,12 @@
                 <el-button type="primary" @click="onClickNotifyMain()">主进程显示通知</el-button>
             </div>
             <div class="panel-warn">
-                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况;详情参见：<a href="javascript:void(0)"
+                <div class="item">1.渲染进程使用Notification完成通知;此方式需要检验通知授权情况;详情参见：<a href="javascript:void(0)"
                         @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a>
                 </div>
-                <div class="item">2.electron-notification-stateU+002c此模块可以检测是否允许发送通知;</div>
+                <div class="item">2.electron-notification-state;此模块可以检测是否允许发送通知;</div>
                 <div class="item">3.windows上合理设置app.setAppUserModelId</div>
-                <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)"
+                <div class="item">4.操作系统对通知正文字数有限制;详情参见：<a href="javascript:void(0)"
                         @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a>
                 </div>
             </div>
@@ -126,6 +126,13 @@
             <div class="panel-content">
                 <el-input v-model="dll_str_echo" placeholder="Please input"  style="width:200px"/>
                 <el-button type="primary" @click="onClickDllMethods('str_echo')" style="width:200px;margin-left: 10px;">方法:str_echo</el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.调用第三方DLL需使用ffi-napi;</div>
+                <div class="item">2.electron高版本需主线程使用ffi-napi;</div>
+                <div class="item">3.若DLL是32位，会报错“win32 error 193 ”，需要使用 32位的electron;</div>
+                <div class="item">4.32位的electron需要在.npmrc或者.yarnrc中对arch配置为 ia32;</div>
+                <div class="item">5.指针类型使用：pointer 声明</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
