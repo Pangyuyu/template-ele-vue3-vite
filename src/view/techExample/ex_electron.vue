@@ -66,12 +66,12 @@
                 <el-button type="primary" @click="onClickNotifyMain()">主进程显示通知</el-button>
             </div>
             <div class="panel-warn">
-                <div class="item">1.渲染进程使用Notification完成通知U+002c此方式需要检验通知授权情况;详情参见：<a href="javascript:void(0)"
+                <div class="item">1.渲染进程使用Notification完成通知;此方式需要检验通知授权情况;详情参见：<a href="javascript:void(0)"
                         @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/notification')">notification</a>
                 </div>
-                <div class="item">2.electron-notification-stateU+002c此模块可以检测是否允许发送通知;</div>
+                <div class="item">2.electron-notification-state;此模块可以检测是否允许发送通知;</div>
                 <div class="item">3.windows上合理设置app.setAppUserModelId</div>
-                <div class="item">4.操作系统对通知正文字数有限制U+002c详情参见：<a href="javascript:void(0)"
+                <div class="item">4.操作系统对通知正文字数有限制;详情参见：<a href="javascript:void(0)"
                         @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/notifications')">通知（Notifications）</a>
                 </div>
             </div>
@@ -108,6 +108,31 @@
                 <div>接收数据</div>
                 <div class="serial-accept">{{ serialPortMsg }}</div>
                 <el-button type="primary" @click="onClickClear()">清空</el-button>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_dll">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_dll')">调用DLL</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickDllMethods('num_add')" style="width:200px">方法:num_add</el-button>
+            </div>
+            <div class="panel-content">
+                <el-input-number v-model="dll_add_ret" :min="1" :max="1000" style="width:200px"/>
+                <el-button type="primary" @click="onClickDllMethods('num_add_ret')" style="width:200px;margin-left: 10px;">方法:num_add_ret</el-button>
+            </div>
+            <div class="panel-content">
+                <el-input v-model="dll_str_echo" placeholder="Please input"  style="width:200px"/>
+                <el-button type="primary" @click="onClickDllMethods('str_echo')" style="width:200px;margin-left: 10px;">方法:str_echo</el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.调用第三方DLL需使用ffi-napi;</div>
+                <div class="item">2.electron高版本需主线程使用ffi-napi;</div>
+                <div class="item">3.若DLL是32位，会报错“win32 error 193 ”，需要使用 32位的electron;</div>
+                <div class="item">4.32位的electron需要在.npmrc或者.yarnrc中对arch配置为 ia32;</div>
+                <div class="item">5.指针类型使用：pointer 声明</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
@@ -259,10 +284,10 @@ function onClickNotifyRenderer() {
             }
         })
     }
-    // 最后U+002c如果执行到这里U+002c说明用户已经拒绝对相关通知进行授权
-    // 出于尊重U+002c我们不应该再打扰他们了
+    // 最后如果执行到这里,说明用户已经拒绝对相关通知进行授权
+    // 出于尊重我们不应该再打扰他们了
     ElMessage({
-        message: "用户已拒绝通知U+002c请勿打扰!",
+        message: "用户已拒绝通知;请勿打扰!",
         type: "warning",
     })
 
@@ -388,6 +413,24 @@ function onClickClear() {
 }
 //#endregion 
 
+//#region 调用第三方DLL
+const dll_add_ret=ref(1)
+const dll_str_echo=ref("Hello World")
+async function onClickDllMethods(methodName:string) {
+    let aValue=""
+    if(methodName=='num_add_ret'){
+        aValue=dll_add_ret.value
+    }else if(methodName=='str_echo'){
+        aValue=dll_str_echo.value
+    }
+    const methodRes =await window.EleApi.dllMethod({ name: methodName, params: { a: aValue} })
+    ElMessage({
+        message: methodRes,
+        type: "success",
+    })
+}
+//#endregion
+
 //#region 更多
 const moreOptions = ref([
     {
@@ -445,6 +488,7 @@ const moreOptions = ref([
     display: flex;
     font-size: 16px;
     align-items: center;
+    margin-bottom: 5px;
 
     .ex-btn {
         min-width: 320px;
