@@ -4,7 +4,6 @@ const log = new Log()
 module.exports.ToolSystemInfo=function(){
     this.registerOn=function(ipcMain,mainWin){
         ipcMain.handle('tool-system-info',(event,args)=>{
-            log.d("process.resourcesPath",process.resourcesPath)
             let attrList=[
                 {
                     name:"process.resourcesPath",

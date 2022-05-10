@@ -1,33 +1,5 @@
 <template>
     <el-tabs v-model="activeName" class="demo-tabs" type="card">
-        <el-tab-pane name="ex_darkmode">
-            <template #label>
-                <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_darkmode')">主题样式</span>
-                </span>
-            </template>
-            <div class="panel-content">
-                <div>选择主题样式：</div>
-                <el-select v-model="appTheme" placeholder="请选择" size="large">
-                    <el-option v-for="item in themeOptions" :key="item.value" :label="item.label" :value="item.value" />
-                </el-select>
-            </div>
-        </el-tab-pane>
-        <el-tab-pane name="ex_sys_win">
-            <template #label>
-                <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_sys_win')">系统信息</span>
-                </span>
-            </template>
-            <div class="panel-content">
-                <el-button class="ex-btn" type="primary" @click="onClickGetSystemInfo()">获取系统信息</el-button>
-            </div>
-            <el-table :data="sysWinAttrList" border style="width:100%;height:420px">
-                <el-table-column prop="name" label="名称" width="220" />
-                <el-table-column prop="desc" label="描述" width="220" />
-                <el-table-column prop="value" label="值" />
-            </el-table>
-        </el-tab-pane>
         <el-tab-pane name="ex_ipc">
             <template #label>
                 <span class="custom-tabs-label">
@@ -49,7 +21,44 @@
                 <div class="item">4.主进程向渲染进程发送消息时U+002c需使用webContents.send方法</div>
             </div>
         </el-tab-pane>
-
+        <el-tab-pane name="ex_darkmode">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_darkmode')">主题样式</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <div>选择主题样式：</div>
+                <el-select v-model="appTheme" placeholder="请选择" size="large">
+                    <el-option v-for="item in themeOptions" :key="item.value" :label="item.label" :value="item.value" />
+                </el-select>
+            </div>
+        </el-tab-pane>
+        <el-tab-pane name="ex_system">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_system')">系统信息</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button class="ex-btn" type="primary" @click="onClickGetSystemInfo()">获取系统信息</el-button>
+            </div>
+            <el-table :data="sysWinAttrList" border style="width:100%;height:420px">
+                <el-table-column prop="name" label="名称" width="220" />
+                <el-table-column prop="desc" label="描述" width="220" />
+                <el-table-column prop="value" label="值" />
+            </el-table>
+        </el-tab-pane>
+        <el-tab-pane name="ex_window">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_window')">窗体操作</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button class="ex-btn" type="primary" @click="onClickCtrlBgColor()">设置窗体背景颜色</el-button>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_drag_drop">
             <template #label>
                 <span class="custom-tabs-label">
@@ -182,7 +191,7 @@ onMounted(() => {
     registerEvents()
 })
 
-//#region 系统&窗体
+//#region 系统信息
 const sysWinAttrList = ref(new Array())
 function initSysWinAttrs() {
     sysWinAttrList.value = [
@@ -499,6 +508,12 @@ async function onClickDllMethods(methodName: string) {
         message: methodRes,
         type: "success",
     })
+}
+//#endregion
+
+//#region 窗体(BrowerWindow)操作
+function onClickCtrlBgColor(){
+    window.EleApi.windowChangeBgColor()
 }
 //#endregion
 

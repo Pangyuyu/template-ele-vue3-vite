@@ -70,12 +70,12 @@ module.exports.ToolIpcExample = function () {
         })
         ipcMain.handle('ipc-example-file-choose', handleFileOpen)
         ipcMain.handle('ipc-example-theme-change', handleThemeChange)
-        ipcMain.on('ipc-example-on-drag-start', (event, filePath) => {
-            // const iconName = path.join(process.cwd(), "src", "assets", "images", 'drag.png');
-            const iconName = path.join(__dirname,"assets", 'drag.png');
+        ipcMain.on('ipc-example-on-drag-start', (event, fileName) => {            
+            const dragFilePath=path.join(process.cwd(),'resources','files',fileName);
+            const iconName = path.join('resources','images','drag.png');
             log.d("iconName", iconName)
             event.sender.startDrag({
-                file: filePath,
+                file: dragFilePath,//这个必须是绝对路径
                 icon: iconName,
             })
         })
