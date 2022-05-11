@@ -68,7 +68,7 @@ module.exports.ToolIpcExample = function () {
         ipcMain.on("ipc-example-set-title", (event, args) => {
             mainWin.setTitle(args.title)
         })
-        ipcMain.handle('ipc-example-file-choose', handleFileOpen)
+        ipcMain.handle('ipc-example-file-choose', handleFileOpen)        
         ipcMain.handle('ipc-example-theme-change', handleThemeChange)
         ipcMain.on('ipc-example-on-drag-start', (event, fileName) => {            
             const dragFilePath=path.join(process.cwd(),'resources','files',fileName);

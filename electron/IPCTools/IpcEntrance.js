@@ -15,6 +15,13 @@ module.exports.IpcEntrance=function(){
     this.mainWin=null;
     this.register=function(mainWin){
         this.mainWin=mainWin
+        //清理可能存在的事件，因为托盘可能会二次打开窗体
+        ipcMain.removeAllListeners()
+        ipcMain.removeHandler('ipc-example-file-choose')
+        ipcMain.removeHandler('ipc-example-theme-change')
+        ipcMain.removeHandler('dll-method')
+        ipcMain.removeHandler("tool-system-info")
+        
         toolOpenChildWin.registerOn(ipcMain,this.mainWin)
         toolIpcExample.registerOn(ipcMain,this.mainWin)
         toolSerialPort.registerOn(ipcMain,this.mainWin)
