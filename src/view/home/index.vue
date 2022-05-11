@@ -12,7 +12,7 @@
         <el-divider></el-divider>
         <div class="link-plat">
           <div class="link-item" v-for="(itemLink, linkIndex) in item.websites" :key="linkIndex">
-            <el-button class="btn" type="text" @click="onClickItemLink(itemLink)">{{ itemLink.desc }}</el-button>
+            <el-button class="btn" type="default" plain  @click="onClickItemLink(itemLink)">{{ itemLink.desc }}</el-button>
           </div>
         </div>
       </div>

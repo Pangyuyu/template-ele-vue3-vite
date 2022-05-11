@@ -21,7 +21,7 @@
         </template>
         <div class="popoContent">
           <el-image class="img" fit="scale-down" :src="imgLoginout" />
-          <el-button type="text" @click="signOut">退出登录</el-button>
+          <el-button type="default" :text="true" @click="signOut">退出登录</el-button>
         </div>
       </el-popover>
     </div>
@@ -151,6 +151,7 @@ export default defineComponent({
       min-width: 40px;
       padding: 0 12px;
       font-size: 14px;
+      color: #333;
     }
   }
 }
