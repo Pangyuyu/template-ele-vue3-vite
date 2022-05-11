@@ -65,7 +65,6 @@ app.on("window-all-closed", () => {
 
 app.on('before-quit', (event) => {
   event.preventDefault()
-  log.d("before-quit", event)
   const nativeImage = require('electron').nativeImage
   dialog.showMessageBox({
     title: "提醒",
