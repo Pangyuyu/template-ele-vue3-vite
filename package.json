@@ -32,7 +32,8 @@
   "packageManager": "yarn@1.22.18",
   "build": {
     "appId": "com.guxing.template",
-    "productName": "孤星electron示例",
+    "productName": "孤星Electron示例",
+    "artifactName":"${productName}_${version}_${os}_${arch}.${ext}",
     "copyright": "Copyright © 2022 ${author}",
     "win": {
       "target": [
