@@ -1,7 +1,7 @@
 {
   "name": "guxing-electron-template",
   "id": "guxing-electron-template",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "electron+ts+vue3+vite模板",
   "private": false,
   "author": "guxing",
