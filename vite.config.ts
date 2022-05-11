@@ -2,10 +2,9 @@ import OptimizationPersist from 'vite-plugin-optimize-persist'
 import PkgConfig from 'vite-plugin-package-config'
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
-// const { path } = require("path");
 import path from "path";
 import ViteComponents, { ElementPlusResolver } from "vite-plugin-components";
-import styleImport from "vite-plugin-style-import";
+import {createStyleImportPlugin,ElementPlusResolve} from "vite-plugin-style-import";
 export default defineConfig({
   base: "./", // 访问路径
   plugins: [
@@ -17,16 +16,17 @@ export default defineConfig({
         ElementPlusResolver(), // 官方插件提供
       ],
     }),
-    styleImport({
-      libs: [
-        {
-          libraryName: "element-plus",
-          esModule: true,
-          resolveStyle: (name) => {
-            return `element-plus/theme-chalk/${name}.css`;
-          },
-        },
+    createStyleImportPlugin({
+      resolves:[
+        ElementPlusResolve(),
       ],
+      libs:[{
+        libraryName:'element-plus',
+        esModule:true,
+        resolveStyle:(name)=>{
+          return `element-plus/theme-chalk/${name}.css`
+        }
+      }]
     }),
   ],
   server: {
@@ -37,6 +37,8 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "src"),
     },
+    // 忽略后缀名的配置选项, 添加 .vue 选项时要记得原本默认忽略的选项也要手动写入
+    // extensions: ['.mjs', '.js', '.ts', '.jsx', '.tsx', '.json', '.vue']
   },
   build: {
     chunkSizeWarningLimit: 1500,
