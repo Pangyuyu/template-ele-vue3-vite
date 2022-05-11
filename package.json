@@ -3,7 +3,7 @@
   "id": "guxing-electron-template",
   "version": "0.0.4",
   "description": "electron+ts+vue3+vite模板",
-  "private": false,
+  "private": true,
   "author": "china_pangyu",
   "email": "1633603801@qq.com",
   "url": "https://gitee.com/pangyu_yanyan/template-ele-vue3-vite/issues",
