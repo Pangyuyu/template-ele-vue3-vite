@@ -4,6 +4,7 @@ const { BrowserWindow } = require('electron')
 
 module.exports.ToolOpenChildwin = function () {
     this.registerOn = function (ipcMain, mainWin) {
+        
         ipcMain.on("open-child-win", (event, args) => {
             const isModal=true
             if(args.isModal!=undefined&&args.isModal!=null){

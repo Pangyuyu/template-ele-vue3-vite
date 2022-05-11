@@ -65,6 +65,7 @@ app.on("window-all-closed", () => {
 
 app.on('before-quit', (event) => {
   event.preventDefault()
+  log.d("before-quit", event)
   const nativeImage = require('electron').nativeImage
   dialog.showMessageBox({
     title: "提醒",
@@ -85,27 +86,49 @@ app.on('before-quit', (event) => {
 })
 
 function createWindow() {
-  app.setAppUserModelId("Electron示例")
-  mainWin = appStart.initWindow()
-  appStart.initWinLoad(mainWin)
-  appMenu.initMenu(mainWin)
-  ipcTools.register(mainWin)
-  createTray()
-  mainWin.setIcon(nativeImage.createFromPath("./resources/images/logo.png"))
+  //如果窗体没有被销毁
+  if (mainWin&&!mainWin.isDestroyed()) {
+    mainWin.showInactive()
+  } else {
+    app.setAppUserModelId("Electron示例")
+    mainWin = appStart.initWindow()
+    appStart.initWinLoad(mainWin)
+    appMenu.initMenu(mainWin)
+    ipcTools.register(mainWin)
+    createTray()
+    mainWin.setIcon(nativeImage.createFromPath("./resources/images/logo.png"))
+  }
 }
 
 let tray
 function createTray() {
+  //托盘在没有窗体的时候是可以存在的。为了不多次创建托盘
+  if(tray&&!tray.isDestroyed()){
+    return
+  }
   //TODO Linux下打包图标显示不出来
   const iconPath = path.join(process.cwd(), "resources", 'images', 'logo.png')
   console.debug("iconPath", iconPath)
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([
-    { label: 'Item1', type: 'radio' },
-    { label: 'Item2', type: 'radio' },
-    { label: 'Item3', type: 'radio', checked: true },
-    { label: 'Item4', type: 'radio' }
+    {
+      label: '重新打开',
+      type: "normal",
+      click: () => {
+        createWindow()
+      }
+    },
+    { type: "separator" },
+    {
+      label: '彻底退出',
+      type: 'normal',
+      click: () => {
+        if (app) {
+          app.exit(0)
+        }
+      }
+    },
   ])
   tray.setContextMenu(contextMenu)
   tray.setToolTip('Electron示例')

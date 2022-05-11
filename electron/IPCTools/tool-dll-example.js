@@ -25,8 +25,6 @@ module.exports.ToolDllExample = function () {
         }else{
             log.d("远程调用DLL:只适用于windows系统且Electron是32位")
         }
-        
-
         ipcMain.handle('dll-method', (event, args) => {
             log.d("参数",args)
             if (libm) {
