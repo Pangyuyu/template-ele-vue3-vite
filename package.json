@@ -110,7 +110,7 @@
     "vite-plugin-optimize-persist": "^0.1.2",
     "vite-plugin-package-config": "^0.1.1",
     "vite-plugin-style-import": "2.0.0",
-    "vue-tsc": "^0.34.11",
+    "vue-tsc": "0.34.13",
     "wait-on": "^6.0.1"
   },
   "vite": {
