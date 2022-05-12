@@ -40,7 +40,9 @@ function handelProgressStart(mainWin) {
             if (c_pro_value >= 1) {
                 c_pro_value = 1
             }
-            mainWin.setProgressBar(c_pro_value)
+            if(mainWin){
+                mainWin.setProgressBar(c_pro_value)
+            }            
             c_pro_value = c_pro_value + INCREMENT //每次进5%
             if (c_pro_value >= 1) {
                 c_pro_value = 1
