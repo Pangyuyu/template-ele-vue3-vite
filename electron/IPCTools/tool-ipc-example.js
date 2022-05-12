@@ -56,6 +56,7 @@ function handelProgressCancel(mainWin) {
         clearInterval(progressInterval)
         progressInterval = -1
     }    
+    c_pro_value=0
     mainWin.setProgressBar(-1)
 }
 function handelProgressUnkown(mainWin){
