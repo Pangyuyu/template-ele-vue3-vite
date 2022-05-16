@@ -12,7 +12,6 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 
 ## 注意事项
 
-- 不可使用 yarn v2，因为yarn v2无法下载electron。此问题暂时未解决!
 - windows环境下，请使用git bash来运行命令，因为windows本身不识别bash脚本!
 
 ## 未解决异常
