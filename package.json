@@ -5,6 +5,7 @@
   "description": "electron+ts+vue3+vite模板",
   "private": true,
   "author": "china_pangyu <1633603801@qq.com>",
+  "packageManager": "yarn@3.2.0",
   "email": "1633603801@qq.com",
   "url": "https://gitee.com/pangyu_yanyan/template-ele-vue3-vite/issues",
   "homepage": "https://pangyu_yanyan.gitee.io/know/",
@@ -30,7 +31,6 @@
     "electron:build.exe_x86": "yarn run build && electron-builder --win --ia32",
     "loadhint": "bash ./loadhint.bash"
   },
-  "packageManager": "yarn@1.22.18",
   "build": {
     "appId": "com.guxing.template",
     "productName": "孤星Electron示例",
