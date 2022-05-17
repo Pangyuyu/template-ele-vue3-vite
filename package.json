@@ -40,11 +40,11 @@
       "target": [
         "nsis"
       ],
-      "icon": "./src/assets/icons/logo.png"
+      "icon": "./resources/icons/logo.png"
     },
     "mac": {
       "category": "public.app-category.utilities",
-      "icon": "./src/assets/icons/logo.png"
+      "icon": "./resources/icons/logo.png"
     },
     "linux": {
       "category": "Utility",
@@ -52,7 +52,7 @@
         "AppImage",
         "deb"
       ],
-      "icon": "./build/icons"
+      "icon": "./resources/icons"
     },
     "asar": true,
     "nsis": {

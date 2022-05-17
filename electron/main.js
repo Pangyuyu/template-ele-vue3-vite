@@ -73,8 +73,7 @@ app.on('before-quit', (event) => {
     defaultId: 1,
     detail: '您确定要退出应用吗?',
     noLink: true,
-    //TODO Linux下打包图标显示不出来
-    icon: nativeImage.createFromPath("./resources/images/logo.png")
+    icon: nativeImage.createFromPath("./resources/icons/logo.png")
   }).then(result => {
     if (result.response == 0) {
       app.exit(0)
@@ -95,7 +94,7 @@ function createWindow() {
     appMenu.initMenu(mainWin)
     ipcTools.register(mainWin)
     createTray()
-    mainWin.setIcon(nativeImage.createFromPath("./resources/images/logo.png"))
+    mainWin.setIcon(nativeImage.createFromPath("./resources/icons/logo.png"))
   }
 }
 
