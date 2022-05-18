@@ -7,11 +7,19 @@
                 {
                     "name": "path",
                     "type": "string",
+                    "desc":"",
                     "must": true
+                },
+                {
+                    "name": "ext",
+                    "type": "string",
+                    "desc":"可选的文件扩展名",
+                    "must": false
                 }
             ],
             "ret": {
-                "type": "string"
+                "type": "string",
+                "desc":"返回 path 的最后一部分"
             }
         }
     ]
