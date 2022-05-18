@@ -164,7 +164,17 @@
                 <div class="item">6.当前只适用于windows系统且Electron是32位；</div>
             </div>
         </el-tab-pane>
-
+        <el-tab-pane name="ex_dialog">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_dialog')">对话框</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickShowOpenDirSync()" style="width:200px">选择目录</el-button>
+                <el-button type="primary" @click="onClickShowOpenFileSync()" style="width:200px">选择文件</el-button>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_more">
             <template #label>
                 <span class="custom-tabs-label">
@@ -514,6 +524,37 @@ async function onClickDllMethods(methodName: string) {
 //#region 窗体(BrowerWindow)操作
 function onClickCtrlBgColor() {
     window.EleApi.windowChangeBgColor()
+}
+//#endregion
+
+//#region 对话框
+async function onClickShowOpenDirSync() {
+    const res=await window.EleApi.showDialog('open',{
+        title:'请选择目录',
+        defaultPath :'.',//
+        buttonLabel:'确定',
+        filters:[],
+        properties:["openDirectory","multiSelections","showHiddenFiles"]
+    })
+    console.log("选择目录结果",res)
+    ElMessage({
+        message: res,
+        type: "success",
+    })
+}
+async function onClickShowOpenFileSync() {
+    const res=await window.EleApi.showDialog('open',{
+        title:'请选择文件',
+        defaultPath :'.',//
+        buttonLabel:'确定',
+        filters:[],
+        properties:["openFile","multiSelections","showHiddenFiles"]
+    })
+    console.log("选择文件结果",res)
+    ElMessage({
+        message: res,
+        type: "success",
+    })
 }
 //#endregion
 

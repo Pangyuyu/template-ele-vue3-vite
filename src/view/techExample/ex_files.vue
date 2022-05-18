@@ -36,6 +36,7 @@
                     <span>文件管理</span>
                 </span>
             </template>
+            <!--选择目录（文件）、创建文件、读文件、写文件、保存文件 -->
         </el-tab-pane>
     </el-tabs>
 </template>
