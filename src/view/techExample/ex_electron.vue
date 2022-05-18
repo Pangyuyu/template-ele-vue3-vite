@@ -1,5 +1,5 @@
 <template>
-    <el-tabs v-model="activeName" class="demo-tabs" type="card">
+    <el-tabs v-model="activeName" class="xing-tabs" type="card">
         <el-tab-pane name="ex_ipc">
             <template #label>
                 <span class="custom-tabs-label">
@@ -14,7 +14,7 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.出于 <a href="javascript:void(0);"
-                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>U+002c务必启用上下文隔离；
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>,务必启用上下文隔离；
                 </div>
                 <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
                 <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
@@ -552,54 +552,7 @@ const moreOptions = ref([
 
 </script>
 
-<style>
-.demo-tabs>.el-tabs__content {
-    padding: 32px;
-    font-size: 32px;
-    font-weight: 600;
-}
-
-.demo-tabs .custom-tabs-label .el-icon {
-    vertical-align: middle;
-}
-
-.demo-tabs .custom-tabs-label span {
-    vertical-align: middle;
-    margin-left: 4px;
-}
-</style>
-
 <style lang="scss" scoped>
-.panel-content {
-    display: flex;
-    font-size: 16px;
-    align-items: center;
-    margin-bottom: 5px;
-
-    .ex-btn {
-        min-width: 320px;
-    }
-
-    a {
-        margin-left: 10px;
-        margin-right: 10px;
-    }
-}
-
-.panel-warn {
-    display: flex;
-    flex-direction: column;
-    border: 1px solid olive;
-    border-radius: 10px;
-    padding: 10px;
-    font-size: 14px;
-    margin-top: 10px;
-
-    .item {
-        line-height: 35px;
-    }
-}
-
 .panel-active {
     color: hsl(214, 89%, 57%);
     font-weight: 700;

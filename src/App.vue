@@ -70,6 +70,22 @@ export default defineComponent({
   },
 });
 </script>
+<style>
+.xing-tabs>.el-tabs__content {
+    padding: 32px;
+    font-size: 32px;
+    font-weight: 600;
+}
+
+.xing-tabs .custom-tabs-label .el-icon {
+    vertical-align: middle;
+}
+
+.xing-tabs .custom-tabs-label span {
+    vertical-align: middle;
+    margin-left: 4px;
+}
+</style>
 <style lang="scss">
 @import "@/styles/scrollbar.scss";
 .versionstyle {

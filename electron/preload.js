@@ -13,16 +13,18 @@ contextBridge.exposeInMainWorld('EleApi', {
     onUpdateCounter: (callback) => ipcRenderer.on('update-counter', callback),
     themeChange: (themeName) => ipcRenderer.invoke('ipc-example-theme-change', { themeName: themeName }),
     startDrag: (fileName) => {
-        const path = require('path')
-        //拼接路径一定要使用path.join
-        // const filePath = path.join(".","resources","files","drag-and-drop.md")
-        // console.log("filePath", filePath)
         ipcRenderer.send("ipc-example-on-drag-start", fileName)
     },
     progressStart: () => ipcRenderer.send('ipc-example-progress-start'),
     progressCancel: () => ipcRenderer.send('ipc-example-progress-cancel'),
     progressUnkown: () => ipcRenderer.send('ipc-example-progress-unkown'),
-    dllMethod:(args)=>ipcRenderer.invoke('dll-method',args),
-    querySystemInfo:()=>ipcRenderer.invoke("tool-system-info"),
-    windowChangeBgColor:()=>{ipcRenderer.send('window:change-bgcolor')}
+    dllMethod: (args) => ipcRenderer.invoke('dll-method', args),
+    querySystemInfo: () => ipcRenderer.invoke("tool-system-info"),
+    windowChangeBgColor: () => { ipcRenderer.send('window:change-bgcolor') },
+    runApiPath: (apiName, apiParams) => {
+        return ipcRenderer.invoke("tool-api-path", {
+            apiName: apiName,
+            params: apiParams
+        })
+    }
 })
