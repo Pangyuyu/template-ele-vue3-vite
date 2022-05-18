@@ -6,6 +6,12 @@
         "icon":"home-filled"
     },
     {
+        "title":"文件管理",
+        "index":"files",
+        "path":"/files",
+        "icon":"files"
+    },
+    {
         "title":"构建工具",
         "index":"buildtools",
         "hide":true,
@@ -15,6 +21,7 @@
         "title":"功能示例",
         "index":"example",
         "icon":"aim",
+        "hide":true,
         "subs":[
             {
                 "title":"Electron",

@@ -10,6 +10,11 @@ const home = {
       name: "menuHome",
       component: () => import("@/view/home/index.vue")
     },
+    {
+      path: "/files",
+      name: "menuFiles",
+      component: () => import("@/view/files/index.vue")
+    },
   ],
 };
 export default home;
