@@ -9,7 +9,7 @@ const home = {
       path: "/home/index",
       name: "menuHome",
       component: () => import("@/view/home/index.vue")
-    },
+    }
   ],
 };
 export default home;

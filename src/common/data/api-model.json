@@ -1,0 +1,176 @@
+{
+    "path": [
+        {
+            "name": "basename",
+            "desc": "返回 path 的最后一部分，类似于 Unix basename 命令。 尾随的目录分隔符被忽略",
+            "args": [
+                {
+                    "name": "path",
+                    "type": "string",
+                    "desc":"",
+                    "must": true
+                },
+                {
+                    "name": "ext",
+                    "type": "string",
+                    "desc":"可选的文件扩展名",
+                    "must": false
+                }
+            ],
+            "ret": {
+                "type": "string",
+                "desc":"返回 path 的最后一部分"
+            }
+        },
+        {
+            "name":"delimiter",
+            "desc": "提供特定于平台的路径定界符",
+            "ret":{
+                "type": "string",
+                "desc":"返回当前平台的路径边界符"
+            }
+        },
+        {
+            "name":"dirname",
+            "desc":"返回 path 的目录名，类似于 Unix dirname 命令。 尾随的目录分隔符被忽略",
+            "ret": {
+                "type": "string",
+                "desc":"返回 path 的目录名"
+            }
+        },
+        {
+            "name":"extname",
+            "desc":"返回 path 的扩展名，即 path 的最后一部分中从最后一次出现的 .（句点）字符到字符串的结尾。 如果 path 的最后一部分中没有 .，或者除了 path 的基本名称（参见 path.basename()）的第一个字符之外没有 . 个字符，则返回空字符串。",
+            "ret": {
+                "type": "string",
+                "desc":"返回 path 的扩展名"
+            }
+        },
+        {
+            "name":"format",
+            "desc":"从对象返回路径字符串",
+            "args":[
+                {
+                    "name": "pathObject",
+                    "type": "object",
+                    "desc":"任何具有以下属性的 JavaScript 对象:dir,root,base,name,ext",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "string",
+                "desc":"指定对象的路径字符串"
+            }
+        },
+        {
+            "name":"isAbsolute",
+            "desc":"确定 path 是否为绝对路径",
+            "args":[
+                {
+                    "name": "path",
+                    "type": "string",
+                    "desc":"如果给定的 path 是零长度字符串，则将返回 false。",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "boolean",
+                "desc":"是否是绝对路径"
+            }
+        },
+        {
+            "name":"join",
+            "desc":"使用特定于平台的分隔符作为定界符将所有给定的 path 片段连接在一起，然后规范化生成的路径。",
+            "args":[
+                {
+                    "name": "paths",
+                    "type": "Arrays",
+                    "desc":"变长字符串数组",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "string",
+                "desc":"是否是绝对路径"
+            }
+        },
+        {
+            "name":"normalize",
+            "desc":"规范化给定的 path，解析 '..' 和 '.' 片段",
+            "args":[
+                {
+                    "name": "path",
+                    "type": "string",
+                    "desc":"初始的路径片段",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "string",
+                "desc":"规范出的路径片段"
+            }
+        },
+        {
+            "name":"parse",
+            "desc":"返回一个对象，其属性表示 path 的重要元素。 尾随的目录分隔符被忽略",
+            "args":[
+                {
+                    "name": "path",
+                    "type": "string",
+                    "desc":"表示路径的字符串",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "object",
+                "desc":"返回的对象具有的属性：dir,root,base,name,ext"
+            }
+        },
+        {
+            "name":"relative",
+            "desc":"根据当前工作目录返回从 from 到 to 的相对路径。 如果 from 和 to 都解析为相同的路径（在分别调用 path.resolve() 之后），则返回零长度字符串。",
+            "args":[
+                {
+                    "name": "from",
+                    "type": "string",
+                    "desc":"起始路径",
+                    "must": true
+                },
+                {
+                    "name": "to",
+                    "type": "string",
+                    "desc":"结束路径",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "string",
+                "desc":"from到to的相对路径"
+            }
+        },
+        {
+            "name":"resolve",
+            "desc":"将路径或路径片段的序列解析为绝对路径",
+            "args":[
+                {
+                    "name": "paths",
+                    "type": "Array<string>",
+                    "desc":"路径或路径片段的序列",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "string",
+                "desc":"解析成功的绝对路径或当前工作目录"
+            }
+        },
+        {
+            "name":"sep",
+            "desc":"提供特定于平台的路径片段分隔符",
+            "ret": {
+                "type": "string",
+                "desc":"特定平台路径片段分隔符，windows上是 \\;POSIX上是 /"
+            }
+        }
+    ]
+}

@@ -9,8 +9,8 @@ const techExample = {
       component: () => import("@/view/techExample/ex_electron.vue")
     },
     {
-      path:"/techExample/ex_elementPlus",
-      component: () => import("@/view/techExample/ex_elementPlus.vue")
+      path:"/techExample/ex_files",
+      component: () => import("@/view/techExample/ex_files.vue")
     }
   ],
 };
