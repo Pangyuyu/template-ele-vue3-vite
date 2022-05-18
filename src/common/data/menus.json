@@ -6,12 +6,6 @@
         "icon":"home-filled"
     },
     {
-        "title":"文件管理",
-        "index":"files",
-        "path":"/files",
-        "icon":"files"
-    },
-    {
         "title":"构建工具",
         "index":"buildtools",
         "hide":true,
@@ -21,7 +15,6 @@
         "title":"功能示例",
         "index":"example",
         "icon":"aim",
-        "hide":true,
         "subs":[
             {
                 "title":"Electron",
@@ -30,10 +23,10 @@
                 "icon":"alarm-clock"
             },
             {
-                "title":"Element-Plus",
-                "index":"/techExample/ex_elementPlus",
-                "path":"/techExample/ex_elementPlus",
-                "icon":"baseball"
+                "title":"文件管理",
+                "index":"/techExample/ex_files",
+                "path":"/techExample/ex_files",
+                "icon":"files"
             }
         ]
     }
