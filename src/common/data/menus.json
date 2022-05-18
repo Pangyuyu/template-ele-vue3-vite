@@ -23,7 +23,7 @@
                 "icon":"alarm-clock"
             },
             {
-                "title":"文件管理",
+                "title":"文件",
                 "index":"/techExample/ex_files",
                 "path":"/techExample/ex_files",
                 "icon":"files"

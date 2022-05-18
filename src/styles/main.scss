@@ -107,49 +107,6 @@ body {
     }
 }
 
-.formAreaItem {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
-
-.areaRegion {
-    border: 1px solid rgba(0, 0, 0, 0.199);
-    border-radius: 5px;
-    min-height: 48px;
-    overflow-x: auto;
-    padding: 2px 5px 5px 5px;
-    display: flex;
-    margin-top: 5px;
-    flex-wrap: wrap;
-    overflow-y: auto;
-    max-height: 220px;
-
-    .areaItem {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        position: relative;
-        border: 1px solid rgba(0, 0, 0, 0.199);
-        min-width: 130px;
-        height: 45px;
-        margin: 0px 2px 2px 2px;
-        border-radius: 8px;
-        font-size: xx-small;
-        background-color: rgb(175, 222, 250);
-        color: black;
-    }
-
-    .delImg {
-        height: 16px;
-        width: 16px;
-        position: absolute;
-        right: 2px;
-        top: 2px;
-        cursor: pointer;
-    }
-}
-
 .valueReadOnly {
     background-color: rgba(194, 193, 191, 0.2);
 }
@@ -179,4 +136,39 @@ body {
     padding-left: 15px;
     padding-right: 15px;
     background-color: aliceblue;
+}
+
+.panel-content {
+    display: flex;
+    font-size: 16px;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .ex-btn {
+        min-width: 320px;
+    }
+
+    a {
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+}
+
+.panel-warn {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid olive;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 14px;
+    margin-top: 20px;
+
+    .item {
+        line-height: 35px;
+    }
+}
+
+.table-clm-ctrl{
+    display: flex;
+    flex-direction: row;
 }

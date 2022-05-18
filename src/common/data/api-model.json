@@ -1,0 +1,18 @@
+{
+    "path": [
+        {
+            "name": "basename",
+            "desc": "返回 path 的最后一部分，类似于 Unix basename 命令。 尾随的目录分隔符被忽略",
+            "args": [
+                {
+                    "name": "path",
+                    "type": "string",
+                    "must": true
+                }
+            ],
+            "ret": {
+                "type": "string"
+            }
+        }
+    ]
+}
