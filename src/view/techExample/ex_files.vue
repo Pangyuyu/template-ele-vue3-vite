@@ -6,16 +6,16 @@
                     <span>文件路径</span>
                 </span>
             </template>
-            <el-table :data="pathApiMethodList" border style="width:100%;height:620px">
+            <el-table :data="pathApiMethodList" border height="720" style="width:100%;">
                 <el-table-column prop="name" label="名称" width="220" />
-                <el-table-column label="参数" width="145">
+                <!-- <el-table-column label="参数" width="145">
                     <template #default="scope">
                         <div class="table-clm-ctrl">
                             <el-button type="primary" @click="onClickScanArgs(scope.row)">查看</el-button>
                         </div>
                     </template>
-                </el-table-column>
-                <el-table-column prop="retStr" label="返回" width="320" />
+                </el-table-column> -->
+                <el-table-column prop="retStr" label="返回" width="420" />
                 <el-table-column prop="desc" label="描述" />
                 <el-table-column label="操作" width="220">
                     <template #default="scope">
