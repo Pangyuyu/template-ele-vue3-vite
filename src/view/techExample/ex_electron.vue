@@ -230,10 +230,10 @@ function initSysWinAttrs() {
 }
 async function onClickGetSystemInfo() {
     const atrrValues = await window.EleApi.querySystemInfo()
-    sysWinAttrList.value.forEach(item=>{
-        const attrItem=atrrValues.find(attr=>{return attr.name==item.name})
-        if(attrItem){
-            item.value=attrItem.value
+    sysWinAttrList.value.forEach(item => {
+        const attrItem = atrrValues.find(attr => { return attr.name == item.name })
+        if (attrItem) {
+            item.value = attrItem.value
         }
     })
 }
@@ -512,7 +512,7 @@ async function onClickDllMethods(methodName: string) {
 //#endregion
 
 //#region 窗体(BrowerWindow)操作
-function onClickCtrlBgColor(){
+function onClickCtrlBgColor() {
     window.EleApi.windowChangeBgColor()
 }
 //#endregion
