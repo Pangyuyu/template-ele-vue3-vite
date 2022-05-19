@@ -171,8 +171,8 @@
                 </span>
             </template>
             <div class="panel-content">
-                <el-button type="primary" @click="onClickShowOpenDirSync()" style="width:200px">选择目录</el-button>
-                <el-button type="primary" @click="onClickShowOpenFileSync()" style="width:200px">选择文件</el-button>
+                <el-button type="primary" @click="onClickShowOpenSync('dir')" style="width:200px">选择目录</el-button>
+                <el-button type="primary" @click="onClickShowOpenSync('file')" style="width:200px">选择文件</el-button>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
@@ -528,32 +528,32 @@ function onClickCtrlBgColor() {
 //#endregion
 
 //#region 对话框
-async function onClickShowOpenDirSync() {
-    const res=await window.EleApi.showDialog('open',{
-        title:'请选择目录',
-        defaultPath :'.',//
-        buttonLabel:'确定',
-        filters:[],
-        properties:["openDirectory","multiSelections","showHiddenFiles"]
+async function onClickShowOpenSync(type) {
+    let properties = ["multiSelections", "showHiddenFiles"]
+    if (type == 'dir') {
+        properties.push('openDirectory')
+    } else if (type == 'file') {
+        properties.push('openFile')
+    }
+    const res = await window.EleApi.showDialog('open', {
+        title: '请选择目录',
+        defaultPath: '.',//
+        buttonLabel: '确定',
+        filters: [],
+        properties,
     })
-    console.log("选择目录结果",res)
+    let message;
+    let msgType;
+    if (res) {
+        message = `已选择${res.length}个文件`
+        msgType = 'success'
+    } else {
+        message = '用户取消选择'
+        msgType = 'warning'
+    }
     ElMessage({
-        message: res,
-        type: "success",
-    })
-}
-async function onClickShowOpenFileSync() {
-    const res=await window.EleApi.showDialog('open',{
-        title:'请选择文件',
-        defaultPath :'.',//
-        buttonLabel:'确定',
-        filters:[],
-        properties:["openFile","multiSelections","showHiddenFiles"]
-    })
-    console.log("选择文件结果",res)
-    ElMessage({
-        message: res,
-        type: "success",
+        message: message,
+        type: msgType,
     })
 }
 //#endregion
