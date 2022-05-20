@@ -37,6 +37,18 @@
                 </span>
             </template>
             <!--选择目录（文件）、创建文件、读文件、写文件、保存文件 -->
+            <div class="file-basic">
+                <div class="content">
+                    <div class="attr">[此处显示文件属性]</div>
+                    <el-input class="input" v-model="text_edit" :rows="12" type="textarea" placeholder="请输入您想要的信息" />
+                </div>
+
+
+                <div class="ctrl">
+                    <el-button type="primary" @click="onClickChooseFile()">选择文件</el-button>
+                    <el-button type="success" @click="onClickSaveFile()">保存文件</el-button>
+                </div>
+            </div>
         </el-tab-pane>
     </el-tabs>
 </template>
@@ -79,7 +91,46 @@ async function onClickTryOnce(methodItem) {
     console.log("onClickTryOnce", res)
 }
 //#endregion
+
+//#region 文件操作
+const text_edit = ref("")
+function onClickChooseFile() {
+
+}
+function onClickSaveFile() {
+
+}
+//#endregion
 </script>
 
 <style lang="scss" scoped>
+.file-basic {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+    .content {
+        display: flex;
+        flex-direction: row;
+
+        .input {
+            padding: 5px;
+            flex-grow: 1;
+            width: 0;
+        }
+        .attr{
+            max-width: 220px;
+            min-width: 220px;
+            border-right: 1px solid #b8d1f7;
+            background-color: black;
+            color: white;
+            font-size: 12px;
+            padding: 5px;
+        }
+    }
+
+    .ctrl {
+        display: flex;
+        margin-top: 10px;
+    }
+}
 </style>
