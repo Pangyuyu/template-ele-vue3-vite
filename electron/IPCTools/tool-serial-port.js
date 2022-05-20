@@ -35,32 +35,35 @@ module.exports.ToolSerialPort = function () {
             //     })
             // }
             if (portList && portList.length > 0) {
-                log.d("select-serial-port", portList[0].portId)
+                // log.d("select-serial-port", portList[0].portId)
                 callback(portList[0].portId)
             } else {
                 callback("") //Could not find any matching devices
             }
         })
         mainWin.webContents.session.on("serial-port-added", (event, port) => {
-            log.d('serial-port-added FIRED WITH', port)
+            // log.d('serial-port-added FIRED WITH', port)
         })
         mainWin.webContents.session.on('serial-port-removed', (event, port) => {
-            log.d('serial-port-removed FIRED WITH', port)
+            // log.d('serial-port-removed FIRED WITH', port)
         })
         mainWin.webContents.session.setPermissionCheckHandler((webContents, permission, requestingOrigin, details) => {
-            log.d("setPermissionCheckHandler permission", permission)
-            log.d("setPermissionCheckHandler details", details)
+            // log.d("setPermissionCheckHandler permission", permission)
+            // log.d("setPermissionCheckHandler details", details)
             if (permission === 'serial') {
                 return true
             }
         })
 
         mainWin.webContents.session.setDevicePermissionHandler((details) => {
-            log.d("setDevicePermissionHandler permission", permission)
-            log.d("setDevicePermissionHandler details", details)
+            // log.d("setDevicePermissionHandler permission", permission)
+            // log.d("setDevicePermissionHandler details", details)
             if (details.deviceType === 'serial') {
                 return true
             }
         })
+    }
+    this.unRegister = function () {
+        
     }
 }

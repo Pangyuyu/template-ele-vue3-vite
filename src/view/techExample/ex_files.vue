@@ -37,6 +37,18 @@
                 </span>
             </template>
             <!--选择目录（文件）、创建文件、读文件、写文件、保存文件 -->
+            <div class="file-basic">
+                <div class="content">
+                    <div class="attr">{{ attr }}</div>
+                    <el-input class="input" v-model="text_edit" :rows="22" type="textarea" placeholder="请输入您想要的信息" />
+                </div>
+
+
+                <div class="ctrl">
+                    <el-button type="primary" @click="onClickChooseFile()">选择&读取文件</el-button>
+                    <el-button type="success" @click="onClickSaveFile()">选择&保存文件</el-button>
+                </div>
+            </div>
         </el-tab-pane>
     </el-tabs>
 </template>
@@ -47,6 +59,7 @@ import { json } from "stream/consumers";
 import { ref, onMounted, watch } from "vue";
 import RenderCmd from '@/../electron/RenderCmd'
 import ApiModel from "@/common/data/api-model.json"
+import { ElMessage } from 'element-plus'
 const activeName = ref("ex_path")
 function onClickOpenWindowByUrl(url: string) {
     RenderCmd.childWinSend("...", url)
@@ -79,7 +92,72 @@ async function onClickTryOnce(methodItem) {
     console.log("onClickTryOnce", res)
 }
 //#endregion
+
+//#region 文件操作
+const text_edit = ref("")
+const attr = ref("")
+async function onClickChooseFile() {
+    const readRes = await window.EleApi.fileChooseRead()
+    if (readRes.code != 0) {
+        ElMessage({
+            message: "用户已取消!",
+            type: "warning",
+        })
+        return
+    }
+    text_edit.value = readRes.data.fileContent
+    attr.value = readRes.data.filePath + "\n" + JSON.stringify(readRes.data.fileStat, null, 4)
+}
+async function onClickSaveFile() {
+    const writeRes = await window.EleApi.fileChooseSave({ fileContent: text_edit.value })
+    if (writeRes.code != 0) {
+        ElMessage({
+            message: writeRes.message,
+            type: "warning",
+        })
+        return
+    }
+    ElMessage({
+        message: "保存成功，文件路径:"+writeRes.data.filePath,
+        type: "success",
+    })
+}
+//#endregion
 </script>
 
 <style lang="scss" scoped>
+.file-basic {
+    display: flex;
+    flex-direction: column;
+    font-size: 16px;
+
+    .content {
+        display: flex;
+        flex-direction: row;
+        height: 420px;
+
+        .input {
+            padding: 5px;
+            flex-grow: 1;
+            width: 0;
+        }
+
+        .attr {
+            max-width: 320px;
+            min-width: 320px;
+            border-right: 1px solid #b8d1f7;
+            background-color: black;
+            color: white;
+            font-size: 12px;
+            padding: 5px;
+            white-space: pre-wrap;
+            margin-top: 10px;
+        }
+    }
+
+    .ctrl {
+        display: flex;
+        margin-top: 10px;
+    }
+}
 </style>

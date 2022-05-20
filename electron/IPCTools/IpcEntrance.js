@@ -7,6 +7,7 @@ const { ToolSystemInfo } = require('./tool-system-info')
 const { ToolWindowExample } = require('./tool-window-example')
 const { ToolApiPathExample } = require('./tool-api-path-example')
 const { ToolDialogExample } = require('./tool-dialog-example')
+const {ToolFileManager}= require('./tool-file-manager')
 const toolOpenChildWin = new ToolOpenChildwin()
 const toolIpcExample = new ToolIpcExample()
 const toolSerialPort = new ToolSerialPort()
@@ -15,20 +16,21 @@ const toolSystemInfo = new ToolSystemInfo()
 const toolWindowExample = new ToolWindowExample()
 const toolApiPathExample = new ToolApiPathExample()
 const toolDialogExample = new ToolDialogExample()
+const toolFileManager=new ToolFileManager()
 module.exports.IpcEntrance = function () {
     this.mainWin = null;
     this.removeAll=function(){
         //清理可能存在的事件，因为托盘可能会二次打开窗体
         ipcMain.removeAllListeners()
-        ipcMain.removeHandler('ipc-example-file-choose')
-        ipcMain.removeHandler('ipc-example-theme-change')
-        ipcMain.removeHandler('dll-method')
-        ipcMain.removeHandler("tool-system-info")
-        ipcMain.removeHandler("tool-api-path")
-        ipcMain.removeHandler("show-open-dialog-sync")
-        ipcMain.removeHandler("show-save-dialog-sync")
-        ipcMain.removeHandler("show-message-box-sync")
-        ipcMain.removeHandler("show-error-box")
+        toolOpenChildWin.unRegister(ipcMain)
+        toolIpcExample.unRegister(ipcMain)
+        toolSerialPort.unRegister(ipcMain)
+        toolDllExample.unRegister(ipcMain)
+        toolSystemInfo.unRegister(ipcMain)
+        toolWindowExample.unRegister(ipcMain)
+        toolApiPathExample.unRegister(ipcMain)
+        toolDialogExample.unRegister(ipcMain)
+        toolFileManager.unRegister(ipcMain)
     },
     this.register = function (mainWin) {
         this.mainWin = mainWin
@@ -41,5 +43,6 @@ module.exports.IpcEntrance = function () {
         toolWindowExample.registerOn(ipcMain, this.mainWin)
         toolApiPathExample.registerOn(ipcMain, this.mainWin)
         toolDialogExample.registerOn(ipcMain,this.mainWin)
+        toolFileManager.registerOn(ipcMain,this.mainWin)
     }
 }

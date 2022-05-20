@@ -41,10 +41,10 @@ module.exports.AppStart = function () {
         const preLoadPath = path.join(__dirname, 'preload.js')
         log.d("预加载文件地址", preLoadPath)
         return new BrowserWindow({
-            width: 1600,
-            height: 1200,
-            minWidth: 1600,
-            minHeight: 1200,
+            width: 1280,
+            height: 720,
+            minWidth: 1280,
+            minHeight: 720,
             webPreferences: {
                 // Use pluginOptions.nodeIntegration, leave this alone
                 // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info

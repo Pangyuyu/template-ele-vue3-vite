@@ -29,4 +29,7 @@ module.exports.ToolOpenChildwin = function () {
             win.show()
         })
     }
+    this.unRegister = function (ipcMain) {
+        
+    }
 }

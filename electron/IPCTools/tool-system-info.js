@@ -33,4 +33,7 @@ module.exports.ToolSystemInfo=function(){
             return attrList
         })
     }
+    this.unRegister = function (ipcMain) {
+        ipcMain.removeHandler('tool-system-info')
+    }
 }

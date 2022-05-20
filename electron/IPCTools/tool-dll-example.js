@@ -53,4 +53,7 @@ module.exports.ToolDllExample = function () {
             }
         })
     }
+    this.unRegister = function (ipcMain) {
+        ipcMain.removeHandler('dll-method')
+    }
 }

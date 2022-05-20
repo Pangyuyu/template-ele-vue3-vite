@@ -42,4 +42,7 @@ module.exports.ToolWindowExample = function () {
             win.setBackgroundColor(colorStr)
         })
     }
+    this.unRegister = function (ipcMain) {
+        
+    }
 }
