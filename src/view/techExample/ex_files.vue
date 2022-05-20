@@ -45,8 +45,8 @@
 
 
                 <div class="ctrl">
-                    <el-button type="primary" @click="onClickChooseFile()">选择&读取</el-button>
-                    <el-button type="success" @click="onClickSaveFile()">保存文件</el-button>
+                    <el-button type="primary" @click="onClickChooseFile()">选择&读取文件</el-button>
+                    <el-button type="success" @click="onClickSaveFile()">选择&保存文件</el-button>
                 </div>
             </div>
         </el-tab-pane>
@@ -59,6 +59,7 @@ import { json } from "stream/consumers";
 import { ref, onMounted, watch } from "vue";
 import RenderCmd from '@/../electron/RenderCmd'
 import ApiModel from "@/common/data/api-model.json"
+import { ElMessage } from 'element-plus'
 const activeName = ref("ex_path")
 function onClickOpenWindowByUrl(url: string) {
     RenderCmd.childWinSend("...", url)
@@ -97,11 +98,29 @@ const text_edit = ref("")
 const attr = ref("")
 async function onClickChooseFile() {
     const readRes = await window.EleApi.fileChooseRead()
+    if (readRes.code != 0) {
+        ElMessage({
+            message: "用户已取消!",
+            type: "warning",
+        })
+        return
+    }
     text_edit.value = readRes.data.fileContent
     attr.value = readRes.data.filePath + "\n" + JSON.stringify(readRes.data.fileStat, null, 4)
 }
-function onClickSaveFile() {
-
+async function onClickSaveFile() {
+    const writeRes = await window.EleApi.fileChooseSave({ fileContent: text_edit.value })
+    if (writeRes.code != 0) {
+        ElMessage({
+            message: writeRes.message,
+            type: "warning",
+        })
+        return
+    }
+    ElMessage({
+        message: "保存成功，文件路径:"+writeRes.data.filePath,
+        type: "success",
+    })
 }
 //#endregion
 </script>

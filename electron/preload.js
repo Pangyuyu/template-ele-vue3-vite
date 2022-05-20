@@ -40,5 +40,6 @@ contextBridge.exposeInMainWorld('EleApi', {
         }
         return ipcRenderer.invoke(topic, args)
     },
-    fileChooseRead:()=>ipcRenderer.invoke('file-manager-choose-read')
+    fileChooseRead:()=>ipcRenderer.invoke('file-manager-choose-read'),
+    fileChooseSave:(args)=>ipcRenderer.invoke('file-manager-choose-save',args)
 })
