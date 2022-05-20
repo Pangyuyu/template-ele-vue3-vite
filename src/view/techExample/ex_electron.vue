@@ -43,7 +43,7 @@
             <div class="panel-content">
                 <el-button class="ex-btn" type="primary" @click="onClickGetSystemInfo()">获取系统信息</el-button>
             </div>
-            <el-table :data="sysWinAttrList" border style="width:100%;height:420px">
+            <el-table :data="sysWinAttrList" border height="720" style="width:100%;flex-grow: 1;">
                 <el-table-column prop="name" label="名称" width="220" />
                 <el-table-column prop="desc" label="描述" width="220" />
                 <el-table-column prop="value" label="值" />
@@ -224,48 +224,18 @@ onMounted(() => {
 //#region 系统信息
 const sysWinAttrList = ref(new Array())
 function initSysWinAttrs() {
-    sysWinAttrList.value = [
-        {
-            name: 'process.versions.chrome',
-            desc: 'Chrome 版本号',
-            value: ''
-        },
-        {
-            name: 'process.versions.electron',
-            desc: 'Electron 版本号',
-            value: ''
-        },
-        {
-            name: 'process.platform',
-            desc: '操作系统(Electron)',
-            value: ''
-        },
-        {
-            name: 'process.arch',
-            desc: '操作系统位数(Electron)',
-            value: ''
-        },
-        {
-            name: 'process.getSystemVersion()',
-            desc: '操作系统的版本',
-            value: ''
-        },
-        {
-            name: 'process.resourcesPath',
-            desc: 'resources 目录的路径',
-            value: ''
-        },
-    ]
+    sysWinAttrList.value = []
     onClickGetSystemInfo()
 }
 async function onClickGetSystemInfo() {
     const atrrValues = await window.EleApi.querySystemInfo()
-    sysWinAttrList.value.forEach(item => {
-        const attrItem = atrrValues.find(attr => { return attr.name == item.name })
-        if (attrItem) {
-            item.value = attrItem.value
-        }
-    })
+    sysWinAttrList.value=atrrValues
+    // sysWinAttrList.value.forEach(item => {
+    //     const attrItem = atrrValues.find(attr => { return attr.name == item.name })
+    //     if (attrItem) {
+    //         item.value = attrItem.value
+    //     }
+    // })
 }
 //#endregion
 
