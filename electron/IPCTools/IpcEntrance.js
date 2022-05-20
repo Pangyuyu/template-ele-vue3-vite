@@ -17,8 +17,7 @@ const toolApiPathExample = new ToolApiPathExample()
 const toolDialogExample = new ToolDialogExample()
 module.exports.IpcEntrance = function () {
     this.mainWin = null;
-    this.register = function (mainWin) {
-        this.mainWin = mainWin
+    this.removeAll=function(){
         //清理可能存在的事件，因为托盘可能会二次打开窗体
         ipcMain.removeAllListeners()
         ipcMain.removeHandler('ipc-example-file-choose')
@@ -29,7 +28,11 @@ module.exports.IpcEntrance = function () {
         ipcMain.removeHandler("show-open-dialog-sync")
         ipcMain.removeHandler("show-save-dialog-sync")
         ipcMain.removeHandler("show-message-box-sync")
-
+        ipcMain.removeHandler("show-error-box")
+    },
+    this.register = function (mainWin) {
+        this.mainWin = mainWin
+        this.removeAll()
         toolOpenChildWin.registerOn(ipcMain, this.mainWin)
         toolIpcExample.registerOn(ipcMain, this.mainWin)
         toolSerialPort.registerOn(ipcMain, this.mainWin)
