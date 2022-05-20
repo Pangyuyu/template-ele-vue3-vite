@@ -26,5 +26,18 @@ contextBridge.exposeInMainWorld('EleApi', {
             apiName: apiName,
             params: apiParams
         })
+    },
+    showDialog: (type, args) => {
+        let topic = ''
+        if (type == 'open') {
+            topic = 'show-open-dialog-sync'
+        } else if (type == 'save') {
+            topic = 'show-save-dialog-sync'
+        } else if (type == 'message') {
+            topic = 'show-message-box-sync'
+        } else if (type == 'error') {
+            topic = 'show-error-box'
+        }
+        return ipcRenderer.invoke(topic, args)
     }
 })

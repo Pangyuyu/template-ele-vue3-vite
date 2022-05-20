@@ -14,11 +14,11 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.出于 <a href="javascript:void(0);"
-                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>,务必启用上下文隔离；
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/tutorial/context-isolation#security-considerations')">安全原因</a>,务必启用上下文隔离;
                 </div>
-                <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问；</div>
-                <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时；</div>
-                <div class="item">4.主进程向渲染进程发送消息时U+002c需使用webContents.send方法</div>
+                <div class="item">2.不要在预加载脚本中暴露主进程的API, 确保尽可能限制渲染器对 Electron API 的访问;</div>
+                <div class="item">3.双向通信时,使用ipcRender.invoke;不要使用event.reply或者ipcRenderer.sendSync;这两种方法已过时;</div>
+                <div class="item">4.主进程向渲染进程发送消息时;需使用webContents.send方法</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_darkmode">
@@ -76,8 +76,8 @@
                 </el-table>
             </div>
             <div class="panel-warn">
-                <div class="item">1.从窗体拖动文件暂时只支持开发模式；</div>
-                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容U+002c务必在主线程中处理；</div>
+                <div class="item">1.从窗体拖动文件暂时只支持开发模式;</div>
+                <div class="item">2.h5元素可以通过drop来相应拖动文件;但是读取文件的内容U+002c务必在主线程中处理;</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_notify">
@@ -113,9 +113,9 @@
                 <el-button type="info" @click="onClickProgressUnkown()" style="width:200px">设置进度条为不确定</el-button>
             </div>
             <div class="panel-warn">
-                <div class="item">1.进度条的值在0~1之间；</div>
-                <div class="item">2.值为“-1”是取消进度条；</div>
-                <div class="item">3.值大于“1”显示一个不确定的状态；</div>
+                <div class="item">1.进度条的值在0~1之间;</div>
+                <div class="item">2.值为“-1”是取消进度条;</div>
+                <div class="item">3.值大于“1”显示一个不确定的状态;</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_serialport">
@@ -158,13 +158,43 @@
             <div class="panel-warn">
                 <div class="item">1.调用第三方DLL需使用ffi-napi;</div>
                 <div class="item">2.electron高版本需主线程使用ffi-napi;</div>
-                <div class="item">3.若DLL是32位，会报错“win32 error 193 ”，需要使用 32位的electron;</div>
+                <div class="item">3.若DLL是32位,会报错“win32 error 193”,需要使用 32位的electron;</div>
                 <div class="item">4.32位的electron需要在.npmrc或者.yarnrc中对arch配置为 ia32;</div>
-                <div class="item">5.指针类型使用：pointer 声明</div>
-                <div class="item">6.当前只适用于windows系统且Electron是32位；</div>
+                <div class="item">5.指针类型使用:pointer 声明</div>
+                <div class="item">6.当前只适用于windows系统且Electron是32位;</div>
             </div>
         </el-tab-pane>
+        <el-tab-pane name="ex_dialog">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span :class="getPanelLabelClass('ex_dialog')">对话框</span>
+                </span>
+            </template>
+            <div class="panel-content">
+                <el-button type="primary" @click="onClickShowOpenSync('dir')" style="width:200px">选择目录</el-button>
+                <el-button type="primary" @click="onClickShowOpenSync('file')" style="width:200px">选择文件</el-button>
+                <el-button type="primary" @click="onClickShowSaveSync()" style="width:200px">保存文件</el-button>
 
+            </div>
+            <div class="panel-content">
+                <el-button type="info" @click="onClickShowMessageSync('none')" style="width:200px">消息框:none</el-button>
+                <el-button type="info" @click="onClickShowMessageSync('info')" style="width:200px">消息框:info</el-button>
+                <el-button type="info" @click="onClickShowMessageSync('error')" style="width:200px">消息框:error
+                </el-button>
+                <el-button type="info" @click="onClickShowMessageSync('question')" style="width:200px">消息框:question
+                </el-button>
+                <el-button type="info" @click="onClickShowMessageSync('warning')" style="width:200px">消息框:warning
+                </el-button>
+            </div>
+            <div class="panel-content">
+                <el-button type="danger" @click="onClickShowError()" style="width:200px">警告框</el-button>
+            </div>
+            <div class="panel-warn">
+                <div class="item">1.详情查看:<a href="javascript:void(0)"
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/api/dialog')">dialog</a></div>
+                <div class="item">2.对话框不同系统不一样，实际使用时，务必详细阅读官方API文档；</div>
+            </div>
+        </el-tab-pane>
         <el-tab-pane name="ex_more">
             <template #label>
                 <span class="custom-tabs-label">
@@ -230,10 +260,10 @@ function initSysWinAttrs() {
 }
 async function onClickGetSystemInfo() {
     const atrrValues = await window.EleApi.querySystemInfo()
-    sysWinAttrList.value.forEach(item=>{
-        const attrItem=atrrValues.find(attr=>{return attr.name==item.name})
-        if(attrItem){
-            item.value=attrItem.value
+    sysWinAttrList.value.forEach(item => {
+        const attrItem = atrrValues.find(attr => { return attr.name == item.name })
+        if (attrItem) {
+            item.value = attrItem.value
         }
     })
 }
@@ -512,8 +542,82 @@ async function onClickDllMethods(methodName: string) {
 //#endregion
 
 //#region 窗体(BrowerWindow)操作
-function onClickCtrlBgColor(){
+function onClickCtrlBgColor() {
     window.EleApi.windowChangeBgColor()
+}
+//#endregion
+
+//#region 对话框
+async function onClickShowOpenSync(type) {
+    let title = ""
+    let properties = ["multiSelections", "showHiddenFiles"]
+    if (type == 'dir') {
+        title = "请选择目录"
+        properties.push('openDirectory')
+    } else if (type == 'file') {
+        title = "请选择文件"
+        properties.push('openFile')
+    }
+    const res = await window.EleApi.showDialog('open', {
+        title: title,
+        defaultPath: '.',//
+        buttonLabel: '确定',
+        filters: [],
+        properties,
+    })
+    let message;
+    let msgType;
+    if (res) {
+        message = `已选择${res.length}个文件`
+        msgType = 'success'
+    } else {
+        message = '用户取消选择'
+        msgType = 'warning'
+    }
+    ElMessage({
+        message: message,
+        type: msgType,
+    })
+}
+async function onClickShowSaveSync() {
+    const res = await window.EleApi.showDialog('save', {
+        title: "设置文件名称",
+        defaultPath: '.',//
+        buttonLabel: '确定',
+        filters: [],
+        properties: ["showOverwriteConfirmation", "dontAddToRecent "],
+    })
+    ElMessage({
+        message: res ? res : '[用户已取消]',
+        type: res ? 'success' : 'warning',
+    })
+}
+async function onClickShowMessageSync(type: string) {
+    const buttons = ["取消", "终止", "确定"]
+    const res = await window.EleApi.showDialog('message', {
+        type: type,
+        title: "提醒框示例",
+        buttons: ["取消", "终止", "确定"],
+        defaultId: 2,
+        cancelId: 0,
+        detail: '这仅仅是一个示例，请忽略...',
+        defaultPath: '~',
+        filters: [],
+        noLink:true,
+        properties: ["showOverwriteConfirmation", "dontAddToRecent"],
+    })
+    if (res) {
+        ElMessage({
+            message: `单击了${buttons[res]}`,
+            type: res ? 'success' : 'warning',
+        })
+    }
+}
+async function onClickShowError(){
+    await window.EleApi.showDialog('error',{
+        title:'警告',
+        content:"读取文件错误，请重试!"
+    });
 }
 //#endregion
 
