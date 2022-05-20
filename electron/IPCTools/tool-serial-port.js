@@ -63,4 +63,7 @@ module.exports.ToolSerialPort = function () {
             }
         })
     }
+    this.unRegister = function () {
+        
+    }
 }

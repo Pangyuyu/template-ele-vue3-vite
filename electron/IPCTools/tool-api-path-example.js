@@ -28,4 +28,7 @@ module.exports.ToolApiPathExample = function () {
             }
         })
     }
+    this.unRegister = function (ipcMain) {
+        ipcMain.removeHandler('tool-api-path')
+    }
 }

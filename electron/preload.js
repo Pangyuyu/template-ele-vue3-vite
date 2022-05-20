@@ -39,5 +39,6 @@ contextBridge.exposeInMainWorld('EleApi', {
             topic = 'show-error-box'
         }
         return ipcRenderer.invoke(topic, args)
-    }
+    },
+    fileChooseRead:()=>ipcRenderer.send('file-manager-choose-read')
 })

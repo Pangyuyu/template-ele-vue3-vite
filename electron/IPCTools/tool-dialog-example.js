@@ -25,4 +25,10 @@ module.exports.ToolDialogExample = function () {
             return dialog.showErrorBox(args.title,args.content)
         })
     }
+    this.unRegister = function (ipcMain) {
+        ipcMain.removeHandler('show-open-dialog-sync')
+        ipcMain.removeHandler('show-save-dialog-sync')
+        ipcMain.removeHandler('show-message-box-sync')
+        ipcMain.removeHandler('show-error-box')
+    }
 }

@@ -86,4 +86,9 @@ module.exports.ToolIpcExample = function () {
         ipcMain.on('ipc-example-progress-cancel', (event, filePath) => { handelProgressCancel(mainWin) })
         ipcMain.on('ipc-example-progress-unkown', (event, filePath) => { handelProgressUnkown(mainWin) })
     }
+    this.unRegister = function (ipcMain) {
+        ipcMain.removeHandler('ipc-example-file-choose')
+        ipcMain.removeHandler('ipc-example-theme-change')
+        ipcMain.removeHandler('ipc-example-on-drag-start')
+    }
 }

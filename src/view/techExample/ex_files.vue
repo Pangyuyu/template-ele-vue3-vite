@@ -45,7 +45,7 @@
 
 
                 <div class="ctrl">
-                    <el-button type="primary" @click="onClickChooseFile()">选择文件</el-button>
+                    <el-button type="primary" @click="onClickChooseFile()">选择&读取</el-button>
                     <el-button type="success" @click="onClickSaveFile()">保存文件</el-button>
                 </div>
             </div>
