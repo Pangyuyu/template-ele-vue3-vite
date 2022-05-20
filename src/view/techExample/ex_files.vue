@@ -39,8 +39,8 @@
             <!--选择目录（文件）、创建文件、读文件、写文件、保存文件 -->
             <div class="file-basic">
                 <div class="content">
-                    <div class="attr">[此处显示文件属性]</div>
-                    <el-input class="input" v-model="text_edit" :rows="12" type="textarea" placeholder="请输入您想要的信息" />
+                    <div class="attr">{{ attr }}</div>
+                    <el-input class="input" v-model="text_edit" :rows="22" type="textarea" placeholder="请输入您想要的信息" />
                 </div>
 
 
@@ -94,8 +94,11 @@ async function onClickTryOnce(methodItem) {
 
 //#region 文件操作
 const text_edit = ref("")
-function onClickChooseFile() {
-
+const attr = ref("")
+async function onClickChooseFile() {
+    const readRes = await window.EleApi.fileChooseRead()
+    text_edit.value = readRes.data.fileContent
+    attr.value = readRes.data.filePath + "\n" + JSON.stringify(readRes.data.fileStat, null, 4)
 }
 function onClickSaveFile() {
 
@@ -108,23 +111,28 @@ function onClickSaveFile() {
     display: flex;
     flex-direction: column;
     font-size: 16px;
+
     .content {
         display: flex;
         flex-direction: row;
+        height: 420px;
 
         .input {
             padding: 5px;
             flex-grow: 1;
             width: 0;
         }
-        .attr{
-            max-width: 220px;
-            min-width: 220px;
+
+        .attr {
+            max-width: 320px;
+            min-width: 320px;
             border-right: 1px solid #b8d1f7;
             background-color: black;
             color: white;
             font-size: 12px;
             padding: 5px;
+            white-space: pre-wrap;
+            margin-top: 10px;
         }
     }
 
