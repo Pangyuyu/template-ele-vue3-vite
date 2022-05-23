@@ -45,6 +45,7 @@ module.exports.AppStart = function () {
             height: 720,
             minWidth: 1280,
             minHeight: 720,
+            maximize:false,
             webPreferences: {
                 // Use pluginOptions.nodeIntegration, leave this alone
                 // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
