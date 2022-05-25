@@ -74,6 +74,15 @@ module.exports.ToolFileManager = function () {
                 }
             }
         })
+        //TODO 以buffer的方式写入文件
+        ipcMain.handle('file-manager-buffer-read',async(event,args)=>{
+
+        })
+        //TODO 以buffer的方式读取文件
+        ipcMain.handle('file-manager-buffer-save',async(event,args)=>{
+
+        })
+
     }
 
     this.unRegister = function (ipcMain) {
