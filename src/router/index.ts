@@ -1,6 +1,7 @@
 import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import home from "./modules/home";
 import techExample from "./modules/techExample";
+import childWin from "./modules/ex_win_child"
 // import Logger from '@/common/logger/logger';
 const routes: Array<RouteRecordRaw> = [
   // **********登录**********
@@ -16,6 +17,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   home,
   techExample,
+  childWin,
   // **********404**********
   {
     path: "/:catchAll(.*)",

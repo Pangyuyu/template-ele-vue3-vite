@@ -57,6 +57,7 @@
             </template>
             <div class="panel-content">
                 <el-button class="ex-btn" type="primary" @click="onClickCtrlBgColor()">设置窗体背景颜色</el-button>
+                <el-button class="ex-btn" type="primary" @click="onClickLocalWinchild()">打开子窗体:本地网页</el-button>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_drag_drop">
@@ -515,6 +516,9 @@ async function onClickDllMethods(methodName: string) {
 function onClickCtrlBgColor() {
     window.EleApi.windowChangeBgColor()
 }
+function onClickLocalWinchild(){
+    window.EleApi.windowOpenLocalWeb()
+}
 //#endregion
 
 //#region 对话框
@@ -590,6 +594,8 @@ async function onClickShowError(){
     });
 }
 //#endregion
+
+
 
 //#region 更多
 const moreOptions = ref([
