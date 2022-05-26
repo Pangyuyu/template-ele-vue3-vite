@@ -61,6 +61,8 @@ module.exports.ToolWindowExample = function () {
                 autoHideMenuBar:true,//自动隐藏菜单栏，除非按了Alt键。 默认值为 false.
                 frame:false,//无边框窗口
                 transparent:true,//使窗口 透明。 默认值为 false. 在Windows上，仅在无边框窗口下起作用。
+                backgroundColor:"#00000000",//
+                // opacity:0,
                 webPreferences:{
                     webSecurity: false,
                     contextIsolation: true,//启用上下文隔离

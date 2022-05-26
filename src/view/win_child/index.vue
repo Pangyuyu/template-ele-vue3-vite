@@ -1,11 +1,9 @@
 <template>
-    <div class="win-outer">
-        <el-button class="btnClose" type="danger" :icon="CircleClose" circle @click="onClickCloseWinChild()"></el-button>
-        <div class="content">
-            <!-- <el-button type="primary">打开子窗体：嵌套本地网页</el-button> -->
-            <div class="warning">1.这个是独立的一个vue页面显示在子窗体中;</div>
-            <div class="warning">2.无边框窗体；</div>
-        </div>
+    <div class="content">
+        <el-button class="btnClose" type="danger" :icon="CircleClose" circle @click="onClickCloseWinChild()">
+        </el-button>
+        <div class="warning">1.这个是独立的一个vue页面显示在子窗体中;</div>
+        <div class="warning">2.无边框窗体；</div>
     </div>
 
 </template>
@@ -27,14 +25,8 @@ function onClickCloseWinChild() {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: transparent;
-    .btnClose{
-        position:absolute;
-        top: 30px;
-        right: 30px;
-        width: 60px;
-        height: 60px;
-    }
+    background-color: rgba(0, 0, 0, 0);
+
 }
 
 .content {
@@ -42,6 +34,7 @@ function onClickCloseWinChild() {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    background-color: rgba(0, 0, 0, 0);
     background-image: linear-gradient(to bottom right, rgba(35, 39, 44, 0.8), rgba(68, 59, 47, 0.3));
     height: 720px;
     width: 720px;
@@ -52,6 +45,14 @@ function onClickCloseWinChild() {
         line-height: 55px;
         color: white;
     }
-    
+
+    .btnClose {
+        position: absolute;
+        top: 30px;
+        right: 30px;
+        width: 60px;
+        height: 60px;
+    }
+
 }
 </style>
