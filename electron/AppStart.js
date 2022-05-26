@@ -18,7 +18,7 @@ module.exports.AppStart = function () {
      * 开发模式下安装Chrome调试工具
      */
     this.installDevtools = async function () {
-        if (process.env.NODE_ENV != "production" && !process.env.IS_TEST) {
+        if (process.env.NODE_ENV == "development") {
             // Install Vue Devtools
             try {
                 // 新增的：安装vue-devtools
@@ -71,7 +71,7 @@ module.exports.AppStart = function () {
      * @param {BrowserWindow} win 窗体
      */
     this.initWinLoad = async function (win) {
-        const isDev = process.env.IS_DEV == "true" ? true : false;
+        const isDev = process.env.NODE_ENV == "development" ? true : false;
         if (isDev) {
             this.installDevtools()
             const localUrl = "http://localhost:3000"

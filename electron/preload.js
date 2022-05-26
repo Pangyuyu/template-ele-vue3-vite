@@ -21,6 +21,7 @@ contextBridge.exposeInMainWorld('EleApi', {
     dllMethod: (args) => ipcRenderer.invoke('dll-method', args),
     querySystemInfo: () => ipcRenderer.invoke("tool-system-info"),
     windowChangeBgColor: () => { ipcRenderer.send('window:change-bgcolor') },
+    windowOpenLocalWeb:()=>{ipcRenderer.send('window:open-local-web')},
     runApiPath: (apiName, apiParams) => {
         return ipcRenderer.invoke("tool-api-path", {
             apiName: apiName,
