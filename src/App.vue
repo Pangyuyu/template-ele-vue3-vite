@@ -1,7 +1,7 @@
 <template>
   <el-config-provider :locale="locale">
     <router-view></router-view>
-    <div class="versionstyle">{{ version }}</div>
+    <!-- <div class="versionstyle">{{ version }}</div> -->
   </el-config-provider>
 </template>
 

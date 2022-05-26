@@ -22,6 +22,7 @@ contextBridge.exposeInMainWorld('EleApi', {
     querySystemInfo: () => ipcRenderer.invoke("tool-system-info"),
     windowChangeBgColor: () => { ipcRenderer.send('window:change-bgcolor') },
     windowOpenLocalWeb:()=>{ipcRenderer.send('window:open-local-web')},
+    windowCloseLocalWeb:()=>{ipcRenderer.send('window:close-local-web')},
     runApiPath: (apiName, apiParams) => {
         return ipcRenderer.invoke("tool-api-path", {
             apiName: apiName,
