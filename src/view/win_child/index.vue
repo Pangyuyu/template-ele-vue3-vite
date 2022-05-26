@@ -27,6 +27,7 @@ function onClickCloseWinChild() {
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: transparent;
     .btnClose{
         position:absolute;
         top: 30px;
