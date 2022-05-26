@@ -21,21 +21,13 @@ function onClickCloseWinChild() {
 </script>
 
 <style lang="scss" scoped>
-.win-outer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(0, 0, 0, 0);
-
-}
-
 .content {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: rgba(0, 0, 0, 0);
-    background-image: linear-gradient(to bottom right, rgba(35, 39, 44, 0.8), rgba(68, 59, 47, 0.3));
+    background-image: linear-gradient(to bottom right, rgba(35, 39, 44, 0.8), rgba(97, 75, 238, 0.3));
     height: 720px;
     width: 720px;
     border-radius: 100px;
