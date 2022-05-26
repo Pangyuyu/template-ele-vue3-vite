@@ -55,7 +55,7 @@
                     <span :class="getPanelLabelClass('ex_window')">窗体操作</span>
                 </span>
             </template>
-            <div class="panel-content">
+            <div class="panel-content" style="height:300px;background-color:#000000">
                 <el-button class="ex-btn" type="primary" @click="onClickCtrlBgColor()">设置窗体背景颜色</el-button>
                 <el-button class="ex-btn" type="primary" @click="onClickLocalWinchild()">打开子窗体:本地网页</el-button>
             </div>
