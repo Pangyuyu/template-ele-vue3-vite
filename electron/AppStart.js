@@ -81,9 +81,11 @@ module.exports.AppStart = function () {
             win.show()
             if (!process.env.IS_TEST) win.webContents.openDevTools()
         } else {
-            win.loadURL(`file://${path.join(__dirname, '../dist/index.html')}`)
+            const filePath=`file://${path.join(__dirname, '../dist/index.html')}`
+            win.loadURL(filePath)
             win.maximize()
             win.show()
+            win.setTitle(filePath)
         }
         if (isDev) {
             win.webContents.openDevTools();

@@ -52,7 +52,7 @@
         <el-tab-pane name="ex_window">
             <template #label>
                 <span class="custom-tabs-label">
-                    <span :class="getPanelLabelClass('ex_window')">窗体操作111</span>
+                    <span :class="getPanelLabelClass('ex_window')">窗体操作</span>
                 </span>
             </template>
             <div class="panel-content">
