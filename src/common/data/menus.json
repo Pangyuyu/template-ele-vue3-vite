@@ -27,6 +27,12 @@
                 "index":"/techExample/ex_files",
                 "path":"/techExample/ex_files",
                 "icon":"files"
+            },
+            {
+                "title":"本地API",
+                "index":"/techExample/ex_local_api",
+                "path":"/techExample/ex_local_api",
+                "icon":"CoffeeCup"
             }
         ]
     }

@@ -5,6 +5,7 @@ import Router from "@/router";
 import { createPinia } from 'pinia'
 import "@/common/beforeRouter";
 import ApiPub from '@/common/net/public/ApiPub';
+import ApiLocal from "@/common/net/public/ApiLocal";
 import "@/styles/main.scss"; //重置样式
 import 'default-passive-events'
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
@@ -25,4 +26,5 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 // 挂载API
 app.config.globalProperties.$APIPUB = ApiPub;
+app.config.globalProperties.$APILOCAL=ApiLocal;
 app.mount("#app");
