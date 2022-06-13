@@ -34,4 +34,11 @@ export default class ApiLocal {
             })
             .withEndpoint(LOCAL_BASEURL)
     }
+    static customerDelete(id:string){
+        return ApiBase.DELETE("/customers/delete")
+            .withQuery({
+                id: id,
+            })
+            .withEndpoint(LOCAL_BASEURL)
+    }
 }

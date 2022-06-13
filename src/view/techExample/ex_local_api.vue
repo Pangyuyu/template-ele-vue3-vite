@@ -26,6 +26,7 @@
 <script lang="ts" setup>
 import { ref, getCurrentInstance, ComponentInternalInstance } from "vue";
 import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'
+import ModalTool from "@/common/ui/ModalTool";
 const dialogCustomerEditRef = ref<any>();
 
 const customerList = ref(new Array())
@@ -42,7 +43,7 @@ async function onClickGetList() {
     const queryRes = await queryApi.exec()
     console.log("数据结果", queryRes)
     if (queryRes.isFail) {
-        console.warn("接口访问失败", queryRes)
+        ModalTool.ShowDialog("提醒", queryRes.message)
         return
     }
     customerList.value = queryRes.body.data
@@ -54,7 +55,19 @@ function onClickEdit(customerItem: any) {
     dialogCustomerEditRef.value?.open(customerItem)
 }
 function onClickDelete(customerItem: any) {
-
+    ModalTool.ShowAsk("提醒", "您确定要删除这条记录吗?", () => {
+        runDelete(customerItem.id)
+    })
+}
+async function runDelete(id: string) {
+    const delRes = await proxy?.$APILOCAL.customerDelete(id).exec()
+    console.log("delRes",delRes)
+    if (delRes.isFail) {
+        ModalTool.ShowDialog("提醒", delRes.message)
+        return
+    }
+    ModalTool.ShowToast("操作成功")
+    onClickGetList()
 }
 </script>
 
