@@ -14,7 +14,7 @@ export default class ApiLocal {
             .withEndpoint(LOCAL_BASEURL)
     }
     static customerAdd(name: string, address: string, phone: string) {
-        return ApiBase.GET("/customers/add")
+        return ApiBase.POST("/customers/add")
             .withBody({
                 name: name,
                 address: address,

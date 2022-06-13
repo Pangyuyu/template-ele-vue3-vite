@@ -1,7 +1,7 @@
 <template>
     <el-dialog v-model="vis" :title="title" width="560px">
-        <el-form ref="formAreaEdit" label-width="120px" :model="formData" :rules="formRules">
-            <el-form-item label="区" prop="name">
+        <el-form ref="formEdit" label-width="120px" :model="formData" :rules="formRules">
+            <el-form-item label="客户姓名" prop="name">
                 <div class="formItem">
                     <el-input v-model="formData.name" placeholder="请输入客户姓名" class="input"></el-input>
                 </div>
@@ -26,10 +26,14 @@
 </template>
 
 <script lang="ts" setup>
-import { ref} from "vue";
+import { getCurrentInstance, ref, ComponentInternalInstance } from "vue";
+import ModalTool from "@/common/ui/ModalTool";
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
 const vis = ref(false)
 const title = ref("修改/添加客户")
 const isAdd = ref(true)
+const formEdit = ref()
 const formData = ref({
     id: '',
     name: "",
@@ -69,7 +73,43 @@ function onClickCancel() {
     vis.value = false
 }
 function onClickConfirm() {
+    formEdit.value?.validate((valid: boolean) => {
+        if (valid) {
+            if (isAdd.value) {
+                onCustomerAdd()
+            } else {
+                onCustomerUpdate()
+            }
+        } else {
+            return false;
+        }
+    });
+}
+async function onCustomerAdd() {
+    const addRes = await proxy?.$APILOCAL.customerAdd(
+        formData.value.name,
+        formData.value.address,
+        formData.value.phone).exec()
+    if (addRes.isFail) {
+        ModalTool.ShowDialog("提醒",addRes.message)
+        return
+    }
+    ModalTool.ShowToast("操作成功")
+    vis.value = false
 
+}
+async function onCustomerUpdate() {
+    const addRes = await proxy?.$APILOCAL.customerUpdate(
+        formData.value.id,
+        formData.value.name,
+        formData.value.address,
+        formData.value.phone).exec()
+    if (addRes.isFail) {
+        ModalTool.ShowDialog("提醒", addRes.isFail)
+        return
+    }
+    ModalTool.ShowToast("操作成功")
+    vis.value = false
 }
 defineExpose({
     open
