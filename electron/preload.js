@@ -45,5 +45,6 @@ contextBridge.exposeInMainWorld('EleApi', {
     fileChooseRead:()=>ipcRenderer.invoke('file-manager-choose-read'),
     fileChooseSave:(args)=>ipcRenderer.invoke('file-manager-choose-save',args),
     /*蓝牙相关*/
-    bleStartScanning:(args)=>ipcRenderer.invoke('ble-startscanning',args),
+    // bleStartScanning:(args)=>ipcRenderer.invoke('ble-startscanning',args),
+    bleOnScanning:(callback)=>ipcRenderer.on('ble-on-scanning', callback),
 })
