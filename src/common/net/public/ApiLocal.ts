@@ -7,14 +7,14 @@ export default class ApiLocal {
             .withEndpoint(LOCAL_BASEURL)
     }
     static customerQuery(name: string) {
-        return ApiBase.GET("/customers/query")
+        return ApiBase.GET("/customer/query")
             .withQuery({
                 name: name
             })
             .withEndpoint(LOCAL_BASEURL)
     }
     static customerAdd(name: string, address: string, phone: string) {
-        return ApiBase.POST("/customers/add")
+        return ApiBase.POST("/customer")
             .withBody({
                 name: name,
                 address: address,
@@ -23,7 +23,7 @@ export default class ApiLocal {
             .withEndpoint(LOCAL_BASEURL)
     }
     static customerUpdate(id: string, name: string, address: string, phone: string) {
-        return ApiBase.GET("/customers/query")
+        return ApiBase.PUT("/customer")
             .withQuery({
                 id: id,
             })
@@ -35,7 +35,7 @@ export default class ApiLocal {
             .withEndpoint(LOCAL_BASEURL)
     }
     static customerDelete(id:string){
-        return ApiBase.DELETE("/customers/delete")
+        return ApiBase.DELETE("/customer")
             .withQuery({
                 id: id,
             })

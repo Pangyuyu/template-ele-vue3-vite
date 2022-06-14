@@ -19,20 +19,24 @@
                 </template>
             </el-table-column>
         </el-table>
-        <dialog-customer-edit ref="dialogCustomerEditRef" />
+        <dialog-customer-edit ref="dialogCustomerEditRef" @onEditEnd="customerOnEditEnd" />
     </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, getCurrentInstance, ComponentInternalInstance } from "vue";
-import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'
+import { ref, getCurrentInstance, ComponentInternalInstance,onMounted } from "vue";
+import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'//客户信息编辑弹窗
 import ModalTool from "@/common/ui/ModalTool";
-const dialogCustomerEditRef = ref<any>();
+const dialogCustomerEditRef = ref<InstanceType<typeof DialogCustomerEdit>>();
 
 const customerList = ref(new Array())
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const query = ref("")
+
+onMounted(()=>{
+    onClickGetList()
+})
 async function onClickGetList() {
     let queryApi = null
     if (query.value == undefined || query.value == null || query.value.length == 0) {
@@ -49,10 +53,10 @@ async function onClickGetList() {
     customerList.value = queryRes.body.data
 }
 function onClickAdd() {
-    dialogCustomerEditRef.value?.open()
+    dialogCustomerEditRef.value.open({})
 }
 function onClickEdit(customerItem: any) {
-    dialogCustomerEditRef.value?.open(customerItem)
+    dialogCustomerEditRef.value.open(customerItem)
 }
 function onClickDelete(customerItem: any) {
     ModalTool.ShowAsk("提醒", "您确定要删除这条记录吗?", () => {
@@ -61,12 +65,15 @@ function onClickDelete(customerItem: any) {
 }
 async function runDelete(id: string) {
     const delRes = await proxy?.$APILOCAL.customerDelete(id).exec()
-    console.log("delRes",delRes)
     if (delRes.isFail) {
         ModalTool.ShowDialog("提醒", delRes.message)
         return
     }
-    ModalTool.ShowToast("操作成功")
+    ModalTool.ShowToast("操作成功","success")
+    onClickGetList()
+}
+function customerOnEditEnd(event) {
+    console.log("customerOnEditEnd", event)
     onClickGetList()
 }
 </script>

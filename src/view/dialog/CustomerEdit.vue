@@ -26,10 +26,10 @@
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, ref, ComponentInternalInstance } from "vue";
+import { getCurrentInstance, ref, ComponentInternalInstance,defineEmits } from "vue";
 import ModalTool from "@/common/ui/ModalTool";
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
+const emit = defineEmits(['onEditEnd'])
 const vis = ref(false)
 const title = ref("修改/添加客户")
 const isAdd = ref(true)
@@ -49,6 +49,9 @@ const formRules = ref<any>({
         }
     ]
 })
+/**
+ * 打开弹窗
+ */
 function open(args: any) {
     isAdd.value = args == undefined || args == null || args.id == undefined || args.id == null || args.id.length == 0
     if (isAdd.value) {
@@ -86,29 +89,43 @@ function onClickConfirm() {
     });
 }
 async function onCustomerAdd() {
+    ModalTool.ShowLoading("保存中...")
     const addRes = await proxy?.$APILOCAL.customerAdd(
         formData.value.name,
         formData.value.address,
         formData.value.phone).exec()
+    ModalTool.HideLoading()
     if (addRes.isFail) {
         ModalTool.ShowDialog("提醒",addRes.message)
         return
     }
-    ModalTool.ShowToast("操作成功")
+    emit('onEditEnd',{
+        isAdd:isAdd.value,
+        data:addRes.body.data
+    })
+    ModalTool.ShowToast("操作成功","success")
     vis.value = false
 
 }
 async function onCustomerUpdate() {
-    const addRes = await proxy?.$APILOCAL.customerUpdate(
+    ModalTool.ShowLoading("保存中...")
+    const upadteRes = await proxy?.$APILOCAL.customerUpdate(
         formData.value.id,
         formData.value.name,
         formData.value.address,
         formData.value.phone).exec()
-    if (addRes.isFail) {
-        ModalTool.ShowDialog("提醒", addRes.isFail)
+    ModalTool.HideLoading()
+    if (upadteRes.isFail) {
+        ModalTool.ShowDialog("提醒", upadteRes.isFail)
         return
     }
-    ModalTool.ShowToast("操作成功")
+    emit('onEditEnd',{
+        isAdd:isAdd.value,
+        data:{
+            ...formData.value
+        }
+    })
+    ModalTool.ShowToast("操作成功","success")
     vis.value = false
 }
 defineExpose({
