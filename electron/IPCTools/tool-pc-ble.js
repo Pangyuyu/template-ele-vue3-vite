@@ -1,13 +1,18 @@
+const { createBluetooth } = require('node-ble')
+
 /*PC端本地蓝牙*/
 function timeSleep(timemilsecond) {
     return new Promise((resolve, __) => {
-        setTimeout(() => {
-            resolve({
-                code: 0,
-                message: 'test',
-                data: []
-            })
-        }, timemilsecond)
+        // setTimeout(() => {
+        //     resolve({
+        //         code: 0,
+        //         message: 'test',
+        //         data: []
+        //     })
+        // }, timemilsecond)
+        // const { bluetooth, destroy } = createBluetooth()
+        // const adapter = await bluetooth.defaultAdapter()
+        
     })
 }
 module.exports.ToolPcBle = function () {

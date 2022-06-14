@@ -36,7 +36,7 @@
     "productName": "孤星Electron示例",
     "artifactName": "${productName}_${version}_${os}_${arch}.${ext}",
     "copyright": "Copyright © 2022 ${author}",
-    "afterPack":"./afterPackHook.js",
+    "afterPack": "./afterPackHook.js",
     "win": {
       "target": [
         "nsis"
@@ -82,6 +82,7 @@
     "default-passive-events": "^2.0.0",
     "element-plus": "2.2.5",
     "ffi-napi": "^4.0.3",
+    "node-ble": "^1.7.0",
     "querystring": "^0.2.1",
     "spark-md5": "^3.0.2",
     "url": "^0.11.0",
