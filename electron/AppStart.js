@@ -27,7 +27,7 @@ module.exports.AppStart = function () {
                 } = require("electron");
                 const path = require("path");
                 const extPath = path.resolve(__dirname, "../shell-chrome")
-                log.d("vue-devtools地址", extPath)
+                // log.d("vue-devtools地址", extPath)
                 session.defaultSession.loadExtension(extPath);
             } catch (e) {
                 log.e("Vue Devtools failed to install:", e.toString())
@@ -39,7 +39,7 @@ module.exports.AppStart = function () {
      */
     this.initWindow = function () {
         const preLoadPath = path.join(__dirname, 'preload.js')
-        log.d("预加载文件地址", preLoadPath)
+        // log.d("预加载文件地址", preLoadPath)
         return new BrowserWindow({
             width: 1280,
             height: 720,

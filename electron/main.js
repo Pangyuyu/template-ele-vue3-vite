@@ -106,7 +106,7 @@ function createTray() {
   }
   //TODO Linux下打包图标显示不出来
   const iconPath = path.join(process.cwd(), "resources", 'images', 'logo.png')
-  console.debug("iconPath", iconPath)
+  // console.debug("iconPath", iconPath)
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([
