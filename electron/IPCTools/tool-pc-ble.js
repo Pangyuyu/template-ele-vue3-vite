@@ -1,8 +1,13 @@
 const { createBluetooth } = require('node-ble')
-
+/*windows测试结果
+1.noble
+    报错Error: No compatible USB Bluetooth 4.0 device found!，
+2.node-ble
+    不兼容windows
+*/
 /*PC端本地蓝牙*/
 function timeSleep(timemilsecond) {
-    return new Promise((resolve, __) => {
+    return new Promise(async (resolve, __) => {
         // setTimeout(() => {
         //     resolve({
         //         code: 0,
@@ -10,9 +15,15 @@ function timeSleep(timemilsecond) {
         //         data: []
         //     })
         // }, timemilsecond)
-        // const { bluetooth, destroy } = createBluetooth()
-        // const adapter = await bluetooth.defaultAdapter()
-        
+        const { bluetooth, destroy } = createBluetooth()
+        const adapter = await bluetooth.defaultAdapter()
+        console.log(adapter)
+        resolve({
+            code: 0,
+            message: 'test',
+            data: adapter.devices
+        })
+
     })
 }
 module.exports.ToolPcBle = function () {
