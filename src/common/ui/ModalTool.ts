@@ -1,9 +1,9 @@
-import * as event from "./event";
+import * as event from "./Event";
 import { ElMessage, ElLoading, ElMessageBox } from "element-plus";
 import Logger from "@/common/logger/logger";
 import utils from "../utils/utils";
 const log = new Logger("Modal");
-let __intervalID_Loading: number = -1;
+let __intervalID_Loading: any = -1;
 /**
  * 模态框、吐丝等
  */
