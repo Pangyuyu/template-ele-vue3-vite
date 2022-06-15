@@ -12,6 +12,7 @@ const log = new Log()
     参考资料：
     1.通过 JavaScript 与蓝牙设备通信:https://web.dev/bluetooth/;
     2.Web Bluetooth API:https://www.electronjs.org/zh/docs/latest/tutorial/devices
+    3.Web Bluetooth Samples:https://googlechrome.github.io/samples/web-bluetooth/
 */
 /*PC端本地蓝牙*/
 function startScaning(win) {

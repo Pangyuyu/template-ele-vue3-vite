@@ -42,9 +42,9 @@ if (!shouldQuit) {
     appStart.winRestoreFocus(mainWin)
   })
   //只有ready之后才可以初始化窗体
+  app.commandLine.appendSwitch('enable-experimental-web-platform-features')
   app.whenReady().then(() => {
-    createWindow()
-    app.commandLine.appendSwitch('enable-experimental-web-platform-features')
+    createWindow()   
     /*activate: macOS 当应用被激活时发出。*/
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) {
