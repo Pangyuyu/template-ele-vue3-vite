@@ -4,10 +4,14 @@
             <el-button type="primary" @click="onClickBleScaning">搜索蓝牙</el-button>
         </div>
         <el-table :data="deviceList" border height="720" style="width:100%;">
+            <el-table-column type="index" width="100" />
+            <el-table-column prop="deviceName" label="deviceName" width="320" sortable />
             <el-table-column prop="deviceId" label="deviceId" width="220" />
-            <el-table-column prop="deviceName" label="deviceName" width="320" />
             <el-table-column label="操作">
                 <template #default="scoped">
+                    <div class="device-ctrl">
+                        <el-button type="primary" @click="onClickBleTest(scoped.row)">测试</el-button>
+                    </div>
                 </template>
             </el-table-column>
         </el-table>
@@ -23,27 +27,32 @@ onMounted(() => {
     watchBleScaning()
 })
 function watchBleScaning() {
-    window.EleApi.bleOnScanning((_event, res) => {
-        console.log("设备列表", res)
-        const findItems=res.data
-        findItems.forEach(item => {
-            const findItem = deviceList.value.find(dev => {
-                return dev.deviceId === item.deviceId
+    window.EleApi.bleOnScanning((_event: any, res: any) => {
+        const findItems = res.data
+        let noList = []
+        for (let i = 0; i < findItems.length; i++) {
+            const findItem = findItems[i]
+            const theItem = deviceList.value.find(dev => {
+                return dev.deviceId === findItem.deviceId
             })
-            if (findItem) {
-                findItem.deviceName = item.deviceName
+            if (theItem) {
+                theItem.deviceName = findItem.deviceName
             } else {
-                deviceList.value.push({
-                    ...item
+                noList.push({
+                    ...findItem
                 })
             }
-        });
+        }
+        if (noList.length > 0) {
+            deviceList.value.push(...noList)
+        }
     })
 }
 async function onClickBleScaning() {
-    ModalTool.ShowLoading("...")
+    ModalTool.ShowLoading("搜索中")
     navigator.bluetooth.requestDevice({
-        acceptAllDevices: true
+        acceptAllDevices: true,
+        // optionalServices: ['battery_service']
     }).then(function (device) {
         ModalTool.HideLoading()
         console.log('名称: ' + device);
@@ -51,6 +60,21 @@ async function onClickBleScaning() {
         console.log(error);
         ModalTool.HideLoading()
     });
+}
+async function onClickBleTest(deviceItem) {
+    console.log("onClickBleTest", deviceItem)
+    ModalTool.ShowLoading("...")
+    await window.EleApi.bleSetSearchDeviceId({ deviceId: deviceItem.deviceId })
+    navigator.bluetooth.requestDevice({
+        acceptAllDevices: true,
+    }).then((res) => {
+        ModalTool.HideLoading()
+        console.log('搜索结果', res);
+    }).catch((err) => {
+        ModalTool.HideLoading()
+        console.log(err);        
+    });
+
 }
 </script>
 
@@ -67,5 +91,10 @@ async function onClickBleScaning() {
         flex-direction: row;
         align-items: center;
     }
+}
+
+.device-ctrl {
+    display: flex;
+    flex-direction: row;
 }
 </style>
