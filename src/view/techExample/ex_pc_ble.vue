@@ -16,7 +16,11 @@
                 </template>
             </el-table-column>
         </el-table>
-
+        <div class="panel-warn">
+            <div class="item">1.noble方案：需要替换驱动，放弃；</div>
+            <div class="item">2.node-ble方案：不兼容windows;</div>
+            <div class="item">3.navigator.bluetooth.requestDevice方案：功能受限；</div>
+        </div>
     </div>
 </template>
 
@@ -94,41 +98,41 @@ async function onClickBleTest(deviceItem) {
 }
 async function onClickScan() {
     try {
-    //卧槽：Only Android and macOS support the Scanning API.来自：https://github.com/WebBluetoothCG/web-bluetooth/issues/483
-    const scan = await navigator.bluetooth.requestLEScan({
-        acceptAllAdvertisements: true
-    });
+        //卧槽：Only Android and macOS support the Scanning API.来自：https://github.com/WebBluetoothCG/web-bluetooth/issues/483
+        const scan = await navigator.bluetooth.requestLEScan({
+            acceptAllAdvertisements: true
+        });
 
-    log('Scan started with:',scan);
-    log(' acceptAllAdvertisements: ' + scan.acceptAllAdvertisements);
-    log(' active: ' + scan.active);
-    log(' keepRepeatedDevices: ' + scan.keepRepeatedDevices);
-    log(' filters: ' + JSON.stringify(scan.filters));
+        log('Scan started with:', scan);
+        log(' acceptAllAdvertisements: ' + scan.acceptAllAdvertisements);
+        log(' active: ' + scan.active);
+        log(' keepRepeatedDevices: ' + scan.keepRepeatedDevices);
+        log(' filters: ' + JSON.stringify(scan.filters));
 
-    navigator.bluetooth.addEventListener('advertisementreceived', event => {
-      log('Advertisement received.');
-      log('  Device Name: ' + event.device.name);
-      log('  Device ID: ' + event.device.id);
-      log('  RSSI: ' + event.rssi);
-      log('  TX Power: ' + event.txPower);
-      log('  UUIDs: ' + event.uuids);
-      event.manufacturerData.forEach((valueDataView, key) => {
-        logDataView('Manufacturer', key, valueDataView);
-      });
-      event.serviceData.forEach((valueDataView, key) => {
-        logDataView('Service', key, valueDataView);
-      });
-    });
+        navigator.bluetooth.addEventListener('advertisementreceived', event => {
+            log('Advertisement received.');
+            log('  Device Name: ' + event.device.name);
+            log('  Device ID: ' + event.device.id);
+            log('  RSSI: ' + event.rssi);
+            log('  TX Power: ' + event.txPower);
+            log('  UUIDs: ' + event.uuids);
+            event.manufacturerData.forEach((valueDataView, key) => {
+                logDataView('Manufacturer', key, valueDataView);
+            });
+            event.serviceData.forEach((valueDataView, key) => {
+                logDataView('Service', key, valueDataView);
+            });
+        });
 
-    setTimeout(stopScan, 10000);
-    function stopScan() {
-      log('Stopping scan...');
-      scan.stop();
-      log('Stopped.  scan.active = ' + scan.active);
+        setTimeout(stopScan, 10000);
+        function stopScan() {
+            log('Stopping scan...');
+            scan.stop();
+            log('Stopped.  scan.active = ' + scan.active);
+        }
+    } catch (error) {
+        log('Argh! ' + error);
     }
-  } catch(error)  {
-    log('Argh! ' + error);
-  }
 }
 const logDataView = (labelOfDataSource, key, valueDataView) => {
     const hexString = [...new Uint8Array(valueDataView.buffer)].map(b => {
@@ -140,8 +144,8 @@ const logDataView = (labelOfDataSource, key, valueDataView) => {
         '\n    (Hex) ' + hexString +
         '\n    (ASCII) ' + asciiString);
 };
-function log(message?: any, ...optionalParams: any[]){
-    console.log(message,optionalParams)
+function log(message?: any, ...optionalParams: any[]) {
+    console.log(message, optionalParams)
 }
 </script>
 
