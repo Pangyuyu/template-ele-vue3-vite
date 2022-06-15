@@ -42,8 +42,9 @@ if (!shouldQuit) {
     appStart.winRestoreFocus(mainWin)
   })
   //只有ready之后才可以初始化窗体
+  app.commandLine.appendSwitch('enable-experimental-web-platform-features')
   app.whenReady().then(() => {
-    createWindow()
+    createWindow()   
     /*activate: macOS 当应用被激活时发出。*/
     app.on("activate", () => {
       if (BrowserWindow.getAllWindows().length === 0) {
@@ -106,7 +107,7 @@ function createTray() {
   }
   //TODO Linux下打包图标显示不出来
   const iconPath = path.join(process.cwd(), "resources", 'images', 'logo.png')
-  console.debug("iconPath", iconPath)
+  // console.debug("iconPath", iconPath)
   const icon = nativeImage.createFromPath(iconPath)
   tray = new Tray(icon)
   const contextMenu = Menu.buildFromTemplate([

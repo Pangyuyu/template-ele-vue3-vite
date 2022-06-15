@@ -15,6 +15,10 @@ const techExample = {
     {
       path:"/techExample/ex_local_api",
       component: () => import("@/view/techExample/ex_local_api.vue")
+    },
+    {
+      path:"/techExample/ex_pc_ble",
+      component: () => import("@/view/techExample/ex_pc_ble.vue")
     }
   ],
 };

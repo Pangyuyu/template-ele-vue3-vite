@@ -33,6 +33,12 @@
                 "index":"/techExample/ex_local_api",
                 "path":"/techExample/ex_local_api",
                 "icon":"CoffeeCup"
+            },
+            {
+                "title":"蓝牙",
+                "index":"/techExample/ex_pc_ble",
+                "path":"/techExample/ex_pc_ble",
+                "icon":"Pear"
             }
         ]
     }
