@@ -32,7 +32,7 @@ module.exports.ToolPcBle = function () {
     this.registerOn = function (ipcMain, mainWin) {
         mainWin.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
             event.preventDefault()
-            log.d("蓝牙设备列表", deviceList)
+            // log.d("蓝牙设备列表", deviceList)
             mainWin.webContents.send('ble-on-scanning', {
                 code: 0,
                 data: deviceList

@@ -4,8 +4,12 @@
             <el-button type="primary" @click="onClickBleScaning">搜索蓝牙</el-button>
         </div>
         <el-table :data="deviceList" border height="720" style="width:100%;">
-            <el-table-column prop="deviceId" label="deviceId" />
-            <el-table-column prop="deviceName" label="deviceName" />
+            <el-table-column prop="deviceId" label="deviceId" width="220" />
+            <el-table-column prop="deviceName" label="deviceName" width="320" />
+            <el-table-column label="操作">
+                <template #default="scoped">
+                </template>
+            </el-table-column>
         </el-table>
     </div>
 </template>
@@ -20,21 +24,20 @@ onMounted(() => {
 })
 function watchBleScaning() {
     window.EleApi.bleOnScanning((_event, res) => {
-        console.log("设备列表",res)
-        if (res.code != 0) {
-            return
-        }
-        for(let i=0;i<res.data.length;i++){
-            const item=res.data[i]
-             const index = deviceList.value.findIndex(dev => {
-                return dev.deviceId == item.deviceId
+        console.log("设备列表", res)
+        const findItems=res.data
+        findItems.forEach(item => {
+            const findItem = deviceList.value.find(dev => {
+                return dev.deviceId === item.deviceId
             })
-            if (index == -1) {
+            if (findItem) {
+                findItem.deviceName = item.deviceName
+            } else {
                 deviceList.value.push({
                     ...item
                 })
             }
-        }
+        });
     })
 }
 async function onClickBleScaning() {
