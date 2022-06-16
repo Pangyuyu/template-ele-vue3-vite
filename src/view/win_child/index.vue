@@ -14,9 +14,9 @@ import {
 } from '@element-plus/icons-vue'
 function onClickCloseWinChild() {
     //@ts-ignore
-    console.debug("子窗体对象", window.EleApi)
+    console.debug("子窗体对象", window.EPre)
     //@ts-ignore
-    window.EleApi.windowCloseLocalWeb()
+    window.EPre.windowCloseLocalWeb()
 }
 </script>
 

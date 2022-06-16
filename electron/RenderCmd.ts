@@ -6,7 +6,7 @@ export default class RenderCmd {
      * @param {object} args 子窗体类型
      */
     static childWinSend(desc,url) {
-        window.EleApi.openChildWin({
+        window.EPre.openChildWin({
             title: desc,
             url: url,
         })
@@ -16,7 +16,7 @@ export default class RenderCmd {
      * @param title 主窗体标题
      */
     static setWinTitle(title){
-        window.EleApi.setTitle({
+        window.EPre.setTitle({
             title: title
         })
     }

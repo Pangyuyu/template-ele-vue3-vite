@@ -80,11 +80,12 @@ function customerOnEditEnd(event) {
     console.log("customerOnEditEnd", event)
     onClickGetList()
 }
-function onClickLocalServerStart(){
+async function onClickLocalServerStart(){
+    const startRes=await window.EPre.localExeStart({})
 
 }
-function onClickLocalServerStop(){
-    
+async function onClickLocalServerStop(){
+
 }
 </script>
 

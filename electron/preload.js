@@ -5,7 +5,7 @@ const { contextBridge, ipcRenderer } = require('electron')
 
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true' /*去掉控制台关于security的警告*/
 /*这是正确的写法，原先把主进程中的对象全部挂载在window上是错误的做法*/
-contextBridge.exposeInMainWorld('EleApi', {
+contextBridge.exposeInMainWorld('EPre', {
     /*ipcRenderer方法
     1.invoke，异步调用，渲染进程需要使用async/await进行调用；主进程使用handle方法;
     2.send,同步调用，主进程使用on方法，不需要向渲染进程发回调；
@@ -60,5 +60,9 @@ contextBridge.exposeInMainWorld('EleApi', {
     /*蓝牙相关*/
     // bleStartScanning:(args)=>ipcRenderer.invoke('ble-startscanning',args),
     bleOnScanning:(callback)=>ipcRenderer.on('ble-on-scanning', callback),//搜索蓝牙
-    bleSetSearchDeviceId:(args)=>ipcRenderer.invoke('ble-set-search-deviceid',args) //设置搜索蓝牙的deviceId
+    bleSetSearchDeviceId:(args)=>ipcRenderer.invoke('ble-set-search-deviceid',args), //设置搜索蓝牙的deviceId
+
+    /*本地可执行文件*/
+    localExeStart:(args)=>ipcRenderer.invoke('local-exe-start',args),
+    localExeStop:(args)=>ipcRenderer.invoke('local-exe-stop',args),
 })

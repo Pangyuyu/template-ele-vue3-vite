@@ -86,7 +86,7 @@ function onClickScanArgs(methodItem) {
 
 }
 async function onClickTryOnce(methodItem) {
-    const res = await window.EleApi.runApiPath(methodItem.name, {
+    const res = await window.EPre.runApiPath(methodItem.name, {
         path: '/foo/bar/baz/asdf/quux.html'
     })
     console.log("onClickTryOnce", res)
@@ -97,7 +97,7 @@ async function onClickTryOnce(methodItem) {
 const text_edit = ref("")
 const attr = ref("")
 async function onClickChooseFile() {
-    const readRes = await window.EleApi.fileChooseRead()
+    const readRes = await window.EPre.fileChooseRead()
     if (readRes.code != 0) {
         ElMessage({
             message: "用户已取消!",
@@ -109,7 +109,7 @@ async function onClickChooseFile() {
     attr.value = readRes.data.filePath + "\n" + JSON.stringify(readRes.data.fileStat, null, 4)
 }
 async function onClickSaveFile() {
-    const writeRes = await window.EleApi.fileChooseSave({ fileContent: text_edit.value })
+    const writeRes = await window.EPre.fileChooseSave({ fileContent: text_edit.value })
     if (writeRes.code != 0) {
         ElMessage({
             message: writeRes.message,

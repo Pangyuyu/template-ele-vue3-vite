@@ -33,7 +33,7 @@ onMounted(() => {
     watchBleScaning()
 })
 function watchBleScaning() {
-    window.EleApi.bleOnScanning((_event: any, res: any) => {
+    window.EPre.bleOnScanning((_event: any, res: any) => {
         const findItems = res.data
         let noList = []
         for (let i = 0; i < findItems.length; i++) {
@@ -70,7 +70,7 @@ async function onClickBleScaning() {
 async function onClickBleTest(deviceItem) {
     // console.log("onClickBleTest", deviceItem)
     // ModalTool.ShowLoading("...")
-    // await window.EleApi.bleSetSearchDeviceId({ deviceId: deviceItem.deviceId })
+    // await window.EPre.bleSetSearchDeviceId({ deviceId: deviceItem.deviceId })
     // navigator.bluetooth.requestDevice({
     //     acceptAllDevices: true,
     // }).then((device) => {

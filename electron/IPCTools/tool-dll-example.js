@@ -13,7 +13,7 @@ module.exports.ToolDllExample = function () {
                 const ffi = require('ffi-napi')
                 const path = require('path')
                 const lib = path.resolve('./resources/dll/example.dll')
-                // log.d("地址", lib)
+                
                 libm = ffi.Library(lib, {
                     'num_add': ['int', []],
                     'num_add_ret': ['int', ['int']],

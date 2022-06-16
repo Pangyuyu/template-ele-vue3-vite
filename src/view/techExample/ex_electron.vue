@@ -212,7 +212,6 @@
 </template>
 
 <script lang="ts" setup>
-// @ts-nocheck
 import { ref, onMounted, watch } from "vue";
 import RenderCmd from '@/../electron/RenderCmd'
 import { ElMessage, ElMessageBox } from 'element-plus'
@@ -229,7 +228,7 @@ function initSysWinAttrs() {
     onClickGetSystemInfo()
 }
 async function onClickGetSystemInfo() {
-    const atrrValues = await window.EleApi.querySystemInfo()
+    const atrrValues = await window.EPre.querySystemInfo()
     sysWinAttrList.value=atrrValues
     // sysWinAttrList.value.forEach(item => {
     //     const attrItem = atrrValues.find(attr => { return attr.name == item.name })
@@ -243,7 +242,7 @@ async function onClickGetSystemInfo() {
 //#region 进程间通信
 const testValue = ref(100)
 function registerEvents() {
-    window.EleApi.onUpdateCounter((_event, value) => {
+    window.EPre.onUpdateCounter((_event, value) => {
         testValue.value += value
     })
 }
@@ -254,7 +253,7 @@ function setMainWinTitle() {
     RenderCmd.setWinTitle(`测试标题:${i}`)
 }
 async function chooseFile() {
-    const filePath = await window.EleApi.openFile()
+    const filePath = await window.EPre.openFile()
     let message = ""
     let type = "info"
     if (filePath) {
@@ -276,7 +275,7 @@ function onClickOpenWindowByUrl(url: string) {
 function onClickUpdateCounter() {
     ElMessageBox.alert('请单击菜单栏中的“示例”子菜单', '提醒', {
         confirmButtonText: 'OK',
-        callback: (action: Action) => {
+        callback: (action:any) => {
 
         },
     })
@@ -316,7 +315,7 @@ watch(() => appTheme.value, (newValue: string, oldValue: string) => {
     onThemeChange()
 })
 async function onThemeChange() {
-    const themeName = await window.EleApi.themeChange(appTheme.value)
+    const themeName = await window.EPre.themeChange(appTheme.value)
     useTheme.value = themeName
 }
 // #endregion
@@ -324,7 +323,7 @@ async function onThemeChange() {
 //#region 拖动文件
 function onDragStartFile(_event) {
     _event.preventDefault()
-    window.EleApi.startDrag('drag-and-drop.md')
+    window.EPre.startDrag('drag-and-drop.md')
 }
 const dropFiles = ref(new Array())
 function onDropFiles(_event) {
@@ -397,13 +396,13 @@ function onClickNotifyMain() {
 
 //#region 进度条
 function onClickProgressStart() {
-    window.EleApi.progressStart()
+    window.EPre.progressStart()
 }
 function onClickProgressCancel() {
-    window.EleApi.progressCancel()
+    window.EPre.progressCancel()
 }
 function onClickProgressUnkown() {
-    window.EleApi.progressUnkown()
+    window.EPre.progressUnkown()
 }
 //#endregion
 
@@ -504,7 +503,7 @@ async function onClickDllMethods(methodName: string) {
     } else if (methodName == 'str_echo') {
         aValue = dll_str_echo.value
     }
-    const methodRes = await window.EleApi.dllMethod({ name: methodName, params: { a: aValue } })
+    const methodRes = await window.EPre.dllMethod({ name: methodName, params: { a: aValue } })
     ElMessage({
         message: methodRes,
         type: "success",
@@ -514,10 +513,10 @@ async function onClickDllMethods(methodName: string) {
 
 //#region 窗体(BrowerWindow)操作
 function onClickCtrlBgColor() {
-    window.EleApi.windowChangeBgColor()
+    window.EPre.windowChangeBgColor()
 }
 function onClickLocalWinchild(){
-    window.EleApi.windowOpenLocalWeb()
+    window.EPre.windowOpenLocalWeb()
 }
 //#endregion
 
@@ -532,7 +531,7 @@ async function onClickShowOpenSync(type) {
         title = "请选择文件"
         properties.push('openFile')
     }
-    const res = await window.EleApi.showDialog('open', {
+    const res = await window.EPre.showDialog('open', {
         title: title,
         defaultPath: '.',//
         buttonLabel: '确定',
@@ -554,7 +553,7 @@ async function onClickShowOpenSync(type) {
     })
 }
 async function onClickShowSaveSync() {
-    const res = await window.EleApi.showDialog('save', {
+    const res = await window.EPre.showDialog('save', {
         title: "设置文件名称",
         defaultPath: '.',//
         buttonLabel: '确定',
@@ -568,7 +567,7 @@ async function onClickShowSaveSync() {
 }
 async function onClickShowMessageSync(type: string) {
     const buttons = ["取消", "终止", "确定"]
-    const res = await window.EleApi.showDialog('message', {
+    const res = await window.EPre.showDialog('message', {
         type: type,
         title: "提醒框示例",
         buttons: ["取消", "终止", "确定"],
@@ -588,7 +587,7 @@ async function onClickShowMessageSync(type: string) {
     }
 }
 async function onClickShowError(){
-    await window.EleApi.showDialog('error',{
+    await window.EPre.showDialog('error',{
         title:'警告',
         content:"读取文件错误，请重试!"
     });
