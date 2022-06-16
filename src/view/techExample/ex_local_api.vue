@@ -1,6 +1,10 @@
 <template>
     <div class="vue-page">
         <div class="vue-ctrl">
+            <div style="margin-right:10px">本地服务:</div>
+            <el-button type="primary" @click="onClickLocalServerStart()">启动</el-button>
+            <el-button type="info" @click="onClickLocalServerStop()">关闭</el-button>
+            <div class="line_h"></div>
             <el-input v-model="query" placeholder="请输入用户名" class="query" />
             <el-button type="primary" @click="onClickGetList()">查询</el-button>
             <el-button type="success" @click="onClickAdd()">添加客户</el-button>
@@ -76,6 +80,12 @@ function customerOnEditEnd(event) {
     console.log("customerOnEditEnd", event)
     onClickGetList()
 }
+function onClickLocalServerStart(){
+
+}
+function onClickLocalServerStop(){
+    
+}
 </script>
 
 <style lang="scss">
@@ -90,6 +100,12 @@ function customerOnEditEnd(event) {
         height: 85px;
         align-items: center;
         padding: 5px;
+        .line_h{
+            width: 1px;
+            height: 100%;
+            background-color:rgb(110, 115, 115);
+            margin:5px;
+        }
     }
 
     .query {
@@ -101,4 +117,5 @@ function customerOnEditEnd(event) {
 .ctrl {
     display: flex;
 }
+
 </style>
