@@ -57,12 +57,11 @@ import { json } from "stream/consumers";
 <script lang="ts" setup>
 // @ts-nocheck
 import { ref, onMounted, watch } from "vue";
-import RenderCmd from '@/../electron/RenderCmd'
 import ApiModel from "@/common/data/api-model.json"
 import { ElMessage } from 'element-plus'
 const activeName = ref("ex_path")
 function onClickOpenWindowByUrl(url: string) {
-    RenderCmd.childWinSend("...", url)
+    window.EPre.openChildWin("...", url)
 }
 onMounted(() => {
     initApiPathMethods()

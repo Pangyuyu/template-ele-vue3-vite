@@ -9,9 +9,10 @@ export default interface PreLoadApi {
        */
     openChildWin(title: string, url: string): void,
     /**
-     * 设置标题
+     * 设置主窗体标题
+     * @param title 标题
      */
-    setTitle(): void,
+    setTitle(title:string): void,
     /**
      * 打开文件
      */
@@ -24,35 +25,82 @@ export default interface PreLoadApi {
      * 更改主题
      * @param themeName 主题名称
      */
-    themeChange: (themeName: string) => Promise<string>,
+    themeChange(themeName: string): Promise<string>,
     /**
      * 拖动指定文件
      * @param fileName 文件名称
      */
-    startDrag: (fileName: string) => void,
+    startDrag(fileName: string): void,
+    /**
+     * 开始进度条
+     */
     progressStart: () => void,
+    /**
+     * 取消进度条
+     */
     progressCancel: () => void,
+    /**
+     * 设置进度条为未知状态
+     */
     progressUnkown: () => void,
-    dllMethod: (args: any) => Promise<any>,
+    /**
+     * 调用DLL
+     * @param args 参数
+     */
+    dllMethod(args: any): Promise<any>,
     /**
      * 获取系统信息
      */
     querySystemInfo: () => Promise<any>,
+    /**
+     * 改变背景色
+     */
     windowChangeBgColor: () => void,
+    /**
+     * 渲染进程打开子窗体并显示本地网页
+     */
     windowOpenLocalWeb: () => void,
+    /**
+     * 渲染进程关闭子窗体
+     */
     windowCloseLocalWeb: () => void,
-    runApiPath: (apiName: string, apiParams: any) => Promise<any>,
-    showDialog: (type: string, args: any) => Promise<any>,
-    fileChooseRead: () => Promise<any>,
-    fileChooseSave: (args: any) => Promise<any>,
-    bleOnScanning: (callback: (args: any) => void) => void,
-    bleSetSearchDeviceId: (args: any) => Promise<any>,
+    /**
+     * 执行指定的API
+     * @param apiName api名称 
+     * @param apiParams api参数
+     */
+    runApiPath(apiName: string, apiParams: any): Promise<any>,
+    /**
+     * 显示主进程的弹窗
+     * @param type 窗体类型
+     * @param args 参数
+     */
+    showDialog(type: string, args: any): Promise<any>,
+    /**
+     * 文件操作：读取
+     */
+    fileChooseRead(): Promise<any>,
+    /**
+     * 文件操作：保存
+     * @param args 参数
+     */
+    fileChooseSave(args: any): Promise<any>,
+    /**
+     * 蓝牙搜索
+     * @param callback 搜索结果
+     */
+    bleOnScanning(callback: (args: any) => void): void,
+    /**
+     * 根据DeviceId选择蓝牙
+     * @param args 参数 
+     */
+    bleSetSearchDeviceId(args: any): Promise<any>,
     /**
      * 启动本地可执行文件
      */
-    localExeStart: (args: any) => void,
+    localExeStart(args: any): void,
     /**
      * 停止本地可执行文件
      */
-    localExeStop: (args: any) => Promise<any>,
+    localExeStop(args: any): Promise<any>,
 }

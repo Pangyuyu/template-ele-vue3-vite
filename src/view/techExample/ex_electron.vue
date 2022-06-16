@@ -214,7 +214,6 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, watch } from "vue";
-import RenderCmd from '@/../electron/RenderCmd'
 import { ElMessage, ElMessageBox } from 'element-plus'
 onMounted(() => {
     onThemeChange()
@@ -245,7 +244,7 @@ const activeName = ref("ex_darkmode")
 let i = 0
 function setMainWinTitle() {
     i++
-    RenderCmd.setWinTitle(`测试标题:${i}`)
+    window.EPre.setTitle(`测试标题:${i}`)
 }
 async function chooseFile() {
     const filePath = await window.EPre.openFile()

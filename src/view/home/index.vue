@@ -27,7 +27,6 @@ import IconElectron from '@/assets/osc/electron.png';
 import IconElementPlus from '@/assets/osc/element-plus.png';
 import IconVite from '@/assets/osc/vite.svg';
 import IconVue from '@/assets/osc/vue.png';
-import RenderCmd from '@/../electron/RenderCmd'
 export default defineComponent({
   components: {},
   setup() {
@@ -50,7 +49,7 @@ export default defineComponent({
     }
     function onClickItemLink(itemLink: any) {
       console.log("onClickItemLink", itemLink)
-      RenderCmd.childWinSend(itemLink.desc,itemLink.url)
+      window.EPre.openChildWin(itemLink.desc,itemLink.url)
     }
     return {
       cardList,
