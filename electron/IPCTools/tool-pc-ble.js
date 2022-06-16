@@ -45,7 +45,7 @@ module.exports.ToolPcBle = function () {
         mainWin.webContents.on('select-bluetooth-device', (event, deviceList, callback) => {
             event.preventDefault()
             if (selectDeviceId.length == 0) {
-                log.d(selectCount, "发现蓝牙设备数量:", deviceList.length)
+                // log.d(selectCount, "发现蓝牙设备数量:", deviceList.length)
                 mainWin.webContents.send('ble-on-scanning', {
                     code: 0,
                     data: deviceList
