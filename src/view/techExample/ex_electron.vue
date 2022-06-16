@@ -192,7 +192,8 @@
             </div>
             <div class="panel-warn">
                 <div class="item">1.详情查看:<a href="javascript:void(0)"
-                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/api/dialog')">dialog</a></div>
+                        @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/api/dialog')">dialog</a>
+                </div>
                 <div class="item">2.对话框不同系统不一样，实际使用时，务必详细阅读官方API文档；</div>
             </div>
         </el-tab-pane>
@@ -229,13 +230,7 @@ function initSysWinAttrs() {
 }
 async function onClickGetSystemInfo() {
     const atrrValues = await window.EPre.querySystemInfo()
-    sysWinAttrList.value=atrrValues
-    // sysWinAttrList.value.forEach(item => {
-    //     const attrItem = atrrValues.find(attr => { return attr.name == item.name })
-    //     if (attrItem) {
-    //         item.value = attrItem.value
-    //     }
-    // })
+    sysWinAttrList.value = atrrValues
 }
 //#endregion
 
@@ -255,7 +250,7 @@ function setMainWinTitle() {
 async function chooseFile() {
     const filePath = await window.EPre.openFile()
     let message = ""
-    let type = "info"
+    let type: "success" | "warning" | "info" | "error" = "info"
     if (filePath) {
         message = `选择了文件：\n${filePath}`
         type = 'success'
@@ -270,12 +265,13 @@ async function chooseFile() {
 }
 
 function onClickOpenWindowByUrl(url: string) {
-    RenderCmd.childWinSend("...", url)
+    window.EPre.openChildWin("...", url)
+
 }
 function onClickUpdateCounter() {
     ElMessageBox.alert('请单击菜单栏中的“示例”子菜单', '提醒', {
         confirmButtonText: 'OK',
-        callback: (action:any) => {
+        callback: (action: any) => {
 
         },
     })
@@ -387,7 +383,7 @@ function showNotify() {
 function onClickNotifyMain() {
     ElMessageBox.alert('请单击菜单栏中的“示例”子菜单“主进程显示通知”', '提醒', {
         confirmButtonText: 'OK',
-        callback: (action: Action) => {
+        callback: (action: any) => {
 
         },
     })
@@ -435,13 +431,13 @@ async function onClickSerialPortFilter() {
         reader = port.readable.getReader();
         writer = port.writable.getWriter();
         // set how to write to device intervally
-        // const writeInt = setInterval(async () => {
-        //     const commandframe = new Uint8Array([
-        //         0x00,
-        //         0xff /*...some bytes to be sent*/,
-        //     ]);
-        //     await writer.write(commandframe);
-        // }, 3000); // send a frame every 3000ms
+        const writeInt = setInterval(async () => {
+            const commandframe = new Uint8Array([
+                0x00,
+                0xff /*...some bytes to be sent*/,
+            ]);
+            await writer.write(commandframe);
+        }, 3000); // send a frame every 3000ms
         while (port.readable && keepReading) {
             try {
                 while (true) {
@@ -497,7 +493,7 @@ function onClickClear() {
 const dll_add_ret = ref(1)
 const dll_str_echo = ref("Hello World")
 async function onClickDllMethods(methodName: string) {
-    let aValue = ""
+    let aValue: number | string = 0
     if (methodName == 'num_add_ret') {
         aValue = dll_add_ret.value
     } else if (methodName == 'str_echo') {
@@ -515,7 +511,7 @@ async function onClickDllMethods(methodName: string) {
 function onClickCtrlBgColor() {
     window.EPre.windowChangeBgColor()
 }
-function onClickLocalWinchild(){
+function onClickLocalWinchild() {
     window.EPre.windowOpenLocalWeb()
 }
 //#endregion
@@ -576,7 +572,7 @@ async function onClickShowMessageSync(type: string) {
         detail: '这仅仅是一个示例，请忽略...',
         defaultPath: '~',
         filters: [],
-        noLink:true,
+        noLink: true,
         properties: ["showOverwriteConfirmation", "dontAddToRecent"],
     })
     if (res) {
@@ -586,10 +582,10 @@ async function onClickShowMessageSync(type: string) {
         })
     }
 }
-async function onClickShowError(){
-    await window.EPre.showDialog('error',{
-        title:'警告',
-        content:"读取文件错误，请重试!"
+async function onClickShowError() {
+    await window.EPre.showDialog('error', {
+        title: '警告',
+        content: "读取文件错误，请重试!"
     });
 }
 //#endregion
