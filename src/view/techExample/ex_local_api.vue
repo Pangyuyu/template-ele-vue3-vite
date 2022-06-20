@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, getCurrentInstance, ComponentInternalInstance,onMounted } from "vue";
+import { ref, getCurrentInstance, ComponentInternalInstance, onMounted } from "vue";
 import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'//客户信息编辑弹窗
 import ModalTool from "@/common/ui/ModalTool";
 const dialogCustomerEditRef = ref<InstanceType<typeof DialogCustomerEdit>>();
@@ -38,8 +38,8 @@ const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
 const query = ref("")
 
-onMounted(()=>{
-    onClickGetList()
+onMounted(() => {
+    // onClickGetList()
 })
 async function onClickGetList() {
     let queryApi = null
@@ -73,19 +73,24 @@ async function runDelete(id: string) {
         ModalTool.ShowDialog("提醒", delRes.message)
         return
     }
-    ModalTool.ShowToast("操作成功","success")
+    ModalTool.ShowToast("操作成功", "success")
     onClickGetList()
 }
 function customerOnEditEnd(event) {
     console.log("customerOnEditEnd", event)
     onClickGetList()
 }
-async function onClickLocalServerStart(){
-    const startRes=await window.EPre.localExeStart({})
-
+async function onClickLocalServerStart() {
+    const startRes = await window.EPre.localExeStart({
+        name: 'local_server'
+    })
+    console.log("startRes", startRes)
 }
-async function onClickLocalServerStop(){
-
+async function onClickLocalServerStop() {
+    const stopRes = await window.EPre.localExeStop({
+        name: 'local_server'
+    })
+    console.log("stopRes", stopRes)
 }
 </script>
 
@@ -101,11 +106,12 @@ async function onClickLocalServerStop(){
         height: 85px;
         align-items: center;
         padding: 5px;
-        .line_h{
+
+        .line_h {
             width: 1px;
             height: 100%;
-            background-color:rgb(110, 115, 115);
-            margin:5px;
+            background-color: rgb(110, 115, 115);
+            margin: 5px;
         }
     }
 
@@ -118,5 +124,4 @@ async function onClickLocalServerStop(){
 .ctrl {
     display: flex;
 }
-
 </style>

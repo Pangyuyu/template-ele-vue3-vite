@@ -1,4 +1,16 @@
 /**
+ * 主进程更改计数回调
+ */
+interface IUpdateCounterCallBack {
+    /**
+     * 回调方法
+     * @param _event 事件
+     * @param value 值
+     */
+    (_event: any, value: number): void
+}
+
+/**
  * preLoad.js中使用方法的TS定义
  */
 export default interface PreLoadApi {
@@ -18,9 +30,10 @@ export default interface PreLoadApi {
      */
     openFile(): Promise<any>,
     /**
-     * 响应主进程命令（+1,-1）
+     * 主进程更改计数
+     * @params callback 回调方法
      */
-    onUpdateCounter(callback: (_event: any, value: number) => void): void,
+    onUpdateCounter(callback: IUpdateCounterCallBack): void,
     /**
      * 更改主题
      * @param themeName 主题名称

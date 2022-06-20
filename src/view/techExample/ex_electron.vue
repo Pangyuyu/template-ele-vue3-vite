@@ -194,7 +194,7 @@
                 <div class="item">1.详情查看:<a href="javascript:void(0)"
                         @click="onClickOpenWindowByUrl('https://www.electronjs.org/zh/docs/latest/api/dialog')">dialog</a>
                 </div>
-                <div class="item">2.对话框不同系统不一样，实际使用时，务必详细阅读官方API文档；</div>
+                <div class="item">2.对话框不同系统不一样,实际使用时,务必详细阅读官方API文档;</div>
             </div>
         </el-tab-pane>
         <el-tab-pane name="ex_more">
@@ -236,7 +236,7 @@ async function onClickGetSystemInfo() {
 //#region 进程间通信
 const testValue = ref(100)
 function registerEvents() {
-    window.EPre.onUpdateCounter((_event, value) => {
+    window.EPre.onUpdateCounter((_event: any, value: number)=>{
         testValue.value += value
     })
 }
@@ -568,7 +568,7 @@ async function onClickShowMessageSync(type: string) {
         buttons: ["取消", "终止", "确定"],
         defaultId: 2,
         cancelId: 0,
-        detail: '这仅仅是一个示例，请忽略...',
+        detail: '这仅仅是一个示例,请忽略...',
         defaultPath: '~',
         filters: [],
         noLink: true,
@@ -584,7 +584,7 @@ async function onClickShowMessageSync(type: string) {
 async function onClickShowError() {
     await window.EPre.showDialog('error', {
         title: '警告',
-        content: "读取文件错误，请重试!"
+        content: "读取文件错误,请重试!"
     });
 }
 //#endregion
