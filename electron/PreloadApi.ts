@@ -111,7 +111,7 @@ export default interface PreLoadApi {
     /**
      * 启动本地可执行文件
      */
-    localExeStart(args: any): void,
+    localExeStart(args: any): Promise<any>,
     /**
      * 停止本地可执行文件
      */

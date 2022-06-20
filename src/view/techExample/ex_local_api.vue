@@ -81,16 +81,11 @@ function customerOnEditEnd(event) {
     onClickGetList()
 }
 async function onClickLocalServerStart() {
-    const startRes = await window.EPre.localExeStart({
-        name: 'local_server'
-    })
-    console.log("startRes", startRes)
+    await window.EPre.localExeStart({ })
 }
 async function onClickLocalServerStop() {
-    const stopRes = await window.EPre.localExeStop({
-        name: 'local_server'
-    })
-    console.log("stopRes", stopRes)
+    const stopRes = await window.EPre.localExeStop({})
+    ModalTool.ShowToast(stopRes.message, "info")
 }
 </script>
 
