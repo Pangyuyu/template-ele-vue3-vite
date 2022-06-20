@@ -12,7 +12,7 @@ export default interface PreLoadApi {
      * 设置主窗体标题
      * @param title 标题
      */
-    setTitle(title:string): void,
+    setTitle(title: string): void,
     /**
      * 打开文件
      */
