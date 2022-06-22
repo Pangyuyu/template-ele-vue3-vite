@@ -1,30 +1,38 @@
-# test directories
+# yarnclean
+
+## test directories
+
 __tests__
 test
 tests
 powered-test
 
-# asset directories
+## asset directories
+
 docs
 doc
 website
 images
 assets
 
-# examples
+## examples
+
 example
 examples
 
-# code coverage directories
+## code coverage directories
+
 coverage
 .nyc_output
 
-# build scripts
+## build scripts
+
 Makefile
 Gulpfile.js
 Gruntfile.js
 
-# configs
+## configs
+
 appveyor.yml
 circle.yml
 codeship-services.yml
@@ -41,5 +49,6 @@ wercker.yml
 .yarn-metadata.json
 .travis.yml
 
-# misc
+## misc
+
 *.md

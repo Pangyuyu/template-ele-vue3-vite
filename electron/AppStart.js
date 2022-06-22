@@ -50,7 +50,7 @@ module.exports.AppStart = function () {
                 // Use pluginOptions.nodeIntegration, leave this alone
                 // See nklayman.github.io/vue-cli-plugin-electron-builder/guide/security.html#node-integration for more info
                 nodeIntegration: process.env.ELECTRON_NODE_INTEGRATION,
-                webSecurity: false,
+                webSecurity: false,//
                 // allowRunningInsecureContent:true,
                 contextIsolation: true,//启用上下文隔离
                 sandbox: false,//启用沙盒
