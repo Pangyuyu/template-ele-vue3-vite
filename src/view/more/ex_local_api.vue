@@ -23,13 +23,14 @@
                 </template>
             </el-table-column>
         </el-table>
-         <div class="panel-warn" style="width:96%;align-self: center;">
+        <div class="panel-warn" style="width:96%;align-self: center;">
             <div class="item">1.本地服务是使用go语言写的;</div>
             <div class="item">2.当前只支持windows;</div>
             <div class="item">3.服务地址:http://localhost:8091</div>
             <div class="item">4.服务以当前程序的子进程运行;</div>
             <div class="item">5.本地服务源码:<a href="javascript:void(0)"
-                        @click="onClickOpenWindowByUrl('https://github.com/Pangyuyu/xing_study/tree/master/ex_go_server')">ex_go_server</a></div>
+                    @click="onClickOpenWindowByUrl('https://github.com/Pangyuyu/xing_study/tree/master/ex_go_server')">ex_go_server</a>
+            </div>
         </div>
         <dialog-customer-edit ref="dialogCustomerEditRef" @onEditEnd="customerOnEditEnd" />
     </div>
@@ -89,19 +90,23 @@ function customerOnEditEnd(event) {
     onClickGetList()
 }
 async function onClickLocalServerStart() {
-     const startRes= await window.EPre.localExeStart({ })
-     if(startRes.code!=0){
-        ModalTool.ShowDialogWarn("提醒",startRes.message)
-     }
+    ModalTool.ShowLoading("正在启动服务...")
+    const startRes = await window.EPre.localExeStart({})
+    ModalTool.HideLoading()
+    if (startRes.code != 0) {
+        ModalTool.ShowDialogWarn("提醒", startRes.message)
+    } else {
+        ModalTool.ShowDialogSuccess("提醒", "本地服务启动成功!")
+    }
 }
 async function onClickLocalServerStop() {
     const stopRes = await window.EPre.localExeStop({})
     ModalTool.ShowToast(stopRes.message, "info")
-    if(stopRes.code==0){
-        customerList.value=[]
+    if (stopRes.code == 0) {
+        customerList.value = []
     }
 }
-function onClickOpenWindowByUrl(url){
+function onClickOpenWindowByUrl(url) {
     window.EPre.openChildWin("...", url)
 }
 </script>
@@ -111,6 +116,7 @@ function onClickOpenWindowByUrl(url){
     width: 100%;
     display: flex;
     flex-direction: column;
+
     .vue-ctrl {
         display: flex;
         flex-direction: row;

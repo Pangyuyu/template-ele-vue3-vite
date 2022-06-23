@@ -12,8 +12,9 @@ const cprocess = require('child_process');
 const path = require('path');
 const log = new Log()
 let LOCALAPI_PID = -1 //本地服务子进程
-const { dialog } = require('electron')
-const apiFileName="yu-local-api"
+const { dialog } = require('electron');
+const { resolve } = require("path");
+const apiFileName = "yu-local-api"
 //打开记事本示例
 function openNotepad() {
     cprocess.execFile("C:\\windows\\notepad.exe", null, null, (error, stdout, stderr) => {
@@ -62,22 +63,20 @@ function exeStart(filePath, fileName) {
             })
     })
 }
-function searchPid(mainWin, taskName) {
-    setTimeout(async () => {
-        const findRes = await findTaskPidByName(taskName)
-        if (findRes.code == 0) {
-            LOCALAPI_PID = findRes.data.pid
-        } else {
-            LOCALAPI_PID = -1
-        }
-        dialog.showMessageBox(mainWin, {
-            title: "提醒",
-            message: LOCALAPI_PID == -1 ? "服务启动失败!" : "服务启动成功!",
-            type: LOCALAPI_PID == -1 ? "error" : "info",
-            noLink: true,
-            properties: ["showOverwriteConfirmation", "dontAddToRecent"],
-        })
-    }, 500)
+/**
+ * 延迟检测服务是否启动成功
+ */
+function delayCheckStart(taskName) {
+    return new Promise((resolve,__)=>{
+        setTimeout(async () => {
+            const findRes = await findTaskPidByName(taskName)
+            const isSuccess=findRes.code == 0
+            resolve({
+                code:isSuccess?0:1,
+                message:isSuccess?"服务启动失败!" : "服务启动成功!"
+            })
+        }, 2000)
+    })
 }
 /**
  * 根据名称返回进程PID
@@ -173,16 +172,19 @@ module.exports.ToolLocalExe = function () {
             }
             const exeName = `${apiFileName}.exe`
             const findRes = await findTaskPidByName(exeName)
-            if(findRes.code==0){
+            if (findRes.code == 0) {
                 return {
-                    code:1,
-                    message:`本地服务已启动，请勿重复启动!`
+                    code: 1,
+                    message: `本地服务已启动，请勿重复启动!`
                 }
             }
             const exePath = path.resolve(".", "resources", "exe", "win_64")
             log.d("exePath", exePath)
             exeStart(exePath, exeName)
-            searchPid(mainWin, exeName)
+            const checkRes=await delayCheckStart()
+            if (checkRes.code != 0) {
+                return checkRes
+            }
             return {
                 code: 0,
                 message: "服务已启动!"
@@ -191,9 +193,9 @@ module.exports.ToolLocalExe = function () {
         ipcMain.handle('local-exe-stop', async (event, args) => {
             log.d("local-exe-stop")
             const findRes = await findTaskPidByName(`${apiFileName}.exe`)
-            if(findRes.code==0){
+            if (findRes.code == 0) {
                 try {
-                    const exePid=findRes.data.pid
+                    const exePid = findRes.data.pid
                     process.kill(exePid)
                 } catch (ex) {
                     log.e("local-exe-stop", ex)
@@ -203,6 +205,21 @@ module.exports.ToolLocalExe = function () {
                 code: 0,
                 message: "本地服务已停止!"
             }
+        })
+    }
+    this.stopChildProcess = function () {
+        return new Promise(async (resolve, __) => {
+            log.d("正在执行停止子进程服务")
+            const findRes = await findTaskPidByName(`${apiFileName}.exe`)
+            if (findRes.code == 0) {
+                try {
+                    const exePid = findRes.data.pid
+                    process.kill(exePid)
+                } catch (ex) {
+                    log.e("local-exe-stop", ex)
+                }
+            }
+            resolve({})
         })
     }
     this.unRegister = function (ipcMain) {
