@@ -13,6 +13,7 @@ const path = require('path');
 const log = new Log()
 let LOCALAPI_PID = -1 //本地服务子进程
 const { dialog } = require('electron')
+const apiFileName="yu-local-api"
 //打开记事本示例
 function openNotepad() {
     cprocess.execFile("C:\\windows\\notepad.exe", null, null, (error, stdout, stderr) => {
@@ -54,8 +55,6 @@ function exeStart(filePath, fileName) {
                     })
                     return
                 }
-                // log.d(filePath, "stdout", stdout)
-                // log.d(filePath, "stderr", stderr)
                 resolve({
                     code: 0,
                     message: "OK"
@@ -95,7 +94,7 @@ function findTaskPidByName(taskName) {
         }
         // let cmd = process.platform === 'win32' ? 'tasklist /fi "STATUS eq running"' : 'ps aux'
         //使用tasklist /fi 筛选速度快,
-        let cmd = process.platform === 'win32' ? 'tasklist /fi "IMAGENAME eq local_api.exe"' : 'ps aux'
+        let cmd = process.platform === 'win32' ? `tasklist /fi "IMAGENAME eq ${taskName}"` : 'ps aux'
         cprocess.exec(cmd, (err, stdout, stderr) => {
             if (err) {
                 resolve({
@@ -168,12 +167,19 @@ module.exports.ToolLocalExe = function () {
             log.d("local-exe-start")
             if (process.platform != 'win32' && process.arch != 'ia32') {
                 return {
-                    code: -1,
+                    code: 1,
                     message: "此功能只支持windows 64 位系统!"
                 }
             }
-            const exePath = path.resolve(".", "resources", "exe", "bin")
-            const exeName = "local_api.exe"
+            const exeName = `${apiFileName}.exe`
+            const findRes = await findTaskPidByName(exeName)
+            if(findRes.code==0){
+                return {
+                    code:1,
+                    message:`本地服务已启动，请勿重复启动!`
+                }
+            }
+            const exePath = path.resolve(".", "resources", "exe", "win_64")
             log.d("exePath", exePath)
             exeStart(exePath, exeName)
             searchPid(mainWin, exeName)
@@ -184,19 +190,15 @@ module.exports.ToolLocalExe = function () {
         })
         ipcMain.handle('local-exe-stop', async (event, args) => {
             log.d("local-exe-stop")
-            // await exeStop("local_api.exe")
-            if (LOCALAPI_PID == -1) {
-                return {
-                    code: 1,
-                    message: "本地服务尚未启动!"
+            const findRes = await findTaskPidByName(`${apiFileName}.exe`)
+            if(findRes.code==0){
+                try {
+                    const exePid=findRes.data.pid
+                    process.kill(exePid)
+                } catch (ex) {
+                    log.e("local-exe-stop", ex)
                 }
             }
-            try {
-                process.kill(LOCALAPI_PID)
-            } catch (ex) {
-                log.e("local-exe-stop", ex)
-            }
-            LOCALAPI_PID = -1
             return {
                 code: 0,
                 message: "本地服务已停止!"

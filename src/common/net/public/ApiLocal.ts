@@ -1,9 +1,8 @@
 import ApiBase from "./ApiBase";
-const LOCAL_BASEURL = "http://localhost:8090";
+const LOCAL_BASEURL = "http://localhost:8091";
 export default class ApiLocal {
-
     static customerList() {
-        return ApiBase.GET("/customerList")
+        return ApiBase.GET("/customers")
             .withEndpoint(LOCAL_BASEURL)
     }
     static customerQuery(name: string) {
