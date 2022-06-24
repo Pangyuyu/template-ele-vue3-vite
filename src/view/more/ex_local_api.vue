@@ -4,34 +4,63 @@
             <div style="margin-right:10px">本地服务:</div>
             <el-button type="primary" @click="onClickLocalServerStart()">启动</el-button>
             <el-button type="info" @click="onClickLocalServerStop()">关闭</el-button>
-            <div class="line_h"></div>
-            <el-input v-model="query" placeholder="请输入用户名" class="query" />
-            <el-button type="primary" @click="onClickGetList()">查询</el-button>
-            <el-button type="success" @click="onClickAdd()">添加客户</el-button>
         </div>
-        <el-table :data="customerList" border height="720" style="width:100%;">
-            <el-table-column prop="id" label="id" />
-            <el-table-column prop="name" label="名称" />
-            <el-table-column prop="address" label="地址" />
-            <el-table-column prop="phone" label="手机号" />
-            <el-table-column label="操作">
-                <template #default="scoped">
-                    <div class="ctrl">
-                        <el-button type="info" @click="onClickEdit(scoped.row)">修改</el-button>
-                        <el-button type="danger" @click="onClickDelete(scoped.row)">删除</el-button>
-                    </div>
+        <el-tabs v-model="activeName" class="xing-tabs" type="card">
+            <el-tab-pane name="ex_list">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span>列表:Sqlite</span>
+                    </span>
                 </template>
-            </el-table-column>
-        </el-table>
-        <div class="panel-warn" style="width:96%;align-self: center;">
-            <div class="item">1.本地服务是使用go语言写的;</div>
-            <div class="item">2.当前只支持windows;</div>
-            <div class="item">3.服务地址:http://localhost:8091</div>
-            <div class="item">4.服务以当前程序的子进程运行;</div>
-            <div class="item">5.本地服务源码:<a href="javascript:void(0)"
-                    @click="onClickOpenWindowByUrl('https://github.com/Pangyuyu/xing_study/tree/master/ex_go_server')">ex_go_server</a>
-            </div>
-        </div>
+                <div class="vue-ctrl">
+                    <el-input v-model="query" placeholder="请输入用户名" class="query" />
+                    <el-button type="primary" @click="onClickGetList()">查询</el-button>
+                    <el-button type="success" @click="onClickAdd()">添加客户</el-button>
+                </div>
+                <el-table :data="customerList" border height="720" style="width:100%;">
+                    <el-table-column prop="id" label="id" />
+                    <el-table-column prop="name" label="名称" />
+                    <el-table-column prop="address" label="地址" />
+                    <el-table-column prop="phone" label="手机号" />
+                    <el-table-column label="操作">
+                        <template #default="scoped">
+                            <div class="ctrl">
+                                <el-button type="info" @click="onClickEdit(scoped.row)">修改</el-button>
+                                <el-button type="danger" @click="onClickDelete(scoped.row)">删除</el-button>
+                            </div>
+                        </template>
+                    </el-table-column>
+                </el-table>
+                <div class="panel-warn">
+                    <div class="item">1.本地服务是使用go语言写的;</div>
+                    <div class="item">2.当前只支持windows;</div>
+                    <div class="item">3.服务地址:http://localhost:8091</div>
+                    <div class="item">4.服务以当前程序的子进程运行;</div>
+                    <div class="item">5.本地服务源码:<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://github.com/Pangyuyu/xing_study/tree/master/ex_go_server')">ex_go_server</a>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="ex_img">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span>随机图片</span>
+                    </span>
+                </template>
+                <div class="vue-ctrl">
+                    <div class="hint">图片宽度：</div>
+                    <el-input-number v-model="imgw" :min="1" :max="1000000" size="small" style="max-height: 35px;"/>
+                    <div class="hint">图片高度：</div>
+                    <el-input-number v-model="imgh" :min="1" :max="1000000" size="small"/>
+                    <el-button @click="onClickRefreshImg()" style="margin-left: 10px;">刷新图片</el-button>
+                </div>
+
+                <div class="temp-img">
+                    <el-image :src="tempImgUrl" fit="scale-down"/>
+                </div>
+            </el-tab-pane>
+        </el-tabs>
+
         <dialog-customer-edit ref="dialogCustomerEditRef" @onEditEnd="customerOnEditEnd" />
     </div>
 </template>
@@ -41,7 +70,7 @@ import { ref, getCurrentInstance, ComponentInternalInstance, onMounted } from "v
 import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'//客户信息编辑弹窗
 import ModalTool from "@/common/ui/ModalTool";
 const dialogCustomerEditRef = ref<InstanceType<typeof DialogCustomerEdit>>();
-
+const activeName = ref("ex_list")
 const customerList = ref(new Array())
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
 
@@ -109,6 +138,21 @@ async function onClickLocalServerStop() {
 function onClickOpenWindowByUrl(url) {
     window.EPre.openChildWin("...", url)
 }
+
+const tempImgUrl = ref("")
+const imgw = ref(200)
+const imgh = ref(200)
+async function onClickRefreshImg() {
+    ModalTool.ShowLoading("...")
+    const refreshRes = await proxy?.$APILOCAL.imageRandom(imgw.value, imgh.value).exec()
+    ModalTool.HideLoading()
+    if (refreshRes.isFail) {
+        ModalTool.ShowDialogWarn("提醒", refreshRes.message)
+        return
+    }
+    tempImgUrl.value = `Data:image/jpg;base64,${refreshRes.body.data}`
+
+}
 </script>
 
 <style lang="scss">
@@ -120,15 +164,14 @@ function onClickOpenWindowByUrl(url) {
     .vue-ctrl {
         display: flex;
         flex-direction: row;
-        height: 85px;
+        height: 55px;
         align-items: center;
         padding: 5px;
-
-        .line_h {
-            width: 1px;
-            height: 100%;
-            background-color: rgb(110, 115, 115);
-            margin: 5px;
+        border-bottom: 1px solid rgb(175, 180, 180);
+        margin-bottom: 5px;
+        .hint {
+            margin-right: 10px;
+            font-size: 14px;
         }
     }
 
@@ -140,5 +183,17 @@ function onClickOpenWindowByUrl(url) {
 
 .ctrl {
     display: flex;
+}
+
+.temp-img {
+    border: 1px solid rgb(137, 132, 132);
+    border-radius: 10px;
+    // display: flex;
+    // justify-content: center;
+    // align-items: center;
+    width: 95%;
+    height: 820px;
+    overflow: auto;
+    padding: 5px;
 }
 </style>
