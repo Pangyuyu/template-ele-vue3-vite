@@ -14,10 +14,10 @@ if (import.meta.env.MODE === "release") {
 } else {
   Logger.setGlobalLevel(EnLogLevel.DEBUG);
 }
-const pinia = createPinia()
+const pina = createPinia()
 const app = createApp(App);
 app.use(Router);//注册路由
-app.use(pinia);//注册状态相应组件
+app.use(pina);//注册状态相应组件
 //注册Element-plus中的图标库
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
   app.component(key, component)
@@ -34,6 +34,5 @@ declare module '@vue/runtime-core'{
   }
 }
 // 挂载API
-// app.config.globalProperties.$APIPUB = ApiPub;
 app.config.globalProperties.$APILOCAL=ApiLocal;
 app.mount("#app");

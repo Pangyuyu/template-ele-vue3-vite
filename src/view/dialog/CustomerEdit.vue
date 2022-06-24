@@ -109,14 +109,14 @@ async function onCustomerAdd() {
 }
 async function onCustomerUpdate() {
     ModalTool.ShowLoading("保存中...")
-    const upadteRes = await proxy?.$APILOCAL.customerUpdate(
+    const updateRes = await proxy?.$APILOCAL.customerUpdate(
         formData.value.id,
         formData.value.name,
         formData.value.address,
         formData.value.phone).exec()
     ModalTool.HideLoading()
-    if (upadteRes.isFail) {
-        ModalTool.ShowDialog("提醒", upadteRes.isFail)
+    if (updateRes.isFail) {
+        ModalTool.ShowDialog("提醒", updateRes.isFail)
         return
     }
     emit('onEditEnd',{
