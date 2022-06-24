@@ -1,44 +1,51 @@
 [
     {
-        "title":"首页",
-        "index":"home",
-        "path":"/home",
-        "icon":"home-filled"
+        "title": "首页",
+        "index": "home",
+        "path": "/home",
+        "icon": "home-filled"
     },
     {
-        "title":"构建工具",
-        "index":"buildtools",
-        "hide":true,
-        "icon":"odometer"
+        "title": "构建工具",
+        "index": "buildtools",
+        "hide": true,
+        "icon": "odometer"
     },
     {
-        "title":"功能示例",
-        "index":"example",
-        "icon":"aim",
-        "subs":[
+        "title": "功能示例",
+        "index": "example",
+        "icon": "aim",
+        "subs": [
             {
-                "title":"Electron",
-                "index":"/techExample/ex_electron",
-                "path":"/techExample/ex_electron",
-                "icon":"alarm-clock"
+                "title": "Electron",
+                "index": "/techExample/ex_electron",
+                "path": "/techExample/ex_electron",
+                "icon": "alarm-clock"
             },
             {
-                "title":"文件",
-                "index":"/techExample/ex_files",
-                "path":"/techExample/ex_files",
-                "icon":"files"
+                "title": "文件",
+                "index": "/techExample/ex_files",
+                "path": "/techExample/ex_files",
+                "icon": "files"
             },
             {
-                "title":"本地API",
-                "index":"/techExample/ex_local_api",
-                "path":"/techExample/ex_local_api",
-                "icon":"CoffeeCup"
-            },
+                "title": "蓝牙",
+                "index": "/techExample/ex_pc_ble",
+                "path": "/techExample/ex_pc_ble",
+                "icon": "Pear"
+            }
+        ]
+    },
+    {
+        "title": "更多功能示例",
+        "index": "more",
+        "icon": "aim",
+        "subs": [
             {
-                "title":"蓝牙",
-                "index":"/techExample/ex_pc_ble",
-                "path":"/techExample/ex_pc_ble",
-                "icon":"Pear"
+                "title": "本地API:Go示例",
+                "index": "/more/ex_local_api",
+                "path": "/more/ex_local_api",
+                "icon": "CoffeeCup"
             }
         ]
     }

@@ -28,7 +28,7 @@ function readResPlaintext(dirName, fileName) {
 function convertXingFile(dirName, fileName) {
     return new Promise(async (resolve, __) => {
         const readFileRes = await readResPlaintext(dirName, fileName)
-        if (readFileRes.code != 0) {
+        if (readFileRes.code !== 0) {
             resolve(readFileRes)
             return
         }

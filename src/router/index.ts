@@ -2,6 +2,7 @@ import { createRouter, createWebHashHistory, RouteRecordRaw } from "vue-router";
 import home from "./modules/home";
 import techExample from "./modules/techExample";
 import childWin from "./modules/ex_win_child"
+import more from "./modules/more"
 // import Logger from '@/common/logger/logger';
 const routes: Array<RouteRecordRaw> = [
   // **********登录**********
@@ -17,6 +18,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   home,
   techExample,
+  more,
   childWin,
   // **********404**********
   {

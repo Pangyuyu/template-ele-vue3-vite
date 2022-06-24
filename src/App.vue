@@ -72,7 +72,8 @@ export default defineComponent({
 </script>
 <style>
 .xing-tabs>.el-tabs__content {
-    padding: 32px;
+    padding-left: 32px;
+    padding-left: 32px;
     font-size: 32px;
     font-weight: 600;
 }
