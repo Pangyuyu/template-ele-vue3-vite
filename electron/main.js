@@ -5,14 +5,14 @@ const { app, Tray, Menu, nativeImage, dialog } = require('electron');
 const { AppStart } = require("./AppStart")
 const { AppMenu } = require("./AppMenu")
 const { IpcEntrance } = require("./IPCTools/IpcEntrance")
-const {ToolLocalExe}=require("./IPCTools/tool-local-exe")
+const {ToolLocalServer}=require("./IPCTools/tool-local-server")
 const path = require('path')
 const isDev = process.env.IS_DEV == "true" ? true : false;
 const shouldQuit = app.requestSingleInstanceLock() //单实例
 const appStart = new AppStart()
 const appMenu = new AppMenu()
 const ipcTools = new IpcEntrance()
-const toolLocalExe=new ToolLocalExe()
+const toolLocalServer=new ToolLocalServer()
 let mainWin = null //窗口
 /*在开发模式下，应父进程（parent process）的要求完全退出。 */
 
@@ -61,7 +61,7 @@ app.on('will-finish-launching', () => {
 })
 app.on("window-all-closed", async () => {
   log.d("====window-all-closed===")
-  await toolLocalExe.stopChildProcess()
+  await toolLocalServer.stopChildProcess()
   if (process.platform !== "darwin") {
     app.quit()
   }

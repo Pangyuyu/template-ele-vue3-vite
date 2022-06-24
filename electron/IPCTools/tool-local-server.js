@@ -160,7 +160,7 @@ function exeStop(exeName) {
         })
     })
 }
-module.exports.ToolLocalExe = function () {
+module.exports.ToolLocalServer = function () {
     this.registerOn = function (ipcMain, mainWin) {
         ipcMain.handle('local-exe-start', async (event, args) => {
             log.d("local-exe-start")
@@ -178,7 +178,7 @@ module.exports.ToolLocalExe = function () {
                     message: `本地服务已启动，请勿重复启动!`
                 }
             }
-            const exePath = path.resolve(".", "resources", "exe", "win_64")
+            const exePath = path.resolve(".", "resources", "server", "win_64")
             log.d("exePath", exePath)
             exeStart(exePath, exeName)
             const checkRes=await delayCheckStart()
