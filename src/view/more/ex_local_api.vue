@@ -54,11 +54,11 @@
                     <el-input-number v-model="imgh" :min="1" :max="1000000" size="small" loading="lazy"/>
                     <el-button @click="onClickStartRefreshImg()" style="margin-left: 10px;" :disabled="refreshFlag">开始刷新图片</el-button>
                     <el-button @click="onClickStopRefreshImg()" style="margin-left: 10px;" :disabled="!refreshFlag">停止刷新图片</el-button>
+                    <div style="margin-left:10px">{{refershCount}}</div>
                 </div>
 
                 <div class="temp-img"  v-cloak>
                     <img :src="tempImgUrl"/>
-                    <div>{{refershCount}}</div>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -142,8 +142,8 @@ function onClickOpenWindowByUrl(url) {
 }
 
 const tempImgUrl = ref("")
-const imgw = ref(200)
-const imgh = ref(200)
+const imgw = ref(800)
+const imgh = ref(600)
 const refreshFlag = ref(false) //true：允许自动刷新；false:不允许
 const refershCount=ref(0)
 function onClickStartRefreshImg() {
@@ -172,7 +172,6 @@ function delayRefreshImg() {
             refreshImg()
         }, 0)
     }
-
 }
 function onClickStopRefreshImg() {
     refreshFlag.value = false
