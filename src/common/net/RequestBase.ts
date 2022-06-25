@@ -237,7 +237,7 @@ class RequestBase {
           .withHeader(httpRes.res.header || {})
           .withMessage(msg);
       }
-      this.__logger.debug("http result", response);
+      // this.__logger.debug("http result", response);
       for (let [name, func] of this.__responseInterceptors) {
         func(req, response);
       }

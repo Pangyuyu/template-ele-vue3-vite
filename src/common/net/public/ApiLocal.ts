@@ -41,7 +41,15 @@ export default class ApiLocal {
             .withEndpoint(LOCAL_BASEURL)
     }
     static imageRandom(w: number, h: number) {
-        return ApiBase.GET("/image/random")
+        return ApiBase.GET("/image/random/solid")
+            .withQuery({
+                w: w,
+                h: h
+            })
+            .withEndpoint(LOCAL_BASEURL)
+    }
+    static imageRandomColor(w: number, h: number) {
+        return ApiBase.GET("/image/random/mottled")
             .withQuery({
                 w: w,
                 h: h

@@ -49,14 +49,16 @@
                 </template>
                 <div class="vue-ctrl">
                     <div class="hint">图片宽度：</div>
-                    <el-input-number v-model="imgw" :min="1" :max="1000000" size="small" style="max-height: 35px;"/>
+                    <el-input-number v-model="imgw" :min="1" :max="1000000" size="small" style="max-height: 35px;" />
                     <div class="hint">图片高度：</div>
-                    <el-input-number v-model="imgh" :min="1" :max="1000000" size="small"/>
-                    <el-button @click="onClickRefreshImg()" style="margin-left: 10px;">刷新图片</el-button>
+                    <el-input-number v-model="imgh" :min="1" :max="1000000" size="small" loading="lazy"/>
+                    <el-button @click="onClickStartRefreshImg()" style="margin-left: 10px;" :disabled="refreshFlag">开始刷新图片</el-button>
+                    <el-button @click="onClickStopRefreshImg()" style="margin-left: 10px;" :disabled="!refreshFlag">停止刷新图片</el-button>
                 </div>
 
-                <div class="temp-img">
-                    <el-image :src="tempImgUrl" fit="scale-down"/>
+                <div class="temp-img"  v-cloak>
+                    <img :src="tempImgUrl"/>
+                    <div>{{refershCount}}</div>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -142,16 +144,38 @@ function onClickOpenWindowByUrl(url) {
 const tempImgUrl = ref("")
 const imgw = ref(200)
 const imgh = ref(200)
-async function onClickRefreshImg() {
-    ModalTool.ShowLoading("...")
-    const refreshRes = await proxy?.$APILOCAL.imageRandom(imgw.value, imgh.value).exec()
-    ModalTool.HideLoading()
-    if (refreshRes.isFail) {
-        ModalTool.ShowDialogWarn("提醒", refreshRes.message)
+const refreshFlag = ref(false) //true：允许自动刷新；false:不允许
+const refershCount=ref(0)
+function onClickStartRefreshImg() {
+    if (refreshFlag.value) {//若已经允许了，就不可以点击此按钮
         return
     }
+    refreshFlag.value = true
+    refershCount.value=0
+    delayRefreshImg()
+}
+async function refreshImg() {
+    const refreshRes = await proxy?.$APILOCAL.imageRandomColor(imgw.value, imgh.value).exec()
+    ModalTool.HideLoading()
+    if (refreshRes.isFail) {
+        return
+    }
+    refershCount.value++
     tempImgUrl.value = `Data:image/jpg;base64,${refreshRes.body.data}`
+    delayRefreshImg()
+}
 
+function delayRefreshImg() {
+    //每隔20毫秒执行一次
+    if (refreshFlag.value) {
+        setTimeout(() => {
+            refreshImg()
+        }, 0)
+    }
+
+}
+function onClickStopRefreshImg() {
+    refreshFlag.value = false
 }
 </script>
 
@@ -169,6 +193,7 @@ async function onClickRefreshImg() {
         padding: 5px;
         border-bottom: 1px solid rgb(175, 180, 180);
         margin-bottom: 5px;
+
         .hint {
             margin-right: 10px;
             font-size: 14px;
