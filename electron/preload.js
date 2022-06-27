@@ -67,5 +67,7 @@ contextBridge.exposeInMainWorld('EPre', {
 
     /*本地可执行文件*/
     localExeStart: (args) => ipcRenderer.invoke('local-exe-start', args),
+    localExeCheckStart:()=>ipcRenderer.invoke('local-exe-check',{}),
     localExeStop: (args) => ipcRenderer.invoke('local-exe-stop', args),
+    localFindAvailablePort:()=>ipcRenderer.invoke('local-find-available-port',{}),
 })

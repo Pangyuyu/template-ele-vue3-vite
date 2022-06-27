@@ -1,7 +1,10 @@
 <template>
     <div class="vue-page">
         <div class="vue-ctrl">
-            <div style="margin-right:10px">本地服务:</div>
+            <div style="margin-right:10px">本地服务端口号:</div>
+            <el-input-number v-model="port" :min="5001" :max="65535" size="small" style="max-height: 35px;" />
+            <el-button @click="onClickAutoPort" type="success" style="margin-left:10px">自动选择</el-button>
+            <div style="margin-right:10px;margin-left: 20px;">操作:</div>
             <el-button type="primary" @click="onClickLocalServerStart()">启动</el-button>
             <el-button type="info" @click="onClickLocalServerStop()">关闭</el-button>
         </div>
@@ -34,7 +37,7 @@
                 <div class="panel-warn">
                     <div class="item">1.本地服务是使用go语言写的;</div>
                     <div class="item">2.当前只支持windows;</div>
-                    <div class="item">3.服务地址:http://localhost:8091</div>
+                    <div class="item">3.服务地址:http://localhost:{port}</div>
                     <div class="item">4.服务以当前程序的子进程运行;</div>
                     <div class="item">5.本地服务源码:<a href="javascript:void(0)"
                             @click="onClickOpenWindowByUrl('https://github.com/Pangyuyu/xing_study/tree/master/ex_go_server')">ex_go_server</a>
@@ -51,14 +54,16 @@
                     <div class="hint">图片宽度：</div>
                     <el-input-number v-model="imgw" :min="1" :max="1000000" size="small" style="max-height: 35px;" />
                     <div class="hint">图片高度：</div>
-                    <el-input-number v-model="imgh" :min="1" :max="1000000" size="small" loading="lazy"/>
-                    <el-button @click="onClickStartRefreshImg()" style="margin-left: 10px;" :disabled="refreshFlag">开始刷新图片</el-button>
-                    <el-button @click="onClickStopRefreshImg()" style="margin-left: 10px;" :disabled="!refreshFlag">停止刷新图片</el-button>
-                    <div style="margin-left:10px">{{refershCount}}</div>
+                    <el-input-number v-model="imgh" :min="1" :max="1000000" size="small" loading="lazy" />
+                    <el-button @click="onClickStartRefreshImg()" style="margin-left: 10px;" :disabled="refreshFlag">
+                        开始刷新图片</el-button>
+                    <el-button @click="onClickStopRefreshImg()" style="margin-left: 10px;" :disabled="!refreshFlag">
+                        停止刷新图片</el-button>
+                    <div style="margin-left:10px">{{ refershCount }}</div>
                 </div>
 
-                <div class="temp-img"  v-cloak>
-                    <img :src="tempImgUrl"/>
+                <div class="temp-img" v-cloak>
+                    <img :src="tempImgUrl" />
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -75,12 +80,29 @@ const dialogCustomerEditRef = ref<InstanceType<typeof DialogCustomerEdit>>();
 const activeName = ref("ex_list")
 const customerList = ref(new Array())
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
-
+const port = ref(8091)
 const query = ref("")
 
 onMounted(() => {
     // onClickGetList()
 })
+async function onClickAutoPort() {
+    ModalTool.ShowLoading("请稍等...")
+    const checkRes = await window.EPre.localExeCheckStart()
+    if (checkRes.code == 0) {
+        ModalTool.HideLoading()
+        ModalTool.ShowDialogWarn("提醒", "本地服务已启动，无法更改端口号!")
+        return
+    }
+    const findRes = await window.EPre.localFindAvailablePort()
+    ModalTool.HideLoading()
+    if (findRes.code != 0) {
+        ModalTool.ShowDialogWarn("提醒", "未发现可用端口号，请稍后重试!")
+        return
+    }
+    ModalTool.ShowDialogSuccess("提醒",`可用端口号为:${findRes.data.port}`)
+    port.value=findRes.data.port
+}
 async function onClickGetList() {
     let queryApi = null
     if (query.value == undefined || query.value == null || query.value.length == 0) {
@@ -145,13 +167,13 @@ const tempImgUrl = ref("")
 const imgw = ref(800)
 const imgh = ref(600)
 const refreshFlag = ref(false) //true：允许自动刷新；false:不允许
-const refershCount=ref(0)
+const refershCount = ref(0)
 function onClickStartRefreshImg() {
     if (refreshFlag.value) {//若已经允许了，就不可以点击此按钮
         return
     }
     refreshFlag.value = true
-    refershCount.value=0
+    refershCount.value = 0
     delayRefreshImg()
 }
 async function refreshImg() {
@@ -176,6 +198,7 @@ function delayRefreshImg() {
 function onClickStopRefreshImg() {
     refreshFlag.value = false
 }
+
 </script>
 
 <style lang="scss">

@@ -113,7 +113,15 @@ export default interface PreLoadApi {
      */
     localExeStart(args: any): Promise<any>,
     /**
+     * 检测本地服务是否启动
+     */
+    localExeCheckStart():Promise<any>,
+    /**
      * 停止本地可执行文件
      */
     localExeStop(args: any): Promise<any>,
+    /**
+     * 发现可用端口号
+     */
+    localFindAvailablePort():Promise<any>,
 }

@@ -10,9 +10,9 @@
 const { Log } = require("../logUtil")
 const cprocess = require('child_process');
 const path = require('path');
+const net = require('net');
 const log = new Log()
 let LOCALAPI_PID = -1 //本地服务子进程
-const { dialog } = require('electron');
 const { resolve } = require("path");
 const apiFileName = "yu-local-api"
 //打开记事本示例
@@ -160,6 +160,27 @@ function exeStop(exeName) {
         })
     })
 }
+/**
+ * 发现可用端口号
+ */
+function checkPortUsed(port){
+    return new Promise((resolve,_)=>{
+        let server = net.createServer().listen(port);
+        server.on('listening',function(){
+            server.close();
+            resolve({
+                code:0
+            });
+        });
+        server.on('error',function(err){
+            if(err.code == 'EADDRINUSE'){
+                resolve({
+                    code:1
+                });
+            }
+        });
+    })
+}
 module.exports.ToolLocalServer = function () {
     this.registerOn = function (ipcMain, mainWin) {
         ipcMain.handle('local-exe-start', async (event, args) => {
@@ -206,6 +227,28 @@ module.exports.ToolLocalServer = function () {
                 message: "本地服务已停止!"
             }
         })
+        ipcMain.handle('local-exe-check',async (event,args)=>{
+            const findRes = await findTaskPidByName(`${apiFileName}.exe`)
+            return findRes
+        })
+        ipcMain.handle('local-find-available-port',async (event,args)=>{
+            var port=-1
+            for(var i=5001;i<65535;i++){
+                const findRes=await checkPortUsed(i)
+                if(findRes.code==0){
+                    port=i
+                    break
+                }
+            }
+            
+            return {
+                code:port>=-1?0:1,
+                message:port==-1?"未找到可用端口":"OK",
+                data:{
+                    port:port
+                }
+            }
+        })
     }
     this.stopChildProcess = function () {
         return new Promise(async (resolve, __) => {
@@ -222,6 +265,7 @@ module.exports.ToolLocalServer = function () {
             resolve({})
         })
     }
+    
     this.unRegister = function (ipcMain) {
         ipcMain.removeHandler('local-exe-start')
         ipcMain.removeHandler('local-exe-stop')
