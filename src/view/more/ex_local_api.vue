@@ -144,7 +144,8 @@ function customerOnEditEnd(event) {
 }
 async function onClickLocalServerStart() {
     ModalTool.ShowLoading("正在启动服务...")
-    const startRes = await window.EPre.localExeStart({})
+    proxy?.$APILOCAL.setLocalPort(port.value)
+    const startRes = await window.EPre.localExeStart({port:port.value})
     ModalTool.HideLoading()
     if (startRes.code != 0) {
         ModalTool.ShowDialogWarn("提醒", startRes.message)

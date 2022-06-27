@@ -34,7 +34,7 @@ function openNotepad() {
         })
     })
 }
-function exeStart(filePath, fileName) {
+function exeStart(filePath, fileName,port) {
     return new Promise(async (resolve, __) => {
         if (LOCALAPI_PID > -1) {
             resolve({
@@ -43,7 +43,7 @@ function exeStart(filePath, fileName) {
             })
             return
         }
-        cprocess.exec(`.\\${fileName}`,
+        cprocess.exec(`.\\${fileName} -p ${port}`,
             {
                 cwd: filePath,
                 windowsHide: false,
@@ -184,7 +184,8 @@ function checkPortUsed(port){
 module.exports.ToolLocalServer = function () {
     this.registerOn = function (ipcMain, mainWin) {
         ipcMain.handle('local-exe-start', async (event, args) => {
-            log.d("local-exe-start")
+            log.d("local-exe-start",args)
+            const port=args.port
             if (process.platform != 'win32' && process.arch != 'ia32') {
                 return {
                     code: 1,
@@ -201,7 +202,7 @@ module.exports.ToolLocalServer = function () {
             }
             const exePath = path.resolve(".", "resources", "server", "win_64")
             log.d("exePath", exePath)
-            exeStart(exePath, exeName)
+            exeStart(exePath, exeName,port)
             const checkRes=await delayCheckStart()
             if (checkRes.code != 0) {
                 return checkRes

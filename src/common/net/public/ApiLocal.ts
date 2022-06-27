@@ -1,16 +1,23 @@
 import ApiBase from "./ApiBase";
-const LOCAL_BASEURL = "http://localhost:8091";
+const LOCAL_BASEURL = "http://localhost";
+let LOCAL_PORT="8091"
 export default class ApiLocal {
+    static getBaseUrl(){
+        return `${LOCAL_BASEURL}:${LOCAL_PORT}`
+    }
+    static setLocalPort(port:string){
+        LOCAL_PORT=port
+    }
     static customerList() {
         return ApiBase.GET("/customers")
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
     static customerQuery(name: string) {
         return ApiBase.GET("/customer/query")
             .withQuery({
                 name: name
             })
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
     static customerAdd(name: string, address: string, phone: string) {
         return ApiBase.POST("/customer")
@@ -19,7 +26,7 @@ export default class ApiLocal {
                 address: address,
                 phone: phone
             })
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
     static customerUpdate(id: string, name: string, address: string, phone: string) {
         return ApiBase.PUT("/customer")
@@ -31,14 +38,14 @@ export default class ApiLocal {
                 address: address,
                 phone: phone
             })
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
     static customerDelete(id: string) {
         return ApiBase.DELETE("/customer")
             .withQuery({
                 id: id,
             })
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
     static imageRandom(w: number, h: number) {
         return ApiBase.GET("/image/random/solid")
@@ -46,7 +53,7 @@ export default class ApiLocal {
                 w: w,
                 h: h
             })
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
     static imageRandomColor(w: number, h: number) {
         return ApiBase.GET("/image/random/mottled")
@@ -54,6 +61,6 @@ export default class ApiLocal {
                 w: w,
                 h: h
             })
-            .withEndpoint(LOCAL_BASEURL)
+            .withEndpoint(ApiLocal.getBaseUrl())
     }
 }
