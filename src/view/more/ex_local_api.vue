@@ -85,7 +85,7 @@
                     <el-button @click="onClickCreateQr()">生成二维码</el-button>
                 </div>
                 <div class="temp-img" v-cloak>
-                    <img :src="tempQrUrl" />
+                    <img :src="tempQrUrl" class="qr-img"/>
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -298,5 +298,9 @@ async function onClickCreateQr() {
     height: 820px;
     overflow: auto;
     padding: 5px;
+}
+.qr-img{
+    border: 1px solid #aba8a8;
+    border-radius: 10px;
 }
 </style>
