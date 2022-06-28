@@ -1,6 +1,6 @@
 import ApiBase from "./ApiBase";
 const LOCAL_BASEURL = "http://localhost";
-let LOCAL_PORT="8091"
+let LOCAL_PORT="8092"
 export default class ApiLocal {
     static getBaseUrl(){
         return `${LOCAL_BASEURL}:${LOCAL_PORT}`
@@ -62,5 +62,24 @@ export default class ApiLocal {
                 h: h
             })
             .withEndpoint(ApiLocal.getBaseUrl())
+    }
+    /**
+     * 获取二维码
+     * @param qrContent 二维码内容
+     * @param level 等级  
+     *  L:低质量，7%的容错率  
+        M:中等质量，15%容错率  
+        Q:高质量，25%容错率,  
+        H：超高质量：30%容错率:  
+     * @param size 大小
+     */
+    static getQr(qrContent:string, level:string, size:number){
+        return ApiBase.POST("/qr")
+        .withBody({
+            content: qrContent,
+            level: level,
+            size:size
+        })
+        .withEndpoint(ApiLocal.getBaseUrl())
     }
 }

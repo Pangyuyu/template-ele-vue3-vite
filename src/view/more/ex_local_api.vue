@@ -66,6 +66,28 @@
                     <img :src="tempImgUrl" />
                 </div>
             </el-tab-pane>
+            <el-tab-pane name="ex_qr">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span>二维码</span>
+                    </span>
+                </template>
+                <div class="vue-ctrl">
+                    <div class="hint">二维码质量：</div>
+                    <el-select v-model="qrLevel">
+                        <el-option v-for="item in qrLevelOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
+                    <div class="hint">二维码大小：</div>
+                    <el-input-number v-model="qrSize" :min="32" :max="1000000" size="small" style="max-height: 35px;" />
+                    <div class="hint">二维码内容：</div>
+                    <el-input style="width:420px" v-model="qrContent" placeholder="请输入要生成的二维码内容" />
+                    <el-button @click="onClickCreateQr()">生成二维码</el-button>
+                </div>
+                <div class="temp-img" v-cloak>
+                    <img :src="tempQrUrl" />
+                </div>
+            </el-tab-pane>
         </el-tabs>
 
         <dialog-customer-edit ref="dialogCustomerEditRef" @onEditEnd="customerOnEditEnd" />
@@ -73,19 +95,16 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, getCurrentInstance, ComponentInternalInstance, onMounted } from "vue";
+import { ref, getCurrentInstance, ComponentInternalInstance } from "vue";
 import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'//客户信息编辑弹窗
 import ModalTool from "@/common/ui/ModalTool";
-const dialogCustomerEditRef = ref<InstanceType<typeof DialogCustomerEdit>>();
-const activeName = ref("ex_list")
-const customerList = ref(new Array())
-const { proxy } = getCurrentInstance() as ComponentInternalInstance
-const port = ref(8091)
-const query = ref("")
 
-onMounted(() => {
-    // onClickGetList()
-})
+const activeName = ref("ex_list")
+const { proxy } = getCurrentInstance() as ComponentInternalInstance
+
+
+//#region 服务管理
+const port = ref(8092) //端口号
 async function onClickAutoPort() {
     ModalTool.ShowLoading("请稍等...")
     const checkRes = await window.EPre.localExeCheckStart()
@@ -100,9 +119,33 @@ async function onClickAutoPort() {
         ModalTool.ShowDialogWarn("提醒", "未发现可用端口号，请稍后重试!")
         return
     }
-    ModalTool.ShowDialogSuccess("提醒",`可用端口号为:${findRes.data.port}`)
-    port.value=findRes.data.port
+    ModalTool.ShowDialogSuccess("提醒", `可用端口号为:${findRes.data.port}`)
+    port.value = findRes.data.port
 }
+async function onClickLocalServerStart() {
+    ModalTool.ShowLoading("正在启动服务...")
+    proxy?.$APILOCAL.setLocalPort(port.value + "")
+    const startRes = await window.EPre.localExeStart({ port: port.value })
+    ModalTool.HideLoading()
+    if (startRes.code != 0) {
+        ModalTool.ShowDialogWarn("提醒", startRes.message)
+    } else {
+        ModalTool.ShowDialogSuccess("提醒", "本地服务启动成功!")
+    }
+}
+async function onClickLocalServerStop() {
+    const stopRes = await window.EPre.localExeStop({})
+    ModalTool.ShowToast(stopRes.message, "info")
+    if (stopRes.code == 0) {
+        customerList.value = []
+    }
+}
+//#endregion 
+
+//#region 列表API
+const dialogCustomerEditRef = ref<InstanceType<typeof DialogCustomerEdit>>();
+const customerList = ref(new Array())
+const query = ref("")
 async function onClickGetList() {
     let queryApi = null
     if (query.value == undefined || query.value == null || query.value.length == 0) {
@@ -142,28 +185,12 @@ function customerOnEditEnd(event) {
     console.log("customerOnEditEnd", event)
     onClickGetList()
 }
-async function onClickLocalServerStart() {
-    ModalTool.ShowLoading("正在启动服务...")
-    proxy?.$APILOCAL.setLocalPort(port.value)
-    const startRes = await window.EPre.localExeStart({port:port.value})
-    ModalTool.HideLoading()
-    if (startRes.code != 0) {
-        ModalTool.ShowDialogWarn("提醒", startRes.message)
-    } else {
-        ModalTool.ShowDialogSuccess("提醒", "本地服务启动成功!")
-    }
-}
-async function onClickLocalServerStop() {
-    const stopRes = await window.EPre.localExeStop({})
-    ModalTool.ShowToast(stopRes.message, "info")
-    if (stopRes.code == 0) {
-        customerList.value = []
-    }
-}
 function onClickOpenWindowByUrl(url) {
     window.EPre.openChildWin("...", url)
 }
+//#endregion
 
+//#region 随机图片
 const tempImgUrl = ref("")
 const imgw = ref(800)
 const imgh = ref(600)
@@ -199,7 +226,35 @@ function delayRefreshImg() {
 function onClickStopRefreshImg() {
     refreshFlag.value = false
 }
+//#endregion
 
+//#region 二维码
+const qrSize = ref(256)
+const qrLevel = ref("M")
+const qrContent = ref("")
+const tempQrUrl = ref("")
+const qrLevelOptions = ref([{
+    value: 'L',
+    label: '低质量(L)',
+}, {
+    value: 'M',
+    label: '中等质量(M)',
+}, {
+    value: 'Q',
+    label: '高质量(Q)',
+}, {
+    value: 'H',
+    label: '超高质量(H)',
+}])
+async function onClickCreateQr() {
+    const qrRes = await proxy?.$APILOCAL.getQr(qrContent.value, qrLevel.value, qrSize.value).exec()
+    if (qrRes.isFail) {
+        ModalTool.ShowDialogWarn("提醒", qrRes.message)
+        return
+    }
+    tempQrUrl.value = `Data:image/jpg;base64,${qrRes.body.data}`
+}
+//#endregion
 </script>
 
 <style lang="scss">
