@@ -51,6 +51,11 @@
                     </span>
                 </template>
                 <div class="vue-ctrl">
+                    <div class="hint">图片获取方式：</div>
+                    <el-select v-model="imgType">
+                        <el-option v-for="item in imgTypeOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                     <div class="hint">图片宽度：</div>
                     <el-input-number v-model="imgw" :min="1" :max="1000000" size="small" style="max-height: 35px;" />
                     <div class="hint">图片高度：</div>
@@ -62,7 +67,7 @@
                     <div style="margin-left:10px">{{ refershCount }}</div>
                 </div>
 
-                <div class="temp-img" v-cloak>
+                <div class="temp-img">
                     <img :src="tempImgUrl" />
                 </div>
             </el-tab-pane>
@@ -85,7 +90,7 @@
                     <el-button @click="onClickCreateQr()">生成二维码</el-button>
                 </div>
                 <div class="temp-img" v-cloak>
-                    <img :src="tempQrUrl" class="qr-img"/>
+                    <img :src="tempQrUrl" class="qr-img" />
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -95,7 +100,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, getCurrentInstance, ComponentInternalInstance } from "vue";
+import { ref, getCurrentInstance, ComponentInternalInstance, nextTick } from "vue";
 import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'//客户信息编辑弹窗
 import ModalTool from "@/common/ui/ModalTool";
 
@@ -191,6 +196,17 @@ function onClickOpenWindowByUrl(url) {
 //#endregion
 
 //#region 随机图片
+const imgType = ref("base64")
+const imgTypeOptions = ref([{
+    value: 'base64',
+    label: 'Base64',
+}, {
+    value: 'blob',
+    label: '二进制文件对象',
+}, {
+    value: 'url',
+    label: 'URL地址访问',
+}])
 const tempImgUrl = ref("")
 const imgw = ref(800)
 const imgh = ref(600)
@@ -203,24 +219,36 @@ function onClickStartRefreshImg() {
     refreshFlag.value = true
     refershCount.value = 0
     delayRefreshImg()
+    // refreshImg()
 }
-async function refreshImg() {
-    const refreshRes = await proxy?.$APILOCAL.imageRandomColor(imgw.value, imgh.value).exec()
-    ModalTool.HideLoading()
-    if (refreshRes.isFail) {
-        return
-    }
-    refershCount.value++
-    tempImgUrl.value = `Data:image/jpg;base64,${refreshRes.body.data}`
-    delayRefreshImg()
+function refreshImg() {
+    return new Promise(async (resolve, __) => {
+        if (imgType.value == "base64") {
+            const refreshRes = await proxy?.$APILOCAL.imageRandom(imgw.value, imgh.value).exec()
+            ModalTool.HideLoading()
+            if (refreshRes.isFail) {
+                return
+            }
+            tempImgUrl.value = `Data:image/jpg;base64,${refreshRes.body.data}`
+        } else if (imgType.value == "blob") {
+            const res=await proxy?.$APILOCAL.imageRandomBlob(imgw.value, imgh.value)
+            tempImgUrl.value = window.URL.createObjectURL(res.data)
+        }else if(imgType.value == "url"){//这种方式，频繁访问是有问题的
+            const imgUrl=proxy?.$APILOCAL.imageRandomUrl(imgw.value, imgh.value)
+            tempImgUrl.value = imgUrl
+        }
+        resolve({})
+    })
 }
 
 function delayRefreshImg() {
     //每隔20毫秒执行一次
     if (refreshFlag.value) {
-        setTimeout(() => {
-            refreshImg()
-        }, 0)
+        setTimeout(async () => {
+            await refreshImg()
+            refershCount.value++
+            delayRefreshImg()
+        },0)
     }
 }
 function onClickStopRefreshImg() {
@@ -299,7 +327,8 @@ async function onClickCreateQr() {
     overflow: auto;
     padding: 5px;
 }
-.qr-img{
+
+.qr-img {
     border: 1px solid #aba8a8;
     border-radius: 10px;
 }
