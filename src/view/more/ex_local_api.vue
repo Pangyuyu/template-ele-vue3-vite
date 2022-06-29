@@ -219,6 +219,9 @@ function onClickStartRefreshImg() {
     refreshFlag.value = true
     refershCount.value = 0
     delayRefreshImg()
+    setTimeout(() => {
+        refreshFlag.value = false
+    }, 10000)
     // refreshImg()
 }
 function refreshImg() {
@@ -231,10 +234,10 @@ function refreshImg() {
             }
             tempImgUrl.value = `Data:image/jpg;base64,${refreshRes.body.data}`
         } else if (imgType.value == "blob") {
-            const res=await proxy?.$APILOCAL.imageRandomBlob(imgw.value, imgh.value)
+            const res = await proxy?.$APILOCAL.imageRandomBlob(imgw.value, imgh.value)
             tempImgUrl.value = window.URL.createObjectURL(res.data)
-        }else if(imgType.value == "url"){//这种方式，频繁访问是有问题的
-            const imgUrl=proxy?.$APILOCAL.imageRandomUrl(imgw.value, imgh.value)
+        } else if (imgType.value == "url") {//这种方式，频繁访问是有问题的
+            const imgUrl = proxy?.$APILOCAL.imageRandomUrl(imgw.value, imgh.value)
             tempImgUrl.value = imgUrl
         }
         resolve({})
@@ -248,7 +251,7 @@ function delayRefreshImg() {
             await refreshImg()
             refershCount.value++
             delayRefreshImg()
-        },0)
+        }, 0)
     }
 }
 function onClickStopRefreshImg() {
