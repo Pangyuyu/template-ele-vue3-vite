@@ -208,8 +208,8 @@ const imgTypeOptions = ref([{
     label: 'URL地址访问',
 }])
 const tempImgUrl = ref("")
-const imgw = ref(800)
-const imgh = ref(600)
+const imgw = ref(64)
+const imgh = ref(64)
 const refreshFlag = ref(false) //true：允许自动刷新；false:不允许
 const refershCount = ref(0)
 function onClickStartRefreshImg() {
