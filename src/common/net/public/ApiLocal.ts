@@ -96,10 +96,17 @@ export default class ApiLocal {
     static getQr(qrContent: string, level: string, size: number) {
         return ApiBase.POST("/qr")
             .withBody({
+                mode:"base64",
                 content: qrContent,
                 level: level,
                 size: size
             })
             .withEndpoint(ApiLocal.getBaseUrl())
+    }
+    static getQrUrl(qrContent: string, level: string, size: number) {
+        /*若直接返回地址，在快速刷新的时候，会导致图片不会刷新*/
+        const timestamp=new Date().getTime()
+        const urlEncode=encodeURIComponent(qrContent)
+        return `${LOCAL_BASEURL}:${LOCAL_PORT}/qr?timestamp=${timestamp}&mode=blob&size=${size}&level=${level}&content=${urlEncode}`
     }
 }

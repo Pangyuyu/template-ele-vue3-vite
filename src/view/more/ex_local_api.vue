@@ -78,6 +78,11 @@
                     </span>
                 </template>
                 <div class="vue-ctrl">
+                    <div class="hint">二维码获取方式：</div>
+                    <el-select v-model="qrType">
+                        <el-option v-for="item in qrTypeOptions" :key="item.value" :label="item.label"
+                            :value="item.value" />
+                    </el-select>
                     <div class="hint">二维码质量：</div>
                     <el-select v-model="qrLevel">
                         <el-option v-for="item in qrLevelOptions" :key="item.value" :label="item.label"
@@ -85,8 +90,10 @@
                     </el-select>
                     <div class="hint">二维码大小：</div>
                     <el-input-number v-model="qrSize" :min="32" :max="1000000" size="small" style="max-height: 35px;" />
+                </div>
+                <div class="vue-ctrl">
                     <div class="hint">二维码内容：</div>
-                    <el-input style="width:420px" v-model="qrContent" placeholder="请输入要生成的二维码内容" />
+                    <el-input style="width:620px" v-model="qrContent" placeholder="请输入要生成的二维码内容" />
                     <el-button @click="onClickCreateQr()">生成二维码</el-button>
                 </div>
                 <div class="temp-img" v-cloak>
@@ -260,10 +267,18 @@ function onClickStopRefreshImg() {
 //#endregion
 
 //#region 二维码
+const qrType = ref("base64")
 const qrSize = ref(256)
 const qrLevel = ref("M")
 const qrContent = ref("")
 const tempQrUrl = ref("")
+const qrTypeOptions = ref([{
+    value: 'base64',
+    label: 'Base64',
+},{
+    value: 'url',
+    label: 'URL地址访问',
+}])
 const qrLevelOptions = ref([{
     value: 'L',
     label: '低质量(L)',
@@ -278,12 +293,16 @@ const qrLevelOptions = ref([{
     label: '超高质量(H)',
 }])
 async function onClickCreateQr() {
-    const qrRes = await proxy?.$APILOCAL.getQr(qrContent.value, qrLevel.value, qrSize.value).exec()
-    if (qrRes.isFail) {
-        ModalTool.ShowDialogWarn("提醒", qrRes.message)
-        return
+    if (qrType.value == "base64") {
+        const qrRes = await proxy?.$APILOCAL.getQr(qrContent.value, qrLevel.value, qrSize.value).exec()
+        if (qrRes.isFail) {
+            ModalTool.ShowDialogWarn("提醒", qrRes.message)
+            return
+        }
+        tempQrUrl.value = `Data:image/jpg;base64,${qrRes.body.data}`
+    }else{
+        tempQrUrl.value =proxy?.$APILOCAL.getQrUrl(qrContent.value, qrLevel.value, qrSize.value)
     }
-    tempQrUrl.value = `Data:image/jpg;base64,${qrRes.body.data}`
 }
 //#endregion
 </script>
