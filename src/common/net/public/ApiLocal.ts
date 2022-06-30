@@ -73,8 +73,7 @@ export default class ApiLocal {
     static imageRandomBlob(w: number, h: number): Promise<any> {
         /*下面的方法，可用以非常快速的方式刷新图片*/
         return new Promise((resolve, __) => {
-            const timestamp = new Date().getTime()
-            const url = `${LOCAL_BASEURL}:${LOCAL_PORT}/image/random?timestamp=${timestamp}&t=blob&w=${w}&h=${h}`
+            const url = `${LOCAL_BASEURL}:${LOCAL_PORT}/image/random?t=blob&w=${w}&h=${h}`
             axios({
                 method: 'get',
                 url: url,
