@@ -65,10 +65,12 @@
                     <el-button @click="onClickStopRefreshImg()" style="margin-left: 10px;" :disabled="!refreshFlag">
                         停止刷新图片</el-button>
                     <div style="margin-left:10px">{{ refershCount }}</div>
+                    <el-button @click="onClickClearTempImg()" style="margin-left:10px">清空</el-button>
                 </div>
 
                 <div class="temp-img">
-                    <img :src="tempImgUrl" />
+                    <!-- <img v-for="(imgSrc,index) in tempImgList" :key="index" :src="imgSrc" style="margin:0"/> -->
+                    <img :src="tempImgUrl"/>
                 </div>
             </el-tab-pane>
             <el-tab-pane name="ex_qr">
@@ -214,6 +216,7 @@ const imgTypeOptions = ref([{
     value: 'url',
     label: 'URL地址访问',
 }])
+const tempImgList=ref(new Array<any>())
 const tempImgUrl = ref("")
 const imgw = ref(64)
 const imgh = ref(64)
@@ -223,6 +226,7 @@ function onClickStartRefreshImg() {
     if (refreshFlag.value) {//若已经允许了，就不可以点击此按钮
         return
     }
+    tempImgList.value=[]
     refreshFlag.value = true
     refershCount.value = 0
     delayRefreshImg()
@@ -240,12 +244,15 @@ function refreshImg() {
                 return
             }
             tempImgUrl.value = `Data:image/jpg;base64,${refreshRes.body.data}`
+            // tempImgList.value.push(`Data:image/jpg;base64,${refreshRes.body.data}`)
         } else if (imgType.value == "blob") {
             const res = await proxy?.$APILOCAL.imageRandomBlob(imgw.value, imgh.value)
             tempImgUrl.value = window.URL.createObjectURL(res.data)
+            // tempImgList.value.push(window.URL.createObjectURL(res.data))
         } else if (imgType.value == "url") {//这种方式，频繁访问是有问题的
             const imgUrl = proxy?.$APILOCAL.imageRandomUrl(imgw.value, imgh.value)
             tempImgUrl.value = imgUrl
+            // tempImgList.value.push(imgUrl)
         }
         resolve({})
     })
@@ -264,6 +271,9 @@ function delayRefreshImg() {
 function onClickStopRefreshImg() {
     refreshFlag.value = false
 }
+function onClickClearTempImg(){
+    tempImgList.value=[]
+}
 //#endregion
 
 //#region 二维码
@@ -275,7 +285,7 @@ const tempQrUrl = ref("")
 const qrTypeOptions = ref([{
     value: 'base64',
     label: 'Base64',
-},{
+}, {
     value: 'url',
     label: 'URL地址访问',
 }])
@@ -300,8 +310,8 @@ async function onClickCreateQr() {
             return
         }
         tempQrUrl.value = `Data:image/jpg;base64,${qrRes.body.data}`
-    }else{
-        tempQrUrl.value =proxy?.$APILOCAL.getQrUrl(qrContent.value, qrLevel.value, qrSize.value)
+    } else {
+        tempQrUrl.value = proxy?.$APILOCAL.getQrUrl(qrContent.value, qrLevel.value, qrSize.value)
     }
 }
 //#endregion
@@ -341,13 +351,14 @@ async function onClickCreateQr() {
 .temp-img {
     border: 1px solid rgb(137, 132, 132);
     border-radius: 10px;
-    // display: flex;
-    // justify-content: center;
-    // align-items: center;
     width: 95%;
     height: 820px;
     overflow: auto;
     padding: 5px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    /*子元素之间取消空白间隙，并把项目放在容器顶部。*/
+    align-content: flex-start;    
 }
 
 .qr-img {
