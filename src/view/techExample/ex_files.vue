@@ -58,9 +58,10 @@
             </template>
             <!--选择目录（文件）、创建文件、读文件、写文件、保存文件 -->
             <div class="file-basic">
-                <el-form>
-                    
-                </el-form>
+                后续有空再写...
+                <!-- <el-form :data="formDownInfo">
+                    <el-form-item label="下载文件路径"></el-form-item>
+                </el-form> -->
             </div>
         </el-tab-pane>
     </el-tabs>
@@ -69,7 +70,7 @@ import { json } from "stream/consumers";
 
 <script lang="ts" setup>
 // @ts-nocheck
-import { ref, onMounted, watch } from "vue";
+import { ref, onMounted, watch, reactive } from "vue";
 import ApiModel from "@/common/data/api-model.json"
 import { ElMessage } from 'element-plus'
 const activeName = ref("ex_path")
@@ -134,6 +135,14 @@ async function onClickSaveFile() {
         type: "success",
     })
 }
+//#endregion
+
+//#region 下载文件
+const formDownInfo=reactive({
+    url:'',
+    fileName:'',
+    md5:''
+})
 //#endregion
 </script>
 

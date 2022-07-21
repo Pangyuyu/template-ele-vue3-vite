@@ -2,7 +2,6 @@
 const { Log } = require("../utils/log")
 const log = new Log().withTag("tool-api-path-example")
 const path = require("path")
-
 function run_basename(pathstr, ext) {
     if (ext) {
         return path.basename(pathstr, ext)
