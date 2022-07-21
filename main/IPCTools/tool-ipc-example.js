@@ -1,8 +1,8 @@
 /*此处是IPC通信示例，示例来自：
   https://www.electronjs.org/zh/docs/latest/tutorial/ipc
 */
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-ipc-example")
 const { dialog, nativeTheme } = require('electron')
 const path = require('path')
 

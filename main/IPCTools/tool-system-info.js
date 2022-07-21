@@ -1,7 +1,7 @@
 /*获取窗体或操作系统基本信息*/
 const os = require('os');
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-system-info")
 module.exports.ToolSystemInfo=function(){
     this.registerOn=function(ipcMain,mainWin){
         ipcMain.handle('tool-system-info',(event,args)=>{

@@ -1,6 +1,6 @@
 // electron/electron.js
-const { Log } = require("./logUtil")
-const log = new Log()
+const { Log } = require("./utils/log")
+const log = new Log().withTag("main/main.js")
 const { app, Tray, Menu, nativeImage, dialog } = require('electron');
 const { AppStart } = require("./AppStart")
 const { AppMenu } = require("./AppMenu")

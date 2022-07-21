@@ -3,8 +3,8 @@
 2.32位的electron需要在.npmrc或者.yarnrc中进行配置；
 3.指针类型使用：pointer 声明
 */
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-dll-example")
 module.exports.ToolDllExample = function () {
     this.registerOn = function (ipcMain, mainWin) {
         let libm = null

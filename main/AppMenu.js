@@ -2,7 +2,7 @@ const {
     Menu, dialog,Notification
 } = require('electron')
 const appPackage = require("../package.json") //当前package包内容
-const { Log } = require("./logUtil")
+const { Log } = require("./utils/log")
 const log = new Log()
 
 module.exports.AppMenu = function () {

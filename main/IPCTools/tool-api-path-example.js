@@ -1,6 +1,6 @@
 /*对于API操作：PATH*/
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-api-path-example")
 const path = require("path")
 
 function run_basename(pathstr, ext) {

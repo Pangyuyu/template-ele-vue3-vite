@@ -1,7 +1,7 @@
 /*窗体相关操作*/
 
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("ToolWindowExample")
 const { BrowserWindow } = require('electron')
 const path = require('path');
 // let __ChildWins=new Map()

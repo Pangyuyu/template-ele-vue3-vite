@@ -50,6 +50,19 @@
                 </div>
             </div>
         </el-tab-pane>
+        <el-tab-pane name="ex_down">
+            <template #label>
+                <span class="custom-tabs-label">
+                    <span>下载文件</span>
+                </span>
+            </template>
+            <!--选择目录（文件）、创建文件、读文件、写文件、保存文件 -->
+            <div class="file-basic">
+                <el-form>
+                    
+                </el-form>
+            </div>
+        </el-tab-pane>
     </el-tabs>
 </template>
 import { json } from "stream/consumers";

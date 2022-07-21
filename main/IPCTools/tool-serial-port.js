@@ -1,6 +1,6 @@
 /*串口通信*/
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-serial-port")
 module.exports.ToolSerialPort = function () {
     this.registerOn = function (ipcMain, mainWin) {
         mainWin.webContents.session.on("select-serial-port", (event, portList, webContents, callback) => {

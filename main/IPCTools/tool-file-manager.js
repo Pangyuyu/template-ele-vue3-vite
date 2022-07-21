@@ -1,9 +1,9 @@
 /*文件管理操作*/
-const { Log } = require("../logUtil")
+const { Log } = require("../utils/log")
 const { dialog } = require('electron')
 const fs = require("fs")
 const fsPromise = require('fs').promises //使用fs promises方法
-const log = new Log()
+const log = new Log().withTag("tool-file-manager")
 
 
 

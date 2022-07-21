@@ -1,5 +1,5 @@
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-pc-ble")
 /*windows测试结果
 1.noble
     报错Error: No compatible USB Bluetooth 4.0 device found!，

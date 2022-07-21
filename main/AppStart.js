@@ -1,6 +1,6 @@
 const { BrowserWindow } = require('electron')
 const path = require('path');
-const { Log } = require("./logUtil")
+const { Log } = require("./utils/log")
 const log = new Log()
 /**
  * APP启动时的方法封装

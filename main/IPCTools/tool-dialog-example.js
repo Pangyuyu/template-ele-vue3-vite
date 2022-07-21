@@ -1,6 +1,6 @@
-const { Log } = require("../logUtil")
+const { Log } = require("../utils/log")
 const { dialog } = require('electron')
-const log = new Log()
+const log = new Log().withTag("tool-dialog-example")
 module.exports.ToolDialogExample = function () {
     this.registerOn = function (ipcMain, mainWin) {
         ipcMain.handle('show-open-dialog-sync', (event, args) => {

@@ -7,11 +7,11 @@
 3.cprocess.execFile 回调不走
     真正的原因是 child_process.exec 的 timeout 默认是 0，这样回调永远不会走。
 */
-const { Log } = require("../logUtil")
+const { Log } = require("../utils/log")
 const cprocess = require('child_process');
 const path = require('path');
 const net = require('net');
-const log = new Log()
+const log = new Log().withTag("tool-local-server")
 let LOCALAPI_PID = -1 //本地服务子进程
 const { resolve } = require("path");
 const apiFileName = "yu-local-api"

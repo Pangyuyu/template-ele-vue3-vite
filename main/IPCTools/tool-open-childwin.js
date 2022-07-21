@@ -1,5 +1,5 @@
-const { Log } = require("../logUtil")
-const log = new Log()
+const { Log } = require("../utils/log")
+const log = new Log().withTag("tool-open-childwin")
 const { BrowserWindow } = require('electron')
 
 module.exports.ToolOpenChildwin = function () {
