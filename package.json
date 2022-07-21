@@ -9,7 +9,7 @@
   "email": "1633603801@qq.com",
   "url": "https://github.com/Pangyuyu/template-ele-vue3-vite/issues",
   "homepage": "https://pangyu_yanyan.gitee.io/know/",
-  "main": "electron/main.js",
+  "main": "main/main.js",
   "license": "MIT",
   "repository": {
     "type": "git",

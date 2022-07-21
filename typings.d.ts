@@ -1,5 +1,5 @@
 
-import PreLoadApi from './electron/PreloadApi'
+import PreLoadApi from './main/PreloadApi'
 export { };
 declare global {
   interface Window {
