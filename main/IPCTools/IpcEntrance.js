@@ -10,6 +10,7 @@ const { ToolDialogExample } = require('./tool-dialog-example')
 const {ToolFileManager}= require('./tool-file-manager')
 const {ToolPcBle}=require('./tool-pc-ble')
 const {ToolLocalServer}=require("./tool-local-server")
+const {ToolSafe} =require("./tool-safe")
 const toolOpenChildWin = new ToolOpenChildwin()
 const toolIpcExample = new ToolIpcExample()
 const toolSerialPort = new ToolSerialPort()
@@ -21,6 +22,7 @@ const toolDialogExample = new ToolDialogExample()
 const toolFileManager=new ToolFileManager()
 const toolPcBle =new ToolPcBle()
 const toolLocalServer=new ToolLocalServer()
+const toolSafe=new ToolSafe()
 module.exports.IpcEntrance = function () {
     this.mainWin = null;
     this.removeAll=function(){
@@ -37,6 +39,7 @@ module.exports.IpcEntrance = function () {
         toolFileManager.unRegister(ipcMain)
         toolPcBle.unRegister(ipcMain)
         toolLocalServer.unRegister(ipcMain)
+        toolSafe.unRegister(ipcMain)
     },
     this.register = function (mainWin) {
         this.mainWin = mainWin
@@ -52,5 +55,6 @@ module.exports.IpcEntrance = function () {
         toolFileManager.registerOn(ipcMain,this.mainWin)
         toolPcBle.registerOn(ipcMain,this.mainWin)
         toolLocalServer.registerOn(ipcMain,this.mainWin)
+        toolSafe.registerOn(ipcMain,this.mainWin)
     }
 }
