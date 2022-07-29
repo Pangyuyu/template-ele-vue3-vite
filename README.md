@@ -29,3 +29,14 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 
   - 相关链接
     - [Electron sandbox_bundle.js script failed to run](https://github.com/electron/electron/issues/32133)
+
+## 随机生成图片测速结果
+
+|电脑|场景|次数/10秒|
+|--|--|--|
+|i7-1255u win11|物理机 插电源|2082~2865|
+|i7-1255u win11|物理机 不插电源|1026~1120|
+|i7-1255u win11|虚拟机 插电源|878~1803|
+|i7-1255u win11|虚拟机 不插电源|185|
+|i7-8850u win10|物理机 插电源|727~1462|
+|i7-8850u win10|物理机 不插电源|728~835|

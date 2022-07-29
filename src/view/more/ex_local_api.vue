@@ -109,7 +109,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, getCurrentInstance, ComponentInternalInstance, nextTick } from "vue";
+import { ref, getCurrentInstance, ComponentInternalInstance } from "vue";
 import DialogCustomerEdit from '@/view/dialog/CustomerEdit.vue'//客户信息编辑弹窗
 import ModalTool from "@/common/ui/ModalTool";
 
