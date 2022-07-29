@@ -70,4 +70,7 @@ contextBridge.exposeInMainWorld('EPre', {
     localExeCheckStart:()=>ipcRenderer.invoke('local-exe-check',{}),
     localExeStop: (args) => ipcRenderer.invoke('local-exe-stop', args),
     localFindAvailablePort:()=>ipcRenderer.invoke('local-find-available-port',{}),
+
+    appSafeEncrypt:(plainText)=>ipcRenderer.invoke("app-safe-encrypt",{plainText:plainText}),
+    appSafeDecrypt:(encrypted)=>ipcRenderer.invoke("app-safe-decrypt",{encrypted:encrypted}),
 })

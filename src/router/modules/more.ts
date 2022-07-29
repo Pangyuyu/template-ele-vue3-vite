@@ -8,6 +8,10 @@ const techExample = {
             path: "/more/ex_local_api",
             component: () => import("@/view/more/ex_local_api.vue")
         },
+        {
+            path: "/more/ex_safe_cache",
+            component: () => import("@/view/more/ex_safe_cache.vue")
+        }
     ],
 };
 export default techExample;

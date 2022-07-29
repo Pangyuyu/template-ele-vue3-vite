@@ -46,6 +46,12 @@
                 "index": "/more/ex_local_api",
                 "path": "/more/ex_local_api",
                 "icon": "CoffeeCup"
+            },
+            {
+                "title": "安全存储",
+                "index": "/more/ex_safe_cache",
+                "path": "/more/ex_safe_cache",
+                "icon": "CoffeeCup"
             }
         ]
     }

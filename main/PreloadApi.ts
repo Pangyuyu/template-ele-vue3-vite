@@ -124,4 +124,14 @@ export default interface PreLoadApi {
      * 发现可用端口号
      */
     localFindAvailablePort():Promise<any>,
+    /**
+    * 安全存储加密字符串
+    * @param plainText 原始字符串
+    */
+   appSafeEncrypt(plainText:string):Promise<any>,
+   /**
+    * 安全存储解密字符串
+    * @param encrypted 已加密的数据
+    */
+   appSafeDecrypt(encrypted:string):Promise<any>,
 }
