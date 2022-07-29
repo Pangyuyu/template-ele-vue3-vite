@@ -62,7 +62,7 @@
     },
     "files": [
       "dist/**/*",
-      "electron/**/*"
+      "main/**/*"
     ],
     "directories": {
       "buildResources": "assets",
@@ -103,6 +103,7 @@
     "sass-loader": "13.0.2",
     "script-loader": "^0.7.2",
     "scss": "^0.2.4",
+    "terser": "^5.14.2",
     "typescript": "^4.7.4",
     "unplugin-auto-import": "0.10.2",
     "unplugin-vue-components": "0.21.2",

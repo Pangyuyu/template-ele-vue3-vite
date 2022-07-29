@@ -44,7 +44,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 1500,
     // 打包配置
     assetsDir: "./static", // 路径
-    brotliSize: false, // 默认为 true
+    reportCompressedSize:false,//不报告压缩包大小
     sourcemap: false,
     rollupOptions: {
       input: {
