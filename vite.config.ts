@@ -52,7 +52,7 @@ export default defineConfig({
         main: path.resolve(__dirname, "index.html"),
       },
       output: {
-        manualChunks(id) {
+        manualChunks(id:string) {
           if (id.includes("node_modules")) {
             return id
               .toString()
@@ -81,7 +81,7 @@ export default defineConfig({
         {
           postcssPlugin: "internal:charset-removal",
           AtRule: {
-            charset: (atRule) => {
+            charset: (atRule:any) => {
               if (atRule.name === "charset") {
                 atRule.remove();
               }

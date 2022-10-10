@@ -22,6 +22,7 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { ArrowLeft, ArrowRight } from '@element-plus/icons-vue'
+import ModalTool from '@/common/ui/ModalTool';
 const plainText = ref("")
 const encrypted = ref("")
 async function onClickEncrypt() {
@@ -29,7 +30,13 @@ async function onClickEncrypt() {
     encrypted.value = res.data
 }
 async function onClickDecrypt() {
+    plainText.value=""
     const res = await window.EPre.appSafeDecrypt(encrypted.value)
+    console.log('解密结果',res)
+    if(res.isFail){
+        ModalTool.ShowDialogWarn("解密失败",res.message)
+        return
+    }
     plainText.value = res.data
 }
 function onClickOpenWindowByUrl(url: string) {
