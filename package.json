@@ -1,7 +1,7 @@
 {
   "name": "guxing-electron-template",
   "id": "guxing-electron-template",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "description": "electron+ts+vue3+vite模板",
   "private": true,
   "author": "china_pangyu <1633603801@qq.com>",
@@ -35,7 +35,6 @@
     "productName": "孤星Electron示例",
     "artifactName": "${productName}_${version}_${os}_${arch}.${ext}",
     "copyright": "Copyright © 2022 ${author}",
-    "afterPack": "./afterPackHook.js",
     "win": {
       "target": [
         "nsis"
@@ -105,7 +104,6 @@
     "unplugin-auto-import": "0.11.2",
     "unplugin-vue-components": "0.22.8",
     "vite": "3.1.6",
-    "vite-plugin-components": "0.13.3",
     "vite-plugin-compression": "0.5.1",
     "vite-plugin-optimize-persist": "^0.1.2",
     "vite-plugin-package-config": "^0.1.1",
