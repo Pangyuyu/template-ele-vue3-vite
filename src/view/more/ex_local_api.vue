@@ -365,4 +365,5 @@ async function onClickCreateQr() {
     border: 1px solid #aba8a8;
     border-radius: 10px;
 }
+
 </style>

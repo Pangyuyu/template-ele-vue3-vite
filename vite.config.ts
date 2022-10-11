@@ -3,7 +3,9 @@ import PkgConfig from 'vite-plugin-package-config'
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
 import path from "path";
-import ViteComponents, { ElementPlusResolver } from "vite-plugin-components";
+// import ViteComponents, { ElementPlusResolver } from "vite-plugin-components";
+import Components from 'unplugin-vue-components/vite'
+import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 import {createStyleImportPlugin,ElementPlusResolve} from "vite-plugin-style-import";
 export default defineConfig({
   base: "./", // 访问路径
@@ -11,10 +13,12 @@ export default defineConfig({
     PkgConfig(),
     OptimizationPersist(),
     vue(),
-    ViteComponents({
-      customComponentResolvers: [
-        ElementPlusResolver(), // 官方插件提供
+    Components({
+      resolvers: [
+        ElementPlusResolver(),
       ],
+      dts:true,
+      include: [/\.vue$/, /\.vue\?vue/, /\.md$/],
     }),
     createStyleImportPlugin({
       resolves:[
