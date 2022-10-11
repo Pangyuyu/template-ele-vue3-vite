@@ -121,10 +121,11 @@ function getPanelLabelClass(lableName: string) {
     }
     return 'system-text'
 }
-//#region blob
 function onClickOpenWindowByUrl(url: string) {
     window.EPre.openChildWin("...", url)
 }
+//#region blob
+
 function onClickBlobBasic() {
     const msg = "Hello World"
     const blob = new Blob([msg], { type: "text/plain" })
