@@ -70,6 +70,37 @@
                     </div>
                 </div>
             </el-tab-pane>
+            <el-tab-pane name="ex_arraybuffer">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span :class="getPanelLabelClass('ex_arraybuffer')">ArrayBuffer</span>
+                    </span>
+                </template>
+                <div class="panel-content ex_blob_content">
+                    <el-button type="primary" @click="onClickArrayBufferTest()">测试</el-button>
+                </div>
+                <div class="panel-warn">
+                    <div class="item">1.ArrayBuffer 对象用来表示通用的、固定长度的原始二进制数据缓冲区。</div>
+                    <div class="item">2.ArrayBuffer 的内容不能直接操作，只能通过 DataView 对象或 TypedArrray 对象来访问。这些对象用于读取和写入缓冲区内容。
+                    </div>
+                    <div class="item">3.详情查看<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer')">ArrayBuffer</a>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="ex_format_convert">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span :class="getPanelLabelClass('ex_format_convert')">格式转换</span>
+                    </span>
+                </template>
+                <div class="panel-content ex_blob_content">
+                    
+                </div>
+                <div class="panel-warn">
+                    
+                </div>
+            </el-tab-pane>
         </el-tabs>
 
     </div>
@@ -172,10 +203,10 @@ const readFunOptions = ref([
         value: 'readAsBinaryString',
         label: "读文件原始二进制数据"
     },
-    {
-        value: 'readMD5',
-        label: "读取文件MD5"
-    }
+    // {
+    //     value: 'readMD5',
+    //     label: "读取文件MD5"
+    // }
 ])
 /*以下方法，都是读取指定 Blob ，区别在于读取完成后result中返回的信息
 1.readAsArrayBuffer 读取完成之后，result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象；
@@ -188,6 +219,7 @@ function onClickReadFile(item) {
     const reader = new FileReader();
     reader.onload = (e) => {
         console.log(item.name, "读取完成\n", e.target.result)
+        ModalTool.ShowDialogSuccess(item.name, e.target.result.toString())
     }
     reader.onerror = (e) => {
         console.log(item.name, "读取发生错误", e)
@@ -201,20 +233,35 @@ function onClickReadFile(item) {
             console.log(`读取进度: ${Math.round(percent)} %`);
         }
     }
-    if(item.readFun=="readAsText"){
+    if (item.readFun == "readAsText") {
         reader.readAsText(item.file)
-    }else if(item.readFun=="readAsDataURL"){
+    } else if (item.readFun == "readAsDataURL") {
         reader.readAsDataURL(item.file)
-    }else if(item.readFun=="readAsArrayBuffer"){
+    } else if (item.readFun == "readAsArrayBuffer") {
         reader.readAsArrayBuffer(item.file)
-    }else if(item.readFun=="readAsBinaryString"){
+    } else if (item.readFun == "readAsBinaryString") {
         reader.readAsBinaryString(item.file)
-    }else if(item.readFun=="readMD5"){
+    } else if (item.readFun == "readMD5") {
         //暂未实现
     }
-    
+
 }
 //#endregion 
+
+//#region ArrayBuffer
+function onClickArrayBufferTest() {
+    const buffer = new ArrayBuffer(16)
+    console.log("buffer.byteLength", buffer.byteLength)
+    console.log("buffer.slice(0, 8)", buffer.slice(0, 8));  // 16
+
+
+    const isView01 = ArrayBuffer.isView(buffer)   // false
+    console.log("buffer isView",isView01); 
+    const view = new Uint32Array(buffer);
+    const isView02 = ArrayBuffer.isView(view)     // true
+    console.log("view isView",isView02);
+}
+//#endregion
 </script>
 
 <style lang="scss" scoped>
