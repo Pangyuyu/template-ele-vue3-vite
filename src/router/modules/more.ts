@@ -11,6 +11,10 @@ const techExample = {
         {
             path: "/more/ex_safe_cache",
             component: () => import("@/view/more/ex_safe_cache.vue")
+        },
+        {
+            path: "/more/ex_js_binary",
+            component: () => import("@/view/more/ex_js_binary.vue")
         }
     ],
 };

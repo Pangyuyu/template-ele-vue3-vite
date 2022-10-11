@@ -52,6 +52,12 @@
                 "index": "/more/ex_safe_cache",
                 "path": "/more/ex_safe_cache",
                 "icon": "CoffeeCup"
+            },
+            {
+                "title": "JS二进制",
+                "index": "/more/ex_js_binary",
+                "path": "/more/ex_js_binary",
+                "icon": "CoffeeCup"
             }
         ]
     }
