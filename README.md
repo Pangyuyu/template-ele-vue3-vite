@@ -40,3 +40,8 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 |i7-1255u win11|虚拟机 不插电源|185|
 |i7-8850u win10|物理机 插电源|727~1462|
 |i7-8850u win10|物理机 不插电源|728~835|
+
+## 代码规范
+
+- 主进程所有代码在main，使用JS,遵循CommonJS方式
+- 渲染进程使用TS，
