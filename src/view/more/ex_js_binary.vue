@@ -55,7 +55,7 @@
                                         <el-option v-for="item in readFunOptions" :key="item.value" :label="item.label"
                                             :value="item.value" />
                                     </el-select>
-                                    <el-button type="primary" size="small" @click="onClickReadFile(scoped.row)">读取文件...
+                                    <el-button :loading="scoped.row.isReading" type="primary" size="small" @click="onClickReadFile(scoped.row)">读取文件...
                                     </el-button>
                                 </div>
                             </template>
@@ -187,7 +187,8 @@ function listChooseFiles(targetFiles) {
             type: file.type,
             webkitRelativePath: file.webkitRelativePath,
             lastModified: file.lastModified,
-            lastModifiedStr: time.timestamp2Str(file.lastModified, "yyyy-MM-dd hh:mm:ss")
+            lastModifiedStr: time.timestamp2Str(file.lastModified, "yyyy-MM-dd hh:mm:ss"),
+            isReading:false,
         })
     }
     tableFiles.value = tempFiles
@@ -228,13 +229,7 @@ function onClickReadFile(item) {
     if (item.readFun != "readMD5") {
         const reader = new FileReader();
         reader.onload = (e) => {
-            if (item.readFun == "readMD5") {
-                //e.target.result.toString() d41d8cd98f00b204e9800998ecf8427e d41d8cd98f00b204e9800998ecf8427e
-                const md5 = SparkMD5.hashBinary(e.target.result.toString());
-                ModalTool.ShowDialogSuccess(item.name, md5)
-            } else {
-
-            }
+            item.isReading=false
             console.log(item.name, "读取完成\n", e.target.result)
             ModalTool.ShowDialogSuccess(item.name, e.target.result.toString())
         }
@@ -250,6 +245,7 @@ function onClickReadFile(item) {
                 console.log(`读取进度: ${Math.round(percent)} %`);
             }
         }
+        item.isReading=true
         if (item.readFun == "readAsText") {
             reader.readAsText(item.file)
         } else if (item.readFun == "readAsDataURL") {
@@ -270,8 +266,10 @@ function onClickReadFile(item) {
 }
 //读取小文件MD5的方法
 function readMd5SmallFile(item) {
+    item.isReading=true
     const reader = new FileReader();
     reader.onload = (e) => {
+        item.isReading=false
         const md5 = SparkMD5.hashBinary(e.target.result.toString());
         ModalTool.ShowDialogSuccess(item.name, md5)
     }
@@ -279,6 +277,7 @@ function readMd5SmallFile(item) {
 }
 //读取大文件MD5的方法
 function readMd5BigFile(item) {
+    item.isReading=true
     const sliceLength = 10;//此处分十片进行读取
     const chunkSize = Math.ceil(item.file.size / sliceLength);
     const fileReader = new FileReader();
@@ -290,6 +289,7 @@ function readMd5BigFile(item) {
             index += chunkSize;
             loadFile();
         } else {
+            item.isReading=false
             ModalTool.ShowDialogSuccess(item.name, md5.end())
         }
     };
