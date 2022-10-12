@@ -8,30 +8,18 @@
                     </span>
                 </template>
                 <div class="panel-content gradient-content">
-                    <div class="img-outer">
-                        <div class="img-content" :style="linear_style">
-
-                        </div>
+                    <div class="img-outer alpha-background-image">
+                        <div class="img-content" :style="linear_style"></div>
+                        <div class="img-style">{{linear_style}}</div>
                     </div>
                     <div class="img-setting">
                         <el-form :model="formDataLinear" label-width="120px" label-position="top">
-                            <!-- <el-form-item label="起始点位置">
-                                <el-select v-model="formDataLinear.sideOrCorner" placeholder="起始点位置">
-                                    <el-option label="left" value="left" />
-                                    <el-option label="right" value="right" />
-                                    <el-option label="top" value="top" />
-                                    <el-option label="bottom" value="bottom" />
-                                </el-select>
-                            </el-form-item> -->
-                            <!-- <el-form-item label="起始点垂直位置">
-                                <el-select v-model="formDataLinear.sideOrCornerV" placeholder="起始点垂直位置">
-                                    <el-option label="top" value="top" />
-                                    <el-option label="bottom" value="bottom" />
-                                </el-select>
-                            </el-form-item> -->
                             <el-form-item label="渐变方向">
-                                <el-input-number v-model="formDataLinear.angle" :min="0" :max="360" />
-                                <div class="angle-hint">top:0deg;bottom:180deg;left:270deg;right:90deg;</div>
+                                <div>
+                                    <el-input-number v-model="formDataLinear.angle" :min="0" :max="360" />
+                                    <div class="angle-hint">top:0deg;bottom:180deg;left:270deg;right:90deg;</div>
+                                </div>
+
                             </el-form-item>
                             <el-form-item label="渐变颜色">
                                 <el-table :data="formDataLinear.colorStopList" border height="420" width="520">
@@ -40,17 +28,10 @@
                                             <el-checkbox v-model="scoped.row.enable" size="small" />
                                         </template>
                                     </el-table-column>
-                                    <el-table-column label="颜色名称" width="160">
+                                    <el-table-column label="颜色" width="90">
                                         <template #default="scoped">
-                                            <div class="color-clm">
-                                                <div class="color-hint" :style="{ background: scoped.row.color }"></div>
-                                                <el-select v-model="scoped.row.color" placeholder="Select" size="small">
-                                                    <el-option v-for="item in colorOptions" :key="item.value"
-                                                        :label="item.label" :value="item.value"
-                                                        :style="{'background-color': item.value}" />
-                                                </el-select>
-                                            </div>
-
+                                            <color-picker v-model:pureColor="scoped.row.color"
+                                                v-model:gradientColor="pikcerGradientColor" />
                                         </template>
                                     </el-table-column>
                                     <el-table-column label="起始位置(%)" width="160">
@@ -68,10 +49,11 @@
                                 </el-table>
                             </el-form-item>
                             <el-form-item>
-                                <el-button type="primary" style="width:200px" @click="onClickSetLinearColor()">设置</el-button>
+                                <el-button type="primary" style="width:200px" @click="onClickSetLinearColor()">设置
+                                </el-button>
                             </el-form-item>
                         </el-form>
-                        
+
                     </div>
                 </div>
                 <div class="panel-warn">
@@ -109,11 +91,14 @@
                 </div>
             </el-tab-pane>
         </el-tabs>
+
     </div>
 </template>
 
 <script lang="ts" setup>
 import { getCurrentInstance, ComponentInternalInstance, ref, onMounted } from 'vue'
+import { ColorPicker } from "vue3-colorpicker";
+import "vue3-colorpicker/style.css";
 const activeName = ref("ex_linear-gradient")
 function getPanelLabelClass(lableName: string) {
     if (activeName.value == lableName) {
@@ -125,79 +110,73 @@ function onClickOpenWindowByUrl(url: string) {
     window.EPre.openChildWin("...", url)
 }
 onMounted(() => {
-    colorOptions.value = colorListStr.split(",").map(item => {
-        return {
-            value: item,
-            label: item
-        }
-    })
     onClickSetLinearColor()
 })
 //#region 线性渐变 
-//linear-gradient(red 0%, orange 10% 30%, yellow 50% 70%, green 90% 100%);
+const pikcerGradientColor = ref("linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)");
 const linear_style = ref("")
 const formDataLinear = ref({
-    sideOrCorner:"right",
-    // sideOrCornerH: "right",
-    // sideOrCornerV: "bottom",
+    sideOrCorner: "right",
     angle: 0,
     colorStopList: [
         {
-            enable:true,
-            color: 'white',
-            start: 0,
+            enable: true,
+            color: 'rgb(5, 160, 69)',
+            start: -1,
             end: -1
         },
         {
-            enable:true,
-            color: 'red',
-            start: 30,
+            enable: true,
+            color: 'rgba(5, 160, 69, 0)',
+            start: -1,
             end: -1
         },
         {
-            enable:true,
-            color: 'green',
-            start: 50,
+            enable: false,
+            color: 'transparent',
+            start: -1,
             end: -1
         },
         {
-            enable:true,
-            color: 'aqua',
-            start: 70,
+            enable: false,
+            color: 'transparent',
+            start: -1,
             end: -1
         },
         {
-            enable:true,
-            color: 'olive',
-            start: 90,
+            enable: false,
+            color: 'transparent',
+            start: -1,
             end: -1
         }
     ]
 })
-const colorListStr = "aqua,black,blue,fuchsia,gray,green,lime,maroon,navy,olive,purple,red,silver,teal,white,yellow"
-const colorOptions = ref([])
-function onClickSetLinearColor(){
-    let styleList=["background: linear-gradient("]
+function onClickSetLinearColor() {
+    let styleList = ["background: linear-gradient("]
     // styleList.push("to ")
     // styleList.push(` ${formDataLinear.value.sideOrCorner}`)
     // styleList.push(",")
     styleList.push(`${formDataLinear.value.angle}deg`)
-    formDataLinear.value.colorStopList.map(item=>{
-        if(item.enable){
+    formDataLinear.value.colorStopList.map(item => {
+        if (item.enable) {
             styleList.push(`,${item.color}`)
-            if(item.start>-1){
+            if (item.start > -1) {
                 styleList.push(` ${item.start}%`)
             }
-            if(item.end>-1){
+            if (item.end > -1) {
                 styleList.push(` ${item.end}%`)
             }
-        }        
+        }
     })
     styleList.push(");")
-    linear_style.value=styleList.join("")
-    console.log("linear_style.value",linear_style.value)
+    linear_style.value = styleList.join("")
+    console.log("linear_style.value", linear_style.value)
 }
 //#endregion
+
+//#region 颜色选择器
+
+//endregion
 </script>
 
 <style lang="scss" scoped>
@@ -228,14 +207,21 @@ function onClickSetLinearColor(){
         flex-grow: 1;
         min-height: 620px;
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
 
         .img-content {
-            width: 600px;
-            height: 600px;
+            width: 560px;
+            height: 560px;
             border: 1px solid #c1c0c0;
+            border-radius: 300px;
+        }
+        .img-style{
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 }
@@ -245,6 +231,7 @@ function onClickSetLinearColor(){
     flex-direction: row;
     align-items: center;
     justify-content: center;
+
     .color-hint {
         min-width: 25px;
         min-height: 25px;
@@ -254,7 +241,11 @@ function onClickSetLinearColor(){
         border: 1px solid #ada9a9;
     }
 }
-.angle-hint{
+
+.angle-hint {
     padding-left: 5px;
+}
+.alpha-background-image {
+    background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTQwIDc5LjE2MDQ1MSwgMjAxNy8wNS8wNi0wMTowODoyMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTggKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6RDkzNzZFN0RDODhFMTFFOEExOUJFNkQ0MTNFM0Q2OTYiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6RDkzNzZFN0VDODhFMTFFOEExOUJFNkQ0MTNFM0Q2OTYiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDpEOTM3NkU3QkM4OEUxMUU4QTE5QkU2RDQxM0UzRDY5NiIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDpEOTM3NkU3Q0M4OEUxMUU4QTE5QkU2RDQxM0UzRDY5NiIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PktroGEAAAAoSURBVHjaYvz06RMDDPDy8sLZTAw4AOkSjP///4dzPn/+TAs7AAIMAG56COJosoI3AAAAAElFTkSuQmCC);
 }
 </style>
