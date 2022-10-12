@@ -223,6 +223,7 @@ const readFunOptions = ref([
 2.readAsBinaryString 读取完成之后，result 属性中将包含所读取文件的原始二进制数据；
 3.readAsDataURL 读取完成之后，result 属性中将包含一个data: URL 格式的 Base64 字符串以表示所读取文件的内容。
 4.readAsText 读取完成之后，result 属性中将包含一个字符串以表示所读取的文件内容。
+5.读取文件MD5，需要使用readAsBinaryString，然后再使用SparkMD5.hashBinary或者md5.appendBinary
 */
 function onClickReadFile(item) {
     console.log(item.name, item.readFun)
@@ -252,7 +253,7 @@ function onClickReadFile(item) {
             reader.readAsDataURL(item.file)
         } else if (item.readFun == "readAsArrayBuffer") {
             reader.readAsArrayBuffer(item.file)
-        } else if (item.readFun == "readAsBinaryString" || item.readFun == "readMD5") {
+        } else if (item.readFun == "readAsBinaryString") {
             reader.readAsBinaryString(item.file)
         }
     } else {
