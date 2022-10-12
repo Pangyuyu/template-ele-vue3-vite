@@ -38,10 +38,10 @@
                         <span :class="getPanelLabelClass('ex_file')">File和FileReader</span>
                     </span>
                 </template>
-                <div class="panel-content ex_blob_content drag-region"
+                <div class="panel-content drag-region" style="flex-direction:column;"
                     :class="draging?'drag-region-active':'drag-region-normal'" @dragover="onFileDragover"
                     @drop="onFileDrop">
-                    <el-button type="primary" @click="onClickChooseFile()">选择文件</el-button>
+                    <el-button type="primary" @click="onClickChooseFile()" style="width:100%">选择文件</el-button>
                     <input ref="vInputFile" type="file" id="fileInput" :multiple="true" @change="fileOnChange" hidden>
                     <el-table :data="tableFiles" border height="520">
                         <el-table-column prop="name" label="文件名" width="320" />
@@ -67,6 +67,12 @@
                     <div class="item">2.File 对象是特殊类型的 Blob，且可以用在任意的 Blob 类型的 context 中。Blob 的属性和方法都可以用于 File 对象。</div>
                     <div class="item">3.input组件使用请查看<a href="javascript:void(0)"
                             @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input/file')">{{inputLinkDesc}}</a>
+                    </div>
+                    <div class="item">4.浏览器环境读取文件MD5可以使用SparkMD5。<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://segmentfault.com/a/1190000022920399')">前端使用js计算文件的MD5值</a>
+                    </div>
+                    <div class="item">5.读取大文件MD5,若是electron建议使用主进程读取。<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://segmentfault.com/a/1190000022924958')">Node.js计算文件的MD5值</a>
                     </div>
                 </div>
             </el-tab-pane>
@@ -98,7 +104,7 @@
                     待完善...
                 </div>
                 <div class="panel-warn">
-                    
+
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -112,6 +118,7 @@ import ModalTool from '@/common/ui/ModalTool';
 import img_js_binary from '@/assets/images/js_binary.jpg'
 import utils from '@/common/utils/utils'
 import time from '@/common/utils/time'
+import SparkMD5 from "spark-md5"
 const activeName = ref("ex_relational")
 const iframe_src = ref("")
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -197,6 +204,10 @@ const readFunOptions = ref([
         label: "读取Base64"
     },
     {
+        value: 'readMD5',
+        label: "读取文件MD5"
+    },
+    {
         value: 'readAsArrayBuffer',
         label: "读文件的ArrayBuffer数据对象"
     },
@@ -204,10 +215,7 @@ const readFunOptions = ref([
         value: 'readAsBinaryString',
         label: "读文件原始二进制数据"
     },
-    // {
-    //     value: 'readMD5',
-    //     label: "读取文件MD5"
-    // }
+
 ])
 /*以下方法，都是读取指定 Blob ，区别在于读取完成后result中返回的信息
 1.readAsArrayBuffer 读取完成之后，result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象；
@@ -217,35 +225,79 @@ const readFunOptions = ref([
 */
 function onClickReadFile(item) {
     console.log(item.name, item.readFun)
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        console.log(item.name, "读取完成\n", e.target.result)
-        ModalTool.ShowDialogSuccess(item.name, e.target.result.toString())
-    }
-    reader.onerror = (e) => {
-        console.log(item.name, "读取发生错误", e)
-    }
-    reader.onabort = (e) => {
-        console.log(item.name, "操作中断", e)
-    }
-    reader.onprogress = (e) => {
-        if (e.loaded && e.total) {
-            const percent = (e.loaded / e.total) * 100;
-            console.log(`读取进度: ${Math.round(percent)} %`);
+    if (item.readFun != "readMD5") {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            if (item.readFun == "readMD5") {
+                //e.target.result.toString() d41d8cd98f00b204e9800998ecf8427e d41d8cd98f00b204e9800998ecf8427e
+                const md5 = SparkMD5.hashBinary(e.target.result.toString());
+                ModalTool.ShowDialogSuccess(item.name, md5)
+            } else {
+
+            }
+            console.log(item.name, "读取完成\n", e.target.result)
+            ModalTool.ShowDialogSuccess(item.name, e.target.result.toString())
+        }
+        reader.onerror = (e) => {
+            console.log(item.name, "读取发生错误", e)
+        }
+        reader.onabort = (e) => {
+            console.log(item.name, "操作中断", e)
+        }
+        reader.onprogress = (e) => {
+            if (e.loaded && e.total) {
+                const percent = (e.loaded / e.total) * 100;
+                console.log(`读取进度: ${Math.round(percent)} %`);
+            }
+        }
+        if (item.readFun == "readAsText") {
+            reader.readAsText(item.file)
+        } else if (item.readFun == "readAsDataURL") {
+            reader.readAsDataURL(item.file)
+        } else if (item.readFun == "readAsArrayBuffer") {
+            reader.readAsArrayBuffer(item.file)
+        } else if (item.readFun == "readAsBinaryString" || item.readFun == "readMD5") {
+            reader.readAsBinaryString(item.file)
+        }
+    } else {
+        if (item.size < 10485760) {//如果小于10MB，就使用普通方式读取
+            readMd5SmallFile(item)
+        } else {
+            readMd5BigFile(item)
         }
     }
-    if (item.readFun == "readAsText") {
-        reader.readAsText(item.file)
-    } else if (item.readFun == "readAsDataURL") {
-        reader.readAsDataURL(item.file)
-    } else if (item.readFun == "readAsArrayBuffer") {
-        reader.readAsArrayBuffer(item.file)
-    } else if (item.readFun == "readAsBinaryString") {
-        reader.readAsBinaryString(item.file)
-    } else if (item.readFun == "readMD5") {
-        //暂未实现
-    }
 
+}
+//读取小文件MD5的方法
+function readMd5SmallFile(item) {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const md5 = SparkMD5.hashBinary(e.target.result.toString());
+        ModalTool.ShowDialogSuccess(item.name, md5)
+    }
+    reader.readAsBinaryString(item.file)
+}
+//读取大文件MD5的方法
+function readMd5BigFile(item) {
+    const sliceLength = 10;//此处分十片进行读取
+    const chunkSize = Math.ceil(item.file.size / sliceLength);
+    const fileReader = new FileReader();
+    const md5 = new SparkMD5();
+    let index = 0;
+    fileReader.onload = e => {
+        md5.appendBinary(e.target.result.toString());
+        if (index < item.file.size) {
+            index += chunkSize;
+            loadFile();
+        } else {
+            ModalTool.ShowDialogSuccess(item.name, md5.end())
+        }
+    };
+    const loadFile = () => {
+        const slice = item.file.slice(index, index + chunkSize);
+        fileReader.readAsBinaryString(slice);
+    }
+    loadFile();    
 }
 //#endregion 
 
@@ -257,10 +309,10 @@ function onClickArrayBufferTest() {
 
 
     const isView01 = ArrayBuffer.isView(buffer)   // false
-    console.log("buffer isView",isView01); 
+    console.log("buffer isView", isView01);
     const view = new Uint32Array(buffer);
     const isView02 = ArrayBuffer.isView(view)     // true
-    console.log("view isView",isView02);
+    console.log("view isView", isView02);
 }
 //#endregion
 </script>
