@@ -95,7 +95,7 @@
                     </span>
                 </template>
                 <div class="panel-content ex_blob_content">
-                    
+                    待完善...
                 </div>
                 <div class="panel-warn">
                     

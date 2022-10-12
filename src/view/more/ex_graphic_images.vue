@@ -69,7 +69,7 @@
                     </span>
                 </template>
                 <div class="panel-content">
-
+                    待完善...
                 </div>
                 <div class="panel-warn">
                     <div class="item">1.详情查看<a href="javascript:void(0)"
@@ -84,7 +84,7 @@
                     </span>
                 </template>
                 <div class="panel-content">
-
+                    待完善...
                 </div>
                 <div class="panel-warn">
 
