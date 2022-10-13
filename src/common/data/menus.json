@@ -64,6 +64,12 @@
                 "index": "/more/ex_graphic_images",
                 "path": "/more/ex_graphic_images",
                 "icon": "CoffeeCup"
+            },
+            {
+                "title": "JS交互",
+                "index": "/more/ex_js_exec",
+                "path": "/more/ex_js_exec",
+                "icon": "CoffeeCup"
             }
         ]
     }

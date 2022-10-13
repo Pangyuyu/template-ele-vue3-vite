@@ -19,6 +19,10 @@ const techExample = {
         {
             path: "/more/ex_graphic_images",
             component: () => import("@/view/more/ex_graphic_images.vue")
+        },
+        {
+            path: "/more/ex_js_exec",
+            component: () => import("@/view/more/ex_js_exec.vue")
         }
     ],
 };
