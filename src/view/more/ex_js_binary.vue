@@ -38,10 +38,10 @@
                         <span :class="getPanelLabelClass('ex_file')">File和FileReader</span>
                     </span>
                 </template>
-                <div class="panel-content ex_blob_content drag-region"
+                <div class="panel-content drag-region" style="flex-direction:column;"
                     :class="draging?'drag-region-active':'drag-region-normal'" @dragover="onFileDragover"
                     @drop="onFileDrop">
-                    <el-button type="primary" @click="onClickChooseFile()">选择文件</el-button>
+                    <el-button type="primary" @click="onClickChooseFile()" style="width:100%">选择文件</el-button>
                     <input ref="vInputFile" type="file" id="fileInput" :multiple="true" @change="fileOnChange" hidden>
                     <el-table :data="tableFiles" border height="520">
                         <el-table-column prop="name" label="文件名" width="320" />
@@ -55,7 +55,8 @@
                                         <el-option v-for="item in readFunOptions" :key="item.value" :label="item.label"
                                             :value="item.value" />
                                     </el-select>
-                                    <el-button type="primary" size="small" @click="onClickReadFile(scoped.row)">读取文件...
+                                    <el-button :loading="scoped.row.isReading" type="primary" size="small"
+                                        @click="onClickReadFile(scoped.row)">读取文件...
                                     </el-button>
                                 </div>
                             </template>
@@ -68,6 +69,43 @@
                     <div class="item">3.input组件使用请查看<a href="javascript:void(0)"
                             @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element/Input/file')">{{inputLinkDesc}}</a>
                     </div>
+                    <div class="item">4.浏览器环境读取文件MD5可以使用SparkMD5。<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://segmentfault.com/a/1190000022920399')">前端使用js计算文件的MD5值</a>
+                    </div>
+                    <div class="item">5.读取大文件MD5,若是electron建议使用主进程读取。<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://segmentfault.com/a/1190000022924958')">Node.js计算文件的MD5值</a>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="ex_arraybuffer">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span :class="getPanelLabelClass('ex_arraybuffer')">ArrayBuffer</span>
+                    </span>
+                </template>
+                <div class="panel-content ex_blob_content">
+                    <el-button type="primary" @click="onClickArrayBufferTest()">测试</el-button>
+                </div>
+                <div class="panel-warn">
+                    <div class="item">1.ArrayBuffer 对象用来表示通用的、固定长度的原始二进制数据缓冲区。</div>
+                    <div class="item">2.ArrayBuffer 的内容不能直接操作，只能通过 DataView 对象或 TypedArrray 对象来访问。这些对象用于读取和写入缓冲区内容。
+                    </div>
+                    <div class="item">3.详情查看<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/ArrayBuffer')">ArrayBuffer</a>
+                    </div>
+                </div>
+            </el-tab-pane>
+            <el-tab-pane name="ex_format_convert">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span :class="getPanelLabelClass('ex_format_convert')">格式转换</span>
+                    </span>
+                </template>
+                <div class="panel-content ex_blob_content">
+                    待完善...
+                </div>
+                <div class="panel-warn">
+
                 </div>
             </el-tab-pane>
         </el-tabs>
@@ -81,6 +119,7 @@ import ModalTool from '@/common/ui/ModalTool';
 import img_js_binary from '@/assets/images/js_binary.jpg'
 import utils from '@/common/utils/utils'
 import time from '@/common/utils/time'
+import SparkMD5 from "spark-md5"
 const activeName = ref("ex_relational")
 const iframe_src = ref("")
 const { proxy } = getCurrentInstance() as ComponentInternalInstance
@@ -90,10 +129,11 @@ function getPanelLabelClass(lableName: string) {
     }
     return 'system-text'
 }
-//#region blob
 function onClickOpenWindowByUrl(url: string) {
     window.EPre.openChildWin("...", url)
 }
+//#region blob
+
 function onClickBlobBasic() {
     const msg = "Hello World"
     const blob = new Blob([msg], { type: "text/plain" })
@@ -135,7 +175,7 @@ function listChooseFiles(targetFiles) {
         ModalTool.ShowToast("未选择任何文件", "info")
         return
     }
-    let tempFiles = []
+    let tempFiles = new Array<any>()
     //e.target.files不可以使用map,forEach
     for (let i = 0; i < targetFiles.length; i++) {
         const file = targetFiles[i]
@@ -148,7 +188,8 @@ function listChooseFiles(targetFiles) {
             type: file.type,
             webkitRelativePath: file.webkitRelativePath,
             lastModified: file.lastModified,
-            lastModifiedStr: time.timestamp2Str(file.lastModified, "yyyy-MM-dd hh:mm:ss")
+            lastModifiedStr: time.timestamp2Str(file.lastModified, "yyyy-MM-dd hh:mm:ss"),
+            isReading: false,
         })
     }
     tableFiles.value = tempFiles
@@ -165,6 +206,10 @@ const readFunOptions = ref([
         label: "读取Base64"
     },
     {
+        value: 'readMD5',
+        label: "读取文件MD5"
+    },
+    {
         value: 'readAsArrayBuffer',
         label: "读文件的ArrayBuffer数据对象"
     },
@@ -172,49 +217,116 @@ const readFunOptions = ref([
         value: 'readAsBinaryString',
         label: "读文件原始二进制数据"
     },
-    {
-        value: 'readMD5',
-        label: "读取文件MD5"
-    }
+
 ])
 /*以下方法，都是读取指定 Blob ，区别在于读取完成后result中返回的信息
 1.readAsArrayBuffer 读取完成之后，result 属性中保存的将是被读取文件的 ArrayBuffer 数据对象；
 2.readAsBinaryString 读取完成之后，result 属性中将包含所读取文件的原始二进制数据；
 3.readAsDataURL 读取完成之后，result 属性中将包含一个data: URL 格式的 Base64 字符串以表示所读取文件的内容。
 4.readAsText 读取完成之后，result 属性中将包含一个字符串以表示所读取的文件内容。
+5.读取文件MD5，需要使用readAsBinaryString，然后再使用SparkMD5.hashBinary或者md5.appendBinary
 */
 function onClickReadFile(item) {
     console.log(item.name, item.readFun)
-    const reader = new FileReader();
-    reader.onload = (e) => {
-        console.log(item.name, "读取完成\n", e.target.result)
-    }
-    reader.onerror = (e) => {
-        console.log(item.name, "读取发生错误", e)
-    }
-    reader.onabort = (e) => {
-        console.log(item.name, "操作中断", e)
-    }
-    reader.onprogress = (e) => {
-        if (e.loaded && e.total) {
-            const percent = (e.loaded / e.total) * 100;
-            console.log(`读取进度: ${Math.round(percent)} %`);
+    if (item.readFun != "readMD5") {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            item.isReading = false
+            if (!(e && e.target && e.target.result)) {
+                return
+            }
+            console.log(item.name, "读取完成\n", e.target.result)
+            ModalTool.ShowDialogSuccess(item.name, e.target.result.toString())
+        }
+        reader.onerror = (e) => {
+            console.log(item.name, "读取发生错误", e)
+        }
+        reader.onabort = (e) => {
+            console.log(item.name, "操作中断", e)
+        }
+        reader.onprogress = (e) => {
+            if (e.loaded && e.total) {
+                const percent = (e.loaded / e.total) * 100;
+                console.log(`读取进度: ${Math.round(percent)} %`);
+            }
+        }
+        item.isReading = true
+        if (item.readFun == "readAsText") {
+            reader.readAsText(item.file)
+        } else if (item.readFun == "readAsDataURL") {
+            reader.readAsDataURL(item.file)
+        } else if (item.readFun == "readAsArrayBuffer") {
+            reader.readAsArrayBuffer(item.file)
+        } else if (item.readFun == "readAsBinaryString") {
+            reader.readAsBinaryString(item.file)
+        }
+    } else {
+        if (item.size < 10485760) {//如果小于10MB，就使用普通方式读取
+            readMd5SmallFile(item)
+        } else {
+            readMd5BigFile(item)
         }
     }
-    if(item.readFun=="readAsText"){
-        reader.readAsText(item.file)
-    }else if(item.readFun=="readAsDataURL"){
-        reader.readAsDataURL(item.file)
-    }else if(item.readFun=="readAsArrayBuffer"){
-        reader.readAsArrayBuffer(item.file)
-    }else if(item.readFun=="readAsBinaryString"){
-        reader.readAsBinaryString(item.file)
-    }else if(item.readFun=="readMD5"){
-        //暂未实现
+
+}
+//读取小文件MD5的方法
+function readMd5SmallFile(item) {
+    item.isReading = true
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        item.isReading = false
+        if (!(e && e.target && e.target.result)) {
+            return
+        }
+        const md5 = SparkMD5.hashBinary(e.target.result.toString());
+        ModalTool.ShowDialogSuccess(item.name, md5)
     }
-    
+    reader.readAsBinaryString(item.file)
+}
+//读取大文件MD5的方法
+function readMd5BigFile(item) {
+    item.isReading = true
+    const sliceLength = 10;//此处分十片进行读取
+    const chunkSize = Math.ceil(item.file.size / sliceLength);
+    const fileReader = new FileReader();
+    const md5 = new SparkMD5();
+    let index = 0;
+    fileReader.onload = e => {
+        if (!(e && e.target && e.target.result)) {
+            return
+        }
+        md5.appendBinary(e.target.result.toString());
+        if (index < item.file.size) {
+            index += chunkSize;
+            loadFile();
+        } else {
+            item.isReading = false
+            ModalTool.ShowDialogSuccess(item.name, md5.end())
+        }
+    };
+    const loadFile = () => {
+        const slice = item.file.slice(index, index + chunkSize);
+        fileReader.readAsBinaryString(slice);
+    }
+    loadFile();
 }
 //#endregion 
+
+//#region ArrayBuffer
+function onClickArrayBufferTest() {
+    const buffer = new ArrayBuffer(16)
+    console.log("buffer.byteLength", buffer.byteLength)
+    console.log("buffer.slice(0, 8)", buffer.slice(0, 8));  // 16
+
+
+    const isView01 = ArrayBuffer.isView(buffer)   // false
+    console.log("buffer isView", isView01);
+    const view = new Uint32Array(buffer);
+    const isView02 = ArrayBuffer.isView(view)     // true
+    console.log("view isView", isView02);
+}
+
+//#endregion
 </script>
 
 <style lang="scss" scoped>
