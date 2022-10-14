@@ -384,20 +384,21 @@ function onClickSetRaidalStyle() {
         align-items: center;
 
         .img-content {
-            width: 560px;
-            height: 560px;
+            width: 500px;
+            height: 500px;
             border: 1px solid #c1c0c0;
             border-radius: 10px;
+            margin-top: 10px;
             // border-radius: 300px;
         }
 
 
         .img-style {
-            height: 35px;
+            flex-grow: 1;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         // @keyframes turnZ {
