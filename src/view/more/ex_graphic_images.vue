@@ -260,6 +260,18 @@ const formDataRadial = ref({
             enable: true,
             color: 'rgba(241, 98, 126,0.6)',
             start: 80,
+            end: 90
+        },
+        {
+            enable: true,
+            color: 'rgba(121, 134, 204, 0.59)',
+            start: 90,
+            end: -1
+        },
+        {
+            enable: false,
+            color: 'transparent',
+            start: -1,
             end: -1
         }
     ]
