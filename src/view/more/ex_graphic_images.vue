@@ -150,9 +150,16 @@
                 </template>
                 <div class="panel-content">
                     待完善...
+                    <!-- 
+                        1.压缩；
+                        2.调整大小；
+                        3.
+                     -->
                 </div>
                 <div class="panel-warn">
-
+                    <div class="item">1.详情查看<a href="javascript:void(0)"
+                            @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API')">Canvas</a>
+                    </div>
                 </div>
             </el-tab-pane>
         </el-tabs>
