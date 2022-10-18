@@ -99,6 +99,24 @@
                         <span :class="getPanelLabelClass('ex_canvas_path')">绘制路径</span>
                     </span>
                 </template>
+                <div class="panel-content gradient-content">
+                    <div class="img-outer alpha-background-image">
+                        <canvas id="ex_ctx_path" class="canvas-content" :width="formDataPath.width"
+                            :height="formDataPath.height"></canvas>
+                    </div>
+                    <div class="img-setting">
+                        <el-form :model="formDataPath" label-width="120px" label-position="top">
+                            <el-form-item label="大小">
+                                <div>
+                                    <label>宽:</label>
+                                    <el-input-number v-model="formDataRect.width" :min="10" :max="4096" />
+                                    <label>高:</label>
+                                    <el-input-number v-model="formDataRect.height" :min="10" :max="4096" />
+                                </div>
+                            </el-form-item>
+                        </el-form>
+                    </div>
+                </div>
             </el-tab-pane>
         </el-tabs>
     </div>
@@ -247,6 +265,13 @@ function onClickDrawCanvas() {
     })
     console.log("绘制信息",formDataRect.value)
 }
+//#endregion
+
+//#region 绘制路径
+const formDataPath=ref({
+    width:0,
+    height:0    
+})
 //#endregion
 </script>
 
