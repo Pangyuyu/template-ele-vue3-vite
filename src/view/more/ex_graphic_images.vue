@@ -142,33 +142,13 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane name="ex_canvas">
-                <template #label>
-                    <span class="custom-tabs-label">
-                        <span :class="getPanelLabelClass('ex_canvas')">canvas</span>
-                    </span>
-                </template>
-                <div class="panel-content">
-                    待完善...
-                    <!-- 
-                        1.压缩；
-                        2.调整大小；
-                        3.
-                     -->
-                </div>
-                <div class="panel-warn">
-                    <div class="item">1.详情查看<a href="javascript:void(0)"
-                            @click="onClickOpenWindowByUrl('https://developer.mozilla.org/zh-CN/docs/Web/API/Canvas_API')">Canvas</a>
-                    </div>
-                </div>
-            </el-tab-pane>
         </el-tabs>
 
     </div>
 </template>
 
 <script lang="ts" setup>
-import { getCurrentInstance, ComponentInternalInstance, ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { ColorPicker } from "vue3-colorpicker";
 import "vue3-colorpicker/style.css";
 const activeName = ref("ex_linear-gradient")
@@ -385,6 +365,7 @@ function onClickSetRaidalStyle() {
     radialStyle.value = styleList.join("")
 }
 //#endregion
+
 </script>
 
 <style lang="scss" scoped>
@@ -414,10 +395,14 @@ function onClickSetRaidalStyle() {
     .img-outer {
         flex-grow: 1;
         min-height: 620px;
+        max-height: 620px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        overflow-y: auto;
+        overflow-x: auto;
+        padding: 10px;
 
         .img-content {
             width: 500px;
@@ -428,6 +413,11 @@ function onClickSetRaidalStyle() {
             // border-radius: 300px;
         }
 
+        .canvas-content {
+            border: 1px solid #c1c0c0;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
 
         .img-style {
             flex-grow: 1;
@@ -485,5 +475,10 @@ function onClickSetRaidalStyle() {
     color: #6d6a6a;
     font-size: 12px;
     margin: 5px;
+}
+
+label {
+    margin-left: 10px;
+    margin-right: 5px;
 }
 </style>

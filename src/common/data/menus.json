@@ -66,6 +66,12 @@
                 "icon": "CoffeeCup"
             },
             {
+                "title": "Canvas",
+                "index": "/more/ex_canvas",
+                "path": "/more/ex_canvas",
+                "icon": "CoffeeCup"
+            },
+            {
                 "title": "JS交互",
                 "index": "/more/ex_js_exec",
                 "path": "/more/ex_js_exec",
