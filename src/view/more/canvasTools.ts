@@ -1,53 +1,5 @@
 
-/**
- * 位置
- */
-export class XPoint {
-    x: number = 0;
-    y: number = 0;
-    constructor(x: number, y: number) {
-        this.x = x
-        this.y = y
-    }
-}
-export class XDrawLines {
-    constructor(ctx: CanvasRenderingContext2D) {
-        this.ctx = ctx
-    }
-    ctx: CanvasRenderingContext2D;//Canvas渲染上下文
-    start: XPoint = new XPoint(0, 0);//开始位置
-    lines: Array<XPoint> = new Array<XPoint>();//线段各个点的位置
-    endMode: 'fill' | 'stroke' = 'stroke';//结束模式，fill:填充；stroke:描边
-    withStart(start: XPoint): XDrawLines {
-        this.start = start
-        return this;
-    }
-    withEndMode(endMode: 'fill' | 'stroke'): XDrawLines {
-        this.endMode = endMode
-        return this;
-    }
-    addLine(xp: XPoint): XDrawLines {
-        this.lines.push(xp)
-        return this;
-    }
-    addLinePoint(x: number, y: number): XDrawLines {
-        this.lines.push(new XPoint(x, y))
-        return this;
-    }
-    draw(){
-        this.ctx.beginPath()
-        this.ctx.moveTo(this.start.x,this.start.y);
-        this.lines.forEach(line=>{
-            this.ctx.lineTo(line.x,line.y)
-        })
-        if(this.endMode=='fill'){
-            this.ctx.fill()
-        }else{
-            this.ctx.closePath()
-            this.ctx.stroke()
-        }
-    }
-}
+
 export default class CanvasTools {
     static getCanvasCtx(canvasId: string): CanvasRenderingContext2D | null {
         let theEle = document.getElementById(canvasId);
@@ -79,15 +31,101 @@ export default class CanvasTools {
         }
         return <CanvasRenderingContext2D>canvasCtx
     }
-    /**
-     * 绘制线段
-     * @param ctx  Canvas渲染上下文
-     * @param start 开始位置
-     * @param lines 线段点的位置
-     * @param endMode 结束模式，fill:填充；stroke:描边
-     */
-    static drawLines(ctx: CanvasRenderingContext2D, start: XPoint, lines: Array<XPoint>, endMode: 'fill' | 'stroke') {
-
+}
+/**
+ * 位置
+ */
+export class XPoint {
+    x: number = 0;
+    y: number = 0;
+    constructor(x: number, y: number) {
+        this.x = x
+        this.y = y
     }
-
+}
+export class XDrawLines {
+    ctx: CanvasRenderingContext2D;//Canvas渲染上下文
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx
+    }
+    start: XPoint = new XPoint(0, 0);//开始位置
+    points: Array<XPoint> = new Array<XPoint>();//线段各个点的位置
+    endMode: 'fill' | 'stroke' = 'stroke';//结束模式，fill:填充；stroke:描边
+    withStart(value: XPoint): XDrawLines {
+        this.start = value
+        return this;
+    }
+    withEndMode(value: 'fill' | 'stroke'): XDrawLines {
+        this.endMode = value
+        return this;
+    }
+    addPoint(value: XPoint): XDrawLines {
+        this.points.push(value)
+        return this;
+    }
+    draw() {
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.start.x, this.start.y);
+        this.points.forEach(point => {
+            this.ctx.lineTo(point.x, point.y)
+        })
+        if (this.endMode == 'fill') {
+            this.ctx.fill()
+        } else {
+            this.ctx.closePath()
+            this.ctx.stroke()
+        }
+    }
+}
+export class XDrawArc {
+    ctx: CanvasRenderingContext2D;//Canvas渲染上下文
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx
+    }
+    centerPoint: XPoint = new XPoint(0, 0);//圆弧（圆）的中心
+    radius: number = 10;//半径
+    startAngle: number = 0;//开始角度
+    endAngle: number = 180;//结束角度
+    anticlockwise: boolean = true;//true:逆时针；false:顺时针
+    endMode: 'fill' | 'stroke' = 'stroke';//结束模式，fill:填充；stroke:描边
+    withCenterPoint(value: XPoint): XDrawArc {
+        this.centerPoint = value
+        return this;
+    }
+    withRadius(value: number): XDrawArc {
+        this.radius = value;
+        return this;
+    }
+    withStartAngle(value: number): XDrawArc {
+        this.startAngle = value
+        return this;
+    }
+    withEndAngle(value: number): XDrawArc {
+        this.endAngle = value;
+        return this;
+    }
+    withAnticlockwise(value: boolean): XDrawArc {
+        this.anticlockwise = value;
+        return this
+    }
+    withEndMode(value: 'fill' | 'stroke'): XDrawArc {
+        this.endMode = value
+        return this;
+    }
+    draw() {
+        this.ctx.beginPath()
+        let startRadian = (Math.PI / 180) * this.startAngle
+        let endRadian = (Math.PI / 180) * this.endAngle
+        this.ctx.arc(this.centerPoint.x,
+            this.centerPoint.y,
+            this.radius,
+            startRadian,
+            endRadian,
+            this.anticlockwise)
+        if (this.endMode == 'fill') {
+            this.ctx.fill()
+        } else {
+            this.ctx.stroke()
+        }
+    }
 }

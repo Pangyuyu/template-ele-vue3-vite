@@ -124,6 +124,12 @@
                             </el-button>
                         </div>
                         <div class="path_ctrl">
+                            <el-button type="primary" style="width:200px" @click="onClickDrawArcFill()">绘制圆弧(填充)
+                            </el-button>
+                            <el-button type="primary" style="width:200px" @click="onClickDrawArcStroke()">绘制圆弧(描边)
+                            </el-button>
+                        </div>
+                        <div class="path_ctrl">
                             <el-button type="danger" style="width:200px" @click="onClickCanvasClear('ex_ctx_path')">清空画布
                             </el-button>
                         </div>
@@ -138,7 +144,7 @@
 <script lang="ts" setup>
 import ModalTool from '@/common/ui/ModalTool';
 import { ref, onMounted } from 'vue'
-import CanvasTools, { XDrawLines, XPoint } from './canvasTools'
+import CanvasTools, { XDrawLines, XPoint, XDrawArc } from './canvasTools'
 const predefineColors = ref([
     '#ff4500',
     '#ff8c00',
@@ -320,8 +326,8 @@ function onClickDrawLinesFill() {
     }
     let xDrawLines = new XDrawLines(ctx)
         .withStart(new XPoint(25, 25))
-        .addLine(new XPoint(105, 25))
-        .addLine(new XPoint(25, 105))
+        .addPoint(new XPoint(105, 25))
+        .addPoint(new XPoint(25, 105))
         .withEndMode('fill')
     xDrawLines.draw()
 }
@@ -333,10 +339,40 @@ function onClickDrawLinesStroke() {
     }
     let xDrawLines = new XDrawLines(ctx)
         .withStart(new XPoint(125, 125))
-        .addLine(new XPoint(125, 45))
-        .addLine(new XPoint(45, 125))
+        .addPoint(new XPoint(125, 45))
+        .addPoint(new XPoint(45, 125))
         .withEndMode('stroke')
     xDrawLines.draw()
+}
+function onClickDrawArcFill() {
+    let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
+    if (ctx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    let xDrawArc = new XDrawArc(ctx)
+        .withCenterPoint(new XPoint(50, 200))
+        .withRadius(50)
+        .withStartAngle(0)
+        .withEndAngle(90)
+        .withAnticlockwise(false)
+        .withEndMode("fill")
+    xDrawArc.draw()
+}
+function onClickDrawArcStroke() {
+    let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
+    if (ctx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    let xDrawArc = new XDrawArc(ctx)
+        .withCenterPoint(new XPoint(200, 200))
+        .withRadius(50)
+        .withStartAngle(100)
+        .withEndAngle(145)
+        .withAnticlockwise(true)
+        .withEndMode("stroke")
+    xDrawArc.draw()
 }
 //#endregion
 </script>
