@@ -1,3 +1,53 @@
+
+/**
+ * 位置
+ */
+export class XPoint {
+    x: number = 0;
+    y: number = 0;
+    constructor(x: number, y: number) {
+        this.x = x
+        this.y = y
+    }
+}
+export class XDrawLines {
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx
+    }
+    ctx: CanvasRenderingContext2D;//Canvas渲染上下文
+    start: XPoint = new XPoint(0, 0);//开始位置
+    lines: Array<XPoint> = new Array<XPoint>();//线段各个点的位置
+    endMode: 'fill' | 'stroke' = 'stroke';//结束模式，fill:填充；stroke:描边
+    withStart(start: XPoint): XDrawLines {
+        this.start = start
+        return this;
+    }
+    withEndMode(endMode: 'fill' | 'stroke'): XDrawLines {
+        this.endMode = endMode
+        return this;
+    }
+    addLine(xp: XPoint): XDrawLines {
+        this.lines.push(xp)
+        return this;
+    }
+    addLinePoint(x: number, y: number): XDrawLines {
+        this.lines.push(new XPoint(x, y))
+        return this;
+    }
+    draw(){
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.start.x,this.start.y);
+        this.lines.forEach(line=>{
+            this.ctx.lineTo(line.x,line.y)
+        })
+        if(this.endMode=='fill'){
+            this.ctx.fill()
+        }else{
+            this.ctx.closePath()
+            this.ctx.stroke()
+        }
+    }
+}
 export default class CanvasTools {
     static getCanvasCtx(canvasId: string): CanvasRenderingContext2D | null {
         let theEle = document.getElementById(canvasId);
@@ -28,6 +78,16 @@ export default class CanvasTools {
             return null
         }
         return <CanvasRenderingContext2D>canvasCtx
+    }
+    /**
+     * 绘制线段
+     * @param ctx  Canvas渲染上下文
+     * @param start 开始位置
+     * @param lines 线段点的位置
+     * @param endMode 结束模式，fill:填充；stroke:描边
+     */
+    static drawLines(ctx: CanvasRenderingContext2D, start: XPoint, lines: Array<XPoint>, endMode: 'fill' | 'stroke') {
+
     }
 
 }
