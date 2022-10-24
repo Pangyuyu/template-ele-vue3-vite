@@ -176,10 +176,10 @@ async function onClickGetList() {
     customerList.value = queryRes.body.data
 }
 function onClickAdd() {
-    dialogCustomerEditRef.value.open({})
+    dialogCustomerEditRef.value?.open({})
 }
 function onClickEdit(customerItem: any) {
-    dialogCustomerEditRef.value.open(customerItem)
+    dialogCustomerEditRef.value?.open(customerItem)
 }
 function onClickDelete(customerItem: any) {
     ModalTool.ShowAsk("提醒", "您确定要删除这条记录吗?", () => {

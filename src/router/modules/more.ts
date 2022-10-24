@@ -23,6 +23,10 @@ const techExample = {
         {
             path: "/more/ex_js_exec",
             component: () => import("@/view/more/ex_js_exec.vue")
+        },
+        {
+            path: "/more/ex_canvas",
+            component: () => import("@/view/more/ex_canvas.vue")
         }
     ],
 };
