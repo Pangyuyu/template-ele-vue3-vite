@@ -162,7 +162,13 @@
 <script lang="ts" setup>
 import ModalTool from '@/common/ui/ModalTool';
 import { ref, onMounted } from 'vue'
-import CanvasTools, { XDrawLines, XPoint, XDrawArc, XCurvePoint, XDrawBezierCurve, XDrawQadraticeCurve } from './canvasTools'
+// import CanvasTools, { XDrawLines, XPoint, XDrawArc, XCurvePoint, XDrawBezierCurve, XDrawQadraticeCurve } from './canvasTools'
+import CanvasTools from '@/xCanvas/CanvasTools'
+import {XDrawMode,XPoint,XCurvePoint} from '@/xCanvas/Entity'
+import XDrawLines from '@/xCanvas/XDrawLines'
+import XDrawArc from '@/xCanvas/XDrawArc'
+import XDrawBezierCurve from '@/xCanvas/XDrawBezierCurve'
+import XDrawQadraticeCurve from '@/xCanvas/XDrawQadraticeCurve'
 const predefineColors = ref([
     '#ff4500',
     '#ff8c00',
@@ -347,7 +353,7 @@ function onClickDrawLinesFill() {
         .withStart(new XPoint(25, 25))
         .addPoint(new XPoint(105, 25))
         .addPoint(new XPoint(25, 105))
-        .withEndMode('fill')
+        .withEndMode(XDrawMode.Fill)
     xDrawLines.draw()
 }
 function onClickDrawLinesStroke() {
@@ -360,7 +366,7 @@ function onClickDrawLinesStroke() {
         .withStart(new XPoint(125, 125))
         .addPoint(new XPoint(125, 45))
         .addPoint(new XPoint(45, 125))
-        .withEndMode('stroke')
+        .withEndMode(XDrawMode.Stroke)
     xDrawLines.draw()
 }
 function onClickDrawArcFill() {
@@ -375,7 +381,7 @@ function onClickDrawArcFill() {
         .withStartAngle(0)
         .withEndAngle(180)
         .withAnticlockwise(false)
-        .withEndMode("fill")
+        .withEndMode(XDrawMode.Fill)
     xDrawArc.draw()
 }
 function onClickDrawArcStroke() {
@@ -390,7 +396,7 @@ function onClickDrawArcStroke() {
         .withStartAngle(180)
         .withEndAngle(360)
         .withAnticlockwise(false)
-        .withEndMode("stroke")
+        .withEndMode(XDrawMode.Stroke)
     xDrawArc.draw()
 }
 function onClickDrawQuadraticFill() {
@@ -401,7 +407,7 @@ function onClickDrawQuadraticFill() {
     }
     let xDraw = new XDrawQadraticeCurve(ctx)
         .withBegin(new XPoint(75, 25))
-        .withEndMode("fill")
+        .withEndMode(XDrawMode.Fill)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 25)).withEndPoint(new XPoint(25, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 100)).withEndPoint(new XPoint(50, 100)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(50, 120)).withEndPoint(new XPoint(30, 125)))
@@ -418,7 +424,7 @@ function onClickDrawQuadraticStroke() {
     }
     let xDraw = new XDrawQadraticeCurve(ctx)
         .withBegin(new XPoint(75, 25))
-        .withEndMode("stroke")
+        .withEndMode(XDrawMode.Stroke)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 25)).withEndPoint(new XPoint(25, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 100)).withEndPoint(new XPoint(50, 100)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(50, 120)).withEndPoint(new XPoint(30, 125)))
@@ -435,7 +441,7 @@ function onClickDrawBezierStroke(){
     }
     let xDraw = new XDrawBezierCurve(ctx)
         .withBegin(new XPoint(75, 40))
-        .withEndMode("stroke")
+        .withEndMode(XDrawMode.Stroke)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(75, 37)).withCtrlP2(new XPoint(70, 25)).withEndPoint(new XPoint(50, 25)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 25)).withCtrlP2(new XPoint(20, 62.5)).withEndPoint(new XPoint(20, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 80)).withCtrlP2(new XPoint(40, 102)).withEndPoint(new XPoint(75, 120)))
@@ -452,7 +458,7 @@ function onClickDrawBezierFill(){
     }
     let xDraw = new XDrawBezierCurve(ctx)
         .withBegin(new XPoint(75, 40))
-        .withEndMode("fill")
+        .withEndMode(XDrawMode.Fill)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(75, 37)).withCtrlP2(new XPoint(70, 25)).withEndPoint(new XPoint(50, 25)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 25)).withCtrlP2(new XPoint(20, 62.5)).withEndPoint(new XPoint(20, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 80)).withCtrlP2(new XPoint(40, 102)).withEndPoint(new XPoint(75, 120)))
