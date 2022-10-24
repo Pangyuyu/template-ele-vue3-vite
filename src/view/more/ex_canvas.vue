@@ -118,15 +118,33 @@
                             </el-form-item>
                         </el-form>
                         <div class="path_ctrl">
-                            <el-button type="primary" style="width:200px" @click="onClickDrawLinesFill()">绘制线段(填充)
+                            <el-button type="primary" style="width:200px" @click="onClickDrawLinesStroke()">线段(描边)
                             </el-button>
-                            <el-button type="primary" style="width:200px" @click="onClickDrawLinesStroke()">绘制线段(描边)
+                            <el-button type="primary" style="width:200px" @click="onClickDrawLinesFill()">线段(填充)
+                            </el-button>
+
+                        </div>
+                        <div class="path_ctrl">
+                            <el-button type="primary" style="width:200px" @click="onClickDrawArcStroke()">圆弧(描边)
+                            </el-button>
+                            <el-button type="primary" style="width:200px" @click="onClickDrawArcFill()">圆弧(填充)
+                            </el-button>
+
+                        </div>
+                        <div class="path_ctrl">
+                            <el-button type="primary" style="width:200px" @click="onClickDrawQuadraticStroke()">
+                                二次贝塞尔曲线(描边)
+                            </el-button>
+                            <el-button type="primary" style="width:200px" @click="onClickDrawQuadraticFill()">
+                                二次贝塞尔曲线(填充)
                             </el-button>
                         </div>
                         <div class="path_ctrl">
-                            <el-button type="primary" style="width:200px" @click="onClickDrawArcFill()">绘制圆弧(填充)
+                            <el-button type="primary" style="width:200px" @click="onClickDrawBezierStroke()">
+                                三次贝塞尔曲线(描边)
                             </el-button>
-                            <el-button type="primary" style="width:200px" @click="onClickDrawArcStroke()">绘制圆弧(描边)
+                            <el-button type="primary" style="width:200px" @click="onClickDrawBezierFill()">
+                                三次贝塞尔曲线(填充)
                             </el-button>
                         </div>
                         <div class="path_ctrl">
@@ -144,7 +162,7 @@
 <script lang="ts" setup>
 import ModalTool from '@/common/ui/ModalTool';
 import { ref, onMounted } from 'vue'
-import CanvasTools, { XDrawLines, XPoint, XDrawArc } from './canvasTools'
+import CanvasTools, { XDrawLines, XPoint, XDrawArc, XCurvePoint, XDrawBezierCurve, XDrawQadraticeCurve } from './canvasTools'
 const predefineColors = ref([
     '#ff4500',
     '#ff8c00',
@@ -307,6 +325,7 @@ const formDataPath = ref({
     width: 500,
     height: 500
 })
+
 //moveTo(x,y) 移动
 
 //lineTo(x,y) 直线
@@ -374,6 +393,75 @@ function onClickDrawArcStroke() {
         .withEndMode("stroke")
     xDrawArc.draw()
 }
+function onClickDrawQuadraticFill() {
+    let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
+    if (ctx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    let xDraw = new XDrawQadraticeCurve(ctx)
+        .withBegin(new XPoint(75, 25))
+        .withEndMode("fill")
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 25)).withEndPoint(new XPoint(25, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 100)).withEndPoint(new XPoint(50, 100)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(50, 120)).withEndPoint(new XPoint(30, 125)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(60, 120)).withEndPoint(new XPoint(65, 100)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(125, 100)).withEndPoint(new XPoint(125, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(125, 25)).withEndPoint(new XPoint(75, 25)));
+    xDraw.draw()
+}
+function onClickDrawQuadraticStroke() {
+    let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
+    if (ctx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    let xDraw = new XDrawQadraticeCurve(ctx)
+        .withBegin(new XPoint(75, 25))
+        .withEndMode("stroke")
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 25)).withEndPoint(new XPoint(25, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 100)).withEndPoint(new XPoint(50, 100)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(50, 120)).withEndPoint(new XPoint(30, 125)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(60, 120)).withEndPoint(new XPoint(65, 100)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(125, 100)).withEndPoint(new XPoint(125, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(125, 25)).withEndPoint(new XPoint(75, 25)));
+    xDraw.draw()
+}
+function onClickDrawBezierStroke(){
+    let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
+    if (ctx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    let xDraw = new XDrawBezierCurve(ctx)
+        .withBegin(new XPoint(75, 40))
+        .withEndMode("stroke")
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(75, 37)).withCtrlP2(new XPoint(70, 25)).withEndPoint(new XPoint(50, 25)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 25)).withCtrlP2(new XPoint(20, 62.5)).withEndPoint(new XPoint(20, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 80)).withCtrlP2(new XPoint(40, 102)).withEndPoint(new XPoint(75, 120)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(110, 102)).withCtrlP2(new XPoint(130, 80)).withEndPoint(new XPoint(130, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(130, 62.5)).withCtrlP2(new XPoint(130, 25)).withEndPoint(new XPoint(100, 25)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(85, 25)).withCtrlP2(new XPoint(75, 37)).withEndPoint(new XPoint(75, 40)))
+    xDraw.draw()
+}
+function onClickDrawBezierFill(){
+    let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
+    if (ctx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    let xDraw = new XDrawBezierCurve(ctx)
+        .withBegin(new XPoint(75, 40))
+        .withEndMode("fill")
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(75, 37)).withCtrlP2(new XPoint(70, 25)).withEndPoint(new XPoint(50, 25)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 25)).withCtrlP2(new XPoint(20, 62.5)).withEndPoint(new XPoint(20, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 80)).withCtrlP2(new XPoint(40, 102)).withEndPoint(new XPoint(75, 120)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(110, 102)).withCtrlP2(new XPoint(130, 80)).withEndPoint(new XPoint(130, 62.5)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(130, 62.5)).withCtrlP2(new XPoint(130, 25)).withEndPoint(new XPoint(100, 25)))
+        .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(85, 25)).withCtrlP2(new XPoint(75, 37)).withEndPoint(new XPoint(75, 40)))
+    xDraw.draw()
+}
+
 //#endregion
 </script>
 

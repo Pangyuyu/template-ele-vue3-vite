@@ -1,5 +1,3 @@
-
-
 export default class CanvasTools {
     static getCanvasCtx(canvasId: string): CanvasRenderingContext2D | null {
         let theEle = document.getElementById(canvasId);
@@ -43,6 +41,29 @@ export class XPoint {
         this.y = y
     }
 }
+/**
+ * 曲线点，用于绘制贝塞尔曲线
+ */
+export class XCurvePoint {
+    ctrlPoint1: XPoint = new XPoint(0, 0);
+    ctrlPoint2: XPoint = new XPoint(0, 0);
+    endPoint: XPoint = new XPoint(0, 0);
+    withCtrlP1(ctrl: XPoint): XCurvePoint {
+        this.ctrlPoint1 = ctrl
+        return this;
+    }
+    withCtrlP2(ctrl: XPoint): XCurvePoint {
+        this.ctrlPoint2 = ctrl;
+        return this;
+    }
+    withEndPoint(end: XPoint): XCurvePoint {
+        this.endPoint = end;
+        return this;
+    }
+}
+/**
+ * 绘制线
+ */
 export class XDrawLines {
     ctx: CanvasRenderingContext2D;//Canvas渲染上下文
     constructor(ctx: CanvasRenderingContext2D) {
@@ -77,6 +98,9 @@ export class XDrawLines {
         }
     }
 }
+/**
+ * 绘制圆弧
+ */
 export class XDrawArc {
     ctx: CanvasRenderingContext2D;//Canvas渲染上下文
     constructor(ctx: CanvasRenderingContext2D) {
@@ -127,5 +151,83 @@ export class XDrawArc {
         } else {
             this.ctx.stroke()
         }
+    }
+}
+
+/**
+ * 绘制二次贝塞尔曲线
+ */
+export class XDrawQadraticeCurve {
+    ctx: CanvasRenderingContext2D;//Canvas渲染上下文
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx
+    }
+    beginPoint: XPoint = new XPoint(0, 0)
+    withBegin(begin: XPoint): XDrawQadraticeCurve {
+        this.beginPoint = begin
+        return this;
+    }
+    curvePointList: Array<XCurvePoint> = new Array<XCurvePoint>()
+    pushPoint(point: XCurvePoint): XDrawQadraticeCurve {
+        this.curvePointList.push(point)
+        return this;
+    }
+    endMode: 'fill' | 'stroke' = 'stroke';//结束模式，fill:填充；stroke:描边
+    withEndMode(value: 'fill' | 'stroke'): XDrawBezierCurve {
+        this.endMode = value
+        return this;
+    }
+    draw() {
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.beginPoint.x, this.beginPoint.y)
+        this.curvePointList.forEach((item: XCurvePoint) => {
+            this.ctx.quadraticCurveTo(item.ctrlPoint1.x, item.ctrlPoint1.y, item.endPoint.x, item.endPoint.y)
+        })
+
+        if (this.endMode == 'fill') {
+            this.ctx.fill()
+        } else {
+            this.ctx.stroke()
+        }
+        // this.ctx.closePath()
+
+    }
+}
+/**
+ * 绘制三次贝塞尔曲线
+ */
+export class XDrawBezierCurve {
+    ctx: CanvasRenderingContext2D;//Canvas渲染上下文
+    constructor(ctx: CanvasRenderingContext2D) {
+        this.ctx = ctx
+    }
+    beginPoint: XPoint = new XPoint(0, 0)
+    withBegin(begin: XPoint): XDrawQadraticeCurve {
+        this.beginPoint = begin
+        return this;
+    }
+    curvePointList: Array<XCurvePoint> = new Array<XCurvePoint>()
+    pushPoint(point: XCurvePoint): XDrawQadraticeCurve {
+        this.curvePointList.push(point)
+        return this;
+    }
+    endMode: 'fill' | 'stroke' = 'stroke';//结束模式，fill:填充；stroke:描边
+    withEndMode(value: 'fill' | 'stroke'): XDrawBezierCurve {
+        this.endMode = value
+        return this;
+    }
+    draw() {
+        this.ctx.beginPath()
+        this.ctx.moveTo(this.beginPoint.x, this.beginPoint.y)
+        this.curvePointList.forEach((item: XCurvePoint) => {
+            this.ctx.bezierCurveTo(item.ctrlPoint1.x, item.ctrlPoint1.y, item.ctrlPoint2.x, item.ctrlPoint2.y, item.endPoint.x, item.endPoint.y)
+        })
+        if (this.endMode == 'fill') {
+            this.ctx.fill()
+        } else {
+            this.ctx.stroke()
+        }
+        // this.ctx.closePath()
+
     }
 }
