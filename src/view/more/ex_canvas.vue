@@ -118,11 +118,15 @@
                             </el-form-item>
                         </el-form>
                         <div class="path_ctrl">
+                            <label>颜色：</label>
+                            <el-color-picker v-model="pathColor" show-alpha
+                                            :predefine="predefineColors" />
+                        </div>
+                        <div class="path_ctrl">
                             <el-button type="primary" style="width:200px" @click="onClickDrawLinesStroke()">线段(描边)
                             </el-button>
                             <el-button type="primary" style="width:200px" @click="onClickDrawLinesFill()">线段(填充)
                             </el-button>
-
                         </div>
                         <div class="path_ctrl">
                             <el-button type="primary" style="width:200px" @click="onClickDrawArcStroke()">圆弧(描边)
@@ -331,18 +335,7 @@ const formDataPath = ref({
     width: 500,
     height: 500
 })
-
-//moveTo(x,y) 移动
-
-//lineTo(x,y) 直线
-//arc() //圆弧 (圆弧中心位置、半径长度、开始弧度、结束弧度、是否逆时针)
-//quadraticCurveTo(cp1x, cp1y, x, y) 绘制二次贝塞尔曲线，cp1x,cp1y 为一个控制点，x,y 为结束点。
-//bezierCurveTo(cp1x, cp1y, cp2x, cp2y, x, y) 绘制三次贝塞尔曲线，cp1x,cp1y为控制点一，cp2x,cp2y为控制点二，x,y为结束点。
-//rect(x, y, width, height) 绘制一个左上角坐标为（x,y），宽高为 width 以及 height 的矩形。
-
-//closePath() 闭合
-//stroke() 描边
-//fill //填充
+const pathColor=ref("#000000")
 function onClickDrawLinesFill() {
     let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
     if (ctx == null) {
@@ -353,6 +346,7 @@ function onClickDrawLinesFill() {
         .withStart(new XPoint(25, 25))
         .addPoint(new XPoint(105, 25))
         .addPoint(new XPoint(25, 105))
+        .withColor(pathColor.value)
         .withEndMode(XDrawMode.Fill)
     xDrawLines.draw()
 }
@@ -366,6 +360,7 @@ function onClickDrawLinesStroke() {
         .withStart(new XPoint(125, 125))
         .addPoint(new XPoint(125, 45))
         .addPoint(new XPoint(45, 125))
+        .withColor(pathColor.value)
         .withEndMode(XDrawMode.Stroke)
     xDrawLines.draw()
 }
@@ -381,6 +376,7 @@ function onClickDrawArcFill() {
         .withStartAngle(0)
         .withEndAngle(180)
         .withAnticlockwise(false)
+        .withColor(pathColor.value)
         .withEndMode(XDrawMode.Fill)
     xDrawArc.draw()
 }
@@ -396,6 +392,7 @@ function onClickDrawArcStroke() {
         .withStartAngle(180)
         .withEndAngle(360)
         .withAnticlockwise(false)
+        .withColor(pathColor.value)
         .withEndMode(XDrawMode.Stroke)
     xDrawArc.draw()
 }
@@ -408,6 +405,7 @@ function onClickDrawQuadraticFill() {
     let xDraw = new XDrawQadraticeCurve(ctx)
         .withBegin(new XPoint(75, 25))
         .withEndMode(XDrawMode.Fill)
+        .withColor(pathColor.value)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 25)).withEndPoint(new XPoint(25, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 100)).withEndPoint(new XPoint(50, 100)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(50, 120)).withEndPoint(new XPoint(30, 125)))
@@ -425,6 +423,7 @@ function onClickDrawQuadraticStroke() {
     let xDraw = new XDrawQadraticeCurve(ctx)
         .withBegin(new XPoint(75, 25))
         .withEndMode(XDrawMode.Stroke)
+        .withColor(pathColor.value)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 25)).withEndPoint(new XPoint(25, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(25, 100)).withEndPoint(new XPoint(50, 100)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(50, 120)).withEndPoint(new XPoint(30, 125)))
@@ -442,6 +441,7 @@ function onClickDrawBezierStroke(){
     let xDraw = new XDrawBezierCurve(ctx)
         .withBegin(new XPoint(75, 40))
         .withEndMode(XDrawMode.Stroke)
+        .withColor(pathColor.value)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(75, 37)).withCtrlP2(new XPoint(70, 25)).withEndPoint(new XPoint(50, 25)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 25)).withCtrlP2(new XPoint(20, 62.5)).withEndPoint(new XPoint(20, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 80)).withCtrlP2(new XPoint(40, 102)).withEndPoint(new XPoint(75, 120)))
@@ -459,6 +459,7 @@ function onClickDrawBezierFill(){
     let xDraw = new XDrawBezierCurve(ctx)
         .withBegin(new XPoint(75, 40))
         .withEndMode(XDrawMode.Fill)
+        .withColor(pathColor.value)
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(75, 37)).withCtrlP2(new XPoint(70, 25)).withEndPoint(new XPoint(50, 25)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 25)).withCtrlP2(new XPoint(20, 62.5)).withEndPoint(new XPoint(20, 62.5)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(20, 80)).withCtrlP2(new XPoint(40, 102)).withEndPoint(new XPoint(75, 120)))
