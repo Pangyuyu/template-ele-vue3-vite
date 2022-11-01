@@ -119,8 +119,7 @@
                         </el-form>
                         <div class="path_ctrl">
                             <label>颜色：</label>
-                            <el-color-picker v-model="pathColor" show-alpha
-                                            :predefine="predefineColors" />
+                            <el-color-picker v-model="pathColor" show-alpha :predefine="predefineColors" />
                         </div>
                         <div class="path_ctrl">
                             <el-button type="primary" style="width:200px" @click="onClickDrawLinesStroke()">线段(描边)
@@ -155,7 +154,9 @@
                             <el-button type="danger" style="width:200px" @click="onClickCanvasClear('ex_ctx_path')">清空画布
                             </el-button>
                         </div>
-
+                        <div class="path_ctrl">
+                            <div>线型、渐变、图案样式、阴影等暂略...</div>
+                        </div>
                     </div>
                 </div>
             </el-tab-pane>
@@ -168,7 +169,7 @@ import ModalTool from '@/common/ui/ModalTool';
 import { ref, onMounted } from 'vue'
 // import CanvasTools, { XDrawLines, XPoint, XDrawArc, XCurvePoint, XDrawBezierCurve, XDrawQadraticeCurve } from './canvasTools'
 import CanvasTools from '@/xCanvas/CanvasTools'
-import {XDrawMode,XPoint,XCurvePoint} from '@/xCanvas/Entity'
+import { XDrawMode, XPoint, XCurvePoint } from '@/xCanvas/Entity'
 import XDrawLines from '@/xCanvas/XDrawLines'
 import XDrawArc from '@/xCanvas/XDrawArc'
 import XDrawBezierCurve from '@/xCanvas/XDrawBezierCurve'
@@ -335,7 +336,7 @@ const formDataPath = ref({
     width: 500,
     height: 500
 })
-const pathColor=ref("#000000")
+const pathColor = ref("#000000")
 function onClickDrawLinesFill() {
     let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
     if (ctx == null) {
@@ -432,7 +433,7 @@ function onClickDrawQuadraticStroke() {
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(125, 25)).withEndPoint(new XPoint(75, 25)));
     xDraw.draw()
 }
-function onClickDrawBezierStroke(){
+function onClickDrawBezierStroke() {
     let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
     if (ctx == null) {
         ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
@@ -450,7 +451,7 @@ function onClickDrawBezierStroke(){
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(85, 25)).withCtrlP2(new XPoint(75, 37)).withEndPoint(new XPoint(75, 40)))
     xDraw.draw()
 }
-function onClickDrawBezierFill(){
+function onClickDrawBezierFill() {
     let ctx = CanvasTools.getCanvasCtx("ex_ctx_path")
     if (ctx == null) {
         ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
@@ -468,7 +469,6 @@ function onClickDrawBezierFill(){
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(85, 25)).withCtrlP2(new XPoint(75, 37)).withEndPoint(new XPoint(75, 40)))
     xDraw.draw()
 }
-
 //#endregion
 </script>
 
