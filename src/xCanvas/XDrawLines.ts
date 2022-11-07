@@ -1,4 +1,4 @@
-import {XDrawMode,XPoint} from './entity'
+import {XDrawMode,XPoint} from './Entity'
 /**
  * 绘制线
  */

@@ -1,4 +1,4 @@
-import {XDrawMode,XPoint,XCurvePoint} from './entity'
+import {XDrawMode,XPoint,XCurvePoint} from './Entity'
 /**
  * 绘制三次贝塞尔曲线
  */
