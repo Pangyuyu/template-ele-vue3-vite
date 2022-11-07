@@ -316,12 +316,12 @@ async function onThemeChange() {
 // #endregion
 
 //#region 拖动文件
-function onDragStartFile(_event) {
+function onDragStartFile(_event:any) {
     _event.preventDefault()
     window.EPre.startDrag('drag-and-drop.md')
 }
 const dropFiles = ref(new Array())
-function onDropFiles(_event) {
+function onDropFiles(_event:any) {
     _event.preventDefault()
     const files = _event.dataTransfer.files;
     console.log("onDropFiles", files)
@@ -408,8 +408,8 @@ const filters = [
 ]
 /*使用 Web Serial API 在浏览器上实现基于 WEB 的串口通信:https://blog.csdn.net/weixin_41231535/article/details/115218293*/
 let keepReading = true;
-let reader;
-let writer;
+let reader:any;
+let writer:any;
 // all data parsed are stored in a list ordered by received time of the data frame.
 let receivedframe = [];
 
@@ -469,7 +469,7 @@ async function onClickSerialPortFilter() {
 }
 //TODO 解析帧
 const serialPortMsg = ref("")
-function dealWithData(value) {
+function dealWithData(value:string) {
     console.log("接收数据：" + value)
     serialPortMsg.value += `${value}\r\n`
 }
@@ -516,7 +516,7 @@ function onClickLocalWinchild() {
 //#endregion
 
 //#region 对话框
-async function onClickShowOpenSync(type) {
+async function onClickShowOpenSync(type:string) {
     let title = ""
     let properties = ["multiSelections", "showHiddenFiles"]
     if (type == 'dir') {
@@ -534,7 +534,7 @@ async function onClickShowOpenSync(type) {
         properties,
     })
     let message;
-    let msgType;
+    let msgType:'success'|'warning'='success';
     if (res) {
         message = `已选择${res.length}个文件`
         msgType = 'success'

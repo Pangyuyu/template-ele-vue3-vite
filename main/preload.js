@@ -15,7 +15,9 @@ contextBridge.exposeInMainWorld('EPre', {
         title: title,
         url: url
     }),
-    setTitle: (args) => ipcRenderer.send('ipc-example-set-title', args),//设置窗体标题
+    setTitle: (title) => ipcRenderer.send('ipc-example-set-title', {
+        title:title
+    }),//设置窗体标题
     openFile: () => ipcRenderer.invoke('ipc-example-file-choose'),//打开文件
     onUpdateCounter: (callback) => ipcRenderer.on('update-counter', callback),//响应主进程命令（+1,-1）
     themeChange: (themeName) => ipcRenderer.invoke('ipc-example-theme-change', { themeName: themeName }),//更改主题（暗黑、明亮）
