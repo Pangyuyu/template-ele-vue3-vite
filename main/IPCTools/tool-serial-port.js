@@ -1,11 +1,11 @@
 /*串口通信*/
 const { Log } = require("../utils/log")
 const log = new Log().withTag("tool-serial-port")
-module.exports.ToolSerialPort = function () {
-    this.registerOn = function (ipcMain, mainWin) {
+class ToolSerialPort {
+    registerOn(ipcMain, mainWin) {
         mainWin.webContents.session.on("select-serial-port", (event, portList, webContents, callback) => {
             event.preventDefault()
-            
+
             /*
             [
                  {
@@ -63,7 +63,8 @@ module.exports.ToolSerialPort = function () {
             }
         })
     }
-    this.unRegister = function () {
-        
+    unRegister() {
+
     }
 }
+module.exports = new ToolSerialPort()

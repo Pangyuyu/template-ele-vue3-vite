@@ -34,7 +34,7 @@ function openNotepad() {
         })
     })
 }
-function exeStart(filePath, fileName,port) {
+function exeStart(filePath, fileName, port) {
     return new Promise(async (resolve, __) => {
         if (LOCALAPI_PID > -1) {
             resolve({
@@ -67,13 +67,13 @@ function exeStart(filePath, fileName,port) {
  * 延迟检测服务是否启动成功
  */
 function delayCheckStart(taskName) {
-    return new Promise((resolve,__)=>{
+    return new Promise((resolve, __) => {
         setTimeout(async () => {
             const findRes = await findTaskPidByName(taskName)
-            const isSuccess=findRes.code == 0
+            const isSuccess = findRes.code == 0
             resolve({
-                code:isSuccess?0:1,
-                message:isSuccess?"服务启动失败!" : "服务启动成功!"
+                code: isSuccess ? 0 : 1,
+                message: isSuccess ? "服务启动失败!" : "服务启动成功!"
             })
         }, 2000)
     })
@@ -163,29 +163,29 @@ function exeStop(exeName) {
 /**
  * 发现可用端口号
  */
-function checkPortUsed(port){
-    return new Promise((resolve,_)=>{
+function checkPortUsed(port) {
+    return new Promise((resolve, _) => {
         let server = net.createServer().listen(port);
-        server.on('listening',function(){
+        server.on('listening', function () {
             server.close();
             resolve({
-                code:0
+                code: 0
             });
         });
-        server.on('error',function(err){
-            if(err.code == 'EADDRINUSE'){
+        server.on('error', function (err) {
+            if (err.code == 'EADDRINUSE') {
                 resolve({
-                    code:1
+                    code: 1
                 });
             }
         });
     })
 }
-module.exports.ToolLocalServer = function () {
-    this.registerOn = function (ipcMain, mainWin) {
+class ToolLocalServer {
+    registerOn(ipcMain, mainWin) {
         ipcMain.handle('local-exe-start', async (event, args) => {
-            log.d("local-exe-start",args)
-            const port=args.port
+            log.d("local-exe-start", args)
+            const port = args.port
             if (process.platform != 'win32' && process.arch != 'ia32') {
                 return {
                     code: 1,
@@ -202,8 +202,8 @@ module.exports.ToolLocalServer = function () {
             }
             const exePath = path.resolve(".", "resources", "server", "win_64")
             log.d("exePath", exePath)
-            exeStart(exePath, exeName,port)
-            const checkRes=await delayCheckStart()
+            exeStart(exePath, exeName, port)
+            const checkRes = await delayCheckStart()
             if (checkRes.code != 0) {
                 return checkRes
             }
@@ -228,30 +228,30 @@ module.exports.ToolLocalServer = function () {
                 message: "本地服务已停止!"
             }
         })
-        ipcMain.handle('local-exe-check',async (event,args)=>{
+        ipcMain.handle('local-exe-check', async (event, args) => {
             const findRes = await findTaskPidByName(`${apiFileName}.exe`)
             return findRes
         })
-        ipcMain.handle('local-find-available-port',async (event,args)=>{
-            var port=-1
-            for(var i=5001;i<65535;i++){
-                const findRes=await checkPortUsed(i)
-                if(findRes.code==0){
-                    port=i
+        ipcMain.handle('local-find-available-port', async (event, args) => {
+            var port = -1
+            for (var i = 5001; i < 65535; i++) {
+                const findRes = await checkPortUsed(i)
+                if (findRes.code == 0) {
+                    port = i
                     break
                 }
             }
-            
+
             return {
-                code:port>=-1?0:1,
-                message:port==-1?"未找到可用端口":"OK",
-                data:{
-                    port:port
+                code: port >= -1 ? 0 : 1,
+                message: port == -1 ? "未找到可用端口" : "OK",
+                data: {
+                    port: port
                 }
             }
         })
     }
-    this.stopChildProcess = function () {
+    stopChildProcess() {
         return new Promise(async (resolve, __) => {
             log.d("正在执行停止子进程服务")
             const findRes = await findTaskPidByName(`${apiFileName}.exe`)
@@ -266,9 +266,11 @@ module.exports.ToolLocalServer = function () {
             resolve({})
         })
     }
-    
-    this.unRegister = function (ipcMain) {
+
+    unRegister(ipcMain) {
         ipcMain.removeHandler('local-exe-start')
         ipcMain.removeHandler('local-exe-stop')
     }
 }
+
+module.exports = new ToolLocalServer()

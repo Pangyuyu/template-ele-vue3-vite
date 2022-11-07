@@ -35,8 +35,8 @@ function startScaning(win) {
 const maxSelectCount = 100 //最大搜索次数
 let selectCount = 0 //当前的搜索次数    
 let selectDeviceId = "";//搜索的设备ID，若为空，则批量搜索
-module.exports.ToolPcBle = function () {
-    this.registerOn = function (ipcMain, mainWin) {
+class ToolPcBle {
+    registerOn(ipcMain, mainWin) {
         ipcMain.handle("ble-set-search-deviceid", (event, args) => {
             const isNoArg = args == undefined || args == null || args.deviceId == undefined || args.deviceId == null || args.deviceId.length == 0
             selectDeviceId = isNoArg ? "" : args.deviceId
@@ -51,8 +51,8 @@ module.exports.ToolPcBle = function () {
                     data: deviceList
                 })
             } else {
-                const findDeviceItem=deviceList.find(item=>{return item.deviceId==selectDeviceId})
-                if(findDeviceItem){
+                const findDeviceItem = deviceList.find(item => { return item.deviceId == selectDeviceId })
+                if (findDeviceItem) {
                     selectCount = 0
                     callback(findDeviceItem.deviceId)
                 }
@@ -64,7 +64,9 @@ module.exports.ToolPcBle = function () {
             }
         })
     }
-    this.unRegister = function (ipcMain) {
+    unRegister(ipcMain) {
 
     }
 }
+
+module.exports = new ToolPcBle()

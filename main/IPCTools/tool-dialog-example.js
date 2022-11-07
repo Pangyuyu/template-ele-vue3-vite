@@ -1,8 +1,8 @@
 const { Log } = require("../utils/log")
 const { dialog } = require('electron')
 const log = new Log().withTag("tool-dialog-example")
-module.exports.ToolDialogExample = function () {
-    this.registerOn = function (ipcMain, mainWin) {
+class ToolDialogExample{
+    registerOn (ipcMain, mainWin) {
         ipcMain.handle('show-open-dialog-sync', (event, args) => {
             return dialog.showOpenDialogSync(mainWin,
                 {
@@ -25,10 +25,11 @@ module.exports.ToolDialogExample = function () {
             return dialog.showErrorBox(args.title,args.content)
         })
     }
-    this.unRegister = function (ipcMain) {
+    unRegister (ipcMain) {
         ipcMain.removeHandler('show-open-dialog-sync')
         ipcMain.removeHandler('show-save-dialog-sync')
         ipcMain.removeHandler('show-message-box-sync')
         ipcMain.removeHandler('show-error-box')
     }
 }
+module.exports=new ToolDialogExample() 
