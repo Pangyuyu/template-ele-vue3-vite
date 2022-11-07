@@ -9,7 +9,7 @@ function run_basename(pathstr, ext) {
         return path.basename(pathstr)
     }
 }
-exports.registerOn = function (ipcMain, mainWin) {
+module.exports.registerOn = function (ipcMain, mainWin) {
     ipcMain.handle('tool-api-path', (event, args) => {
         log.d("ToolApiPathExample", args)
         const apiName = args.apiName
@@ -25,6 +25,6 @@ exports.registerOn = function (ipcMain, mainWin) {
         }
     })
 }
-exports.unRegister = function (ipcMain) {
+module.exports.unRegister = function (ipcMain) {
     ipcMain.removeHandler('tool-api-path')
 }

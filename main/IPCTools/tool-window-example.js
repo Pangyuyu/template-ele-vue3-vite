@@ -6,17 +6,17 @@ const { BrowserWindow } = require('electron')
 const path = require('path');
 // let __ChildWins=new Map()
 let __modalChildWin = null
-module.exports.ToolWindowExample = function () {
-    let colorIndex = 0
-    let colorList = [
-        'hsl(230, 100%, 50%)',
-        'rgb(255, 145, 145)',
-        '#ff00a3',
-        'blueviolet',
-        'hsla(200, 20%, 50%, 0.5)',
-        'rgba(255, 255, 255, 0.6)'
-    ]
-    this.registerOn = function (ipcMain, mainWin) {
+let colorIndex = 0;
+let colorList = [
+    'hsl(230, 100%, 50%)',
+    'rgb(255, 145, 145)',
+    '#ff00a3',
+    'blueviolet',
+    'hsla(200, 20%, 50%, 0.5)',
+    'rgba(255, 255, 255, 0.6)'
+]
+class ToolWindowExample {
+    registerOn(ipcMain, mainWin) {
         ipcMain.on('window:change-bgcolor', (event, args) => {
             if (colorIndex >= colorList.length) {
                 colorIndex = 0
@@ -106,7 +106,8 @@ module.exports.ToolWindowExample = function () {
             }
         })
     }
-    this.unRegister = function (ipcMain) {
+    unRegister(ipcMain) {
 
     }
 }
+module.exports = new ToolWindowExample()

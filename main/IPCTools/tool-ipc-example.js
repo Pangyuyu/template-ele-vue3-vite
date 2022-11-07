@@ -40,9 +40,9 @@ function handelProgressStart(mainWin) {
             if (c_pro_value >= 1) {
                 c_pro_value = 1
             }
-            if(mainWin){
+            if (mainWin) {
                 mainWin.setProgressBar(c_pro_value)
-            }            
+            }
             c_pro_value = c_pro_value + INCREMENT //每次进5%
             if (c_pro_value >= 1) {
                 c_pro_value = 1
@@ -55,27 +55,27 @@ function handelProgressCancel(mainWin) {
     if (progressInterval > -1) {
         clearInterval(progressInterval)
         progressInterval = -1
-    }    
-    c_pro_value=0
+    }
+    c_pro_value = 0
     mainWin.setProgressBar(-1)
 }
-function handelProgressUnkown(mainWin){
+function handelProgressUnkown(mainWin) {
     if (progressInterval > -1) {
         clearInterval(progressInterval)
         progressInterval = -1
     }
     mainWin.setProgressBar(2)
 }
-module.exports.ToolIpcExample = function () {
-    this.registerOn = function (ipcMain, mainWin) {
+class ToolIpcExample {
+    registerOn(ipcMain, mainWin) {
         ipcMain.on("ipc-example-set-title", (event, args) => {
             mainWin.setTitle(args.title)
         })
-        ipcMain.handle('ipc-example-file-choose', handleFileOpen)        
+        ipcMain.handle('ipc-example-file-choose', handleFileOpen)
         ipcMain.handle('ipc-example-theme-change', handleThemeChange)
-        ipcMain.on('ipc-example-on-drag-start', (event, fileName) => {            
-            const dragFilePath=path.join(process.cwd(),'resources','files',fileName);
-            const iconName = path.join('resources','images','drag.png');
+        ipcMain.on('ipc-example-on-drag-start', (event, fileName) => {
+            const dragFilePath = path.join(process.cwd(), 'resources', 'files', fileName);
+            const iconName = path.join('resources', 'images', 'drag.png');
             log.d("iconName", iconName)
             event.sender.startDrag({
                 file: dragFilePath,//这个必须是绝对路径
@@ -86,9 +86,10 @@ module.exports.ToolIpcExample = function () {
         ipcMain.on('ipc-example-progress-cancel', (event, filePath) => { handelProgressCancel(mainWin) })
         ipcMain.on('ipc-example-progress-unkown', (event, filePath) => { handelProgressUnkown(mainWin) })
     }
-    this.unRegister = function (ipcMain) {
+    unRegister(ipcMain) {
         ipcMain.removeHandler('ipc-example-file-choose')
         ipcMain.removeHandler('ipc-example-theme-change')
         ipcMain.removeHandler('ipc-example-on-drag-start')
     }
 }
+module.exports = new ToolIpcExample()

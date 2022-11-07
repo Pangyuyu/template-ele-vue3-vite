@@ -1,10 +1,8 @@
 const { Log } = require("../utils/log")
 const log = new Log().withTag("tool-open-childwin")
 const { BrowserWindow } = require('electron')
-
-module.exports.ToolOpenChildwin = function () {
-    this.registerOn = function (ipcMain, mainWin) {
-
+class ToolOpenChildwin {
+    registerOn(ipcMain, mainWin) {
         ipcMain.on("open-child-win", (event, args) => {
             const isModal = true
             if (args.isModal != undefined && args.isModal != null) {
@@ -29,7 +27,8 @@ module.exports.ToolOpenChildwin = function () {
             win.show()
         })
     }
-    this.unRegister = function (ipcMain) {
+    unRegister(ipcMain) {
 
     }
 }
+module.exports = new ToolOpenChildwin()

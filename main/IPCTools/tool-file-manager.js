@@ -7,8 +7,8 @@ const log = new Log().withTag("tool-file-manager")
 
 
 
-module.exports.ToolFileManager = function () {
-    this.registerOn = function (ipcMain, mainWin) {
+class ToolFileManager {
+    registerOn(ipcMain, mainWin) {
         //选择文件并读取
         ipcMain.handle('file-manager-choose-read', async (event, args) => {
             const openRes = await dialog.showOpenDialog(mainWin, {
@@ -75,18 +75,20 @@ module.exports.ToolFileManager = function () {
             }
         })
         //TODO 以buffer的方式写入文件
-        ipcMain.handle('file-manager-buffer-read',async(event,args)=>{
+        ipcMain.handle('file-manager-buffer-read', async (event, args) => {
 
         })
         //TODO 以buffer的方式读取文件
-        ipcMain.handle('file-manager-buffer-save',async(event,args)=>{
+        ipcMain.handle('file-manager-buffer-save', async (event, args) => {
 
         })
 
     }
 
-    this.unRegister = function (ipcMain) {
+    unRegister(ipcMain) {
         ipcMain.removeHandler('file-manager-choose-read')
         ipcMain.removeHandler('file-manager-choose-save')
     }
 }
+
+module.exports = new ToolFileManager()
