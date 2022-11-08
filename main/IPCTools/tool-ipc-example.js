@@ -69,6 +69,7 @@ function handelProgressUnkown(mainWin) {
 class ToolIpcExample {
     registerOn(ipcMain, mainWin) {
         ipcMain.on("ipc-example-set-title", (event, args) => {
+            log.d("ipc-example-set-title",args)
             mainWin.setTitle(args.title)
         })
         ipcMain.handle('ipc-example-file-choose', handleFileOpen)
