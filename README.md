@@ -46,3 +46,13 @@ Since TypeScript cannot handle type information for `.vue` imports, they are shi
 |i7-8850u win10|物理机 插电源|727~1462|
 |i7-8850u win10|物理机 不插电源|728~835|
 
+## 技术说明
+
+### 主进程
+
+主进程源码在main目录下，使用JS编写，模块系统采用"CommonJS"规范。
+主进程的功能：启动主进程、窗体菜单栏控制、完成主进程与渲染进程桥接；
+
+### 渲染进程
+
+渲染进程代码在src中，采用Vue3+ts编写，模块系统采用“ES模块”规范
