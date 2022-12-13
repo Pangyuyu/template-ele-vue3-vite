@@ -160,6 +160,44 @@
                     </div>
                 </div>
             </el-tab-pane>
+            <el-tab-pane name="ex_canvas_text">
+                <template #label>
+                    <span class="custom-tabs-label">
+                        <span :class="getPanelLabelClass('ex_canvas_text')">绘制文本</span>
+                    </span>
+                </template>
+                <div class="panel-content gradient-content">
+                    <div class="img-outer alpha-background-image">
+                        <canvas id="ex_ctx_text" class="canvas-content" :width="formDataText.width"
+                            :height="formDataText.height"></canvas>
+                    </div>
+                    <div class="img-setting">
+                        <el-form :model="formDataPath" label-width="120px" label-position="top">
+                            <el-form-item label="大小">
+                                <div>
+                                    <label>宽:</label>
+                                    <el-input-number v-model="formDataText.width" :min="10" :max="4096" />
+                                    <label>高:</label>
+                                    <el-input-number v-model="formDataText.height" :min="10" :max="4096" />
+                                </div>
+                            </el-form-item>
+                            <el-form-item label="文本">
+                                <el-input v-model="formDataText.text"></el-input>
+                            </el-form-item>
+                            <el-form-item>
+                                <label class="clear-ctx">
+                                    <el-checkbox v-model="formDataText.clearCtx" size="small" /> 绘制之前清空画布
+                                </label>
+                                <el-button type="primary" style="width:200px" @click="onClickDrawText()">绘制文本
+                                </el-button>
+                                <el-button type="primary" style="width:200px" @click="onClickSaveText()">保存图片</el-button>
+                            </el-form-item>
+                            
+                        </el-form>
+                        
+                    </div>
+                </div>
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -331,6 +369,8 @@ function onClickDrawCanvas() {
 }
 //#endregion
 
+
+
 //#region 绘制路径
 const formDataPath = ref({
     width: 500,
@@ -468,6 +508,63 @@ function onClickDrawBezierFill() {
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(130, 62.5)).withCtrlP2(new XPoint(130, 25)).withEndPoint(new XPoint(100, 25)))
         .pushPoint(new XCurvePoint().withCtrlP1(new XPoint(85, 25)).withCtrlP2(new XPoint(75, 37)).withEndPoint(new XPoint(75, 40)))
     xDraw.draw()
+}
+
+//#endregion
+
+
+//#region 绘制文本
+let exTextCtx: CanvasRenderingContext2D | null = null
+const formDataText=ref({
+    clearCtx:true,
+    width: 500,
+    height: 200,
+    text:"",
+    shadowBlur:15
+})
+function onClickDrawText() {
+    if (exTextCtx == null) {
+        exTextCtx = CanvasTools.getCanvasCtx("ex_ctx_text")
+    }
+    if (exTextCtx == null) {
+        ModalTool.ShowDialogWarn("提醒", "初始化Canvas失败!")
+        return
+    }
+    if (formDataRect.value.clearCtx) {
+        exTextCtx?.clearRect(0, 0, formDataText.value.width, formDataText.value.height)
+    }
+    exTextCtx.fillStyle = 'transparent';
+    // exRectCtx.fillRect(0, 0, 500, 500);
+    // 设置文字阴影的颜色为黑色，透明度为20%
+    exTextCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    // 将阴影向右移动15px，向上移动10px
+    exTextCtx.shadowOffsetX = 10;
+    exTextCtx.shadowOffsetY = 5;
+    // 轻微模糊阴影
+    exTextCtx.shadowBlur = 15;
+    // 字号为60px，字体为impact
+    exTextCtx.font = "8em 方正粗活意简体";
+    // 将文本填充为棕色
+    exTextCtx.fillStyle = 'white';
+    // 将文本设为居中对齐
+    exTextCtx.textAlign = 'center';
+    exTextCtx.textBaseline = 'middle';
+    // 在canvas顶部中央的位置，以大字体的形式显示文本
+    exTextCtx.fillText(formDataText.value.text, 250, 100);
+    exTextCtx.restore();
+}
+function onClickSaveText() {
+    let theCanvas = <HTMLCanvasElement>document.getElementById("ex_ctx_text");
+    // var imgURL = theCanvas?.toDataURL({ format: "image/png", quality: 1, width: 12000, height: 4000 });
+    var imgURL = theCanvas?.toDataURL("image/png",0.92);
+    // console.log(imgURL)
+    var dlLink = document.createElement('a');
+    dlLink.download = "fileName";
+    dlLink.href = imgURL;
+    dlLink.dataset.downloadurl = ["image/png", dlLink.download, dlLink.href].join(':');
+    document.body.appendChild(dlLink);
+    dlLink.click();
+    document.body.removeChild(dlLink);
 }
 //#endregion
 </script>
