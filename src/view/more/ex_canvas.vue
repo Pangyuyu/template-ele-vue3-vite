@@ -15,7 +15,7 @@
                     <div class="img-setting">
                         <el-form :model="formDataRect" label-width="120px" label-position="top">
                             <el-form-item label="大小">
-                                <div>
+                                <div class="clm-item">
                                     <label>宽:</label>
                                     <el-input-number v-model="formDataRect.width" :min="10" :max="4096" />
                                     <label>高:</label>
@@ -109,10 +109,10 @@
                     <div class="img-setting">
                         <el-form :model="formDataPath" label-width="120px" label-position="top">
                             <el-form-item label="大小">
-                                <div>
-                                    <label>宽:</label>
+                                <div class="clm-item">
+                                    <div class="title">宽:</div>
                                     <el-input-number v-model="formDataRect.width" :min="10" :max="4096" />
-                                    <label>高:</label>
+                                    <div class="title">高:</div>
                                     <el-input-number v-model="formDataRect.height" :min="10" :max="4096" />
                                 </div>
                             </el-form-item>
@@ -174,15 +174,44 @@
                     <div class="img-setting">
                         <el-form :model="formDataPath" label-width="120px" label-position="top">
                             <el-form-item label="大小">
-                                <div>
-                                    <label>宽:</label>
+                                <div class="clm-item">
+                                    <div class="title">宽:</div>
                                     <el-input-number v-model="formDataText.width" :min="10" :max="4096" />
-                                    <label>高:</label>
+                                    <div class="title">高:</div>
                                     <el-input-number v-model="formDataText.height" :min="10" :max="4096" />
                                 </div>
                             </el-form-item>
+                            <el-form-item label="背景色">
+                                <el-color-picker v-model="formDataText.backgroundColor" show-alpha
+                                    :predefine="predefineColors" />
+                            </el-form-item>
                             <el-form-item label="文本">
                                 <el-input v-model="formDataText.text"></el-input>
+                            </el-form-item>
+                            <el-form-item label="字体大小(px)">
+                                <el-input-number v-model="formDataText.fontSize" :min="1" :max="1000"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="字体间距(px)">
+                                <el-input-number v-model="formDataText.letterSpacing" :min="1" :max="100"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="字体颜色">
+                                <el-color-picker v-model="formDataText.color" show-alpha :predefine="predefineColors" />
+                            </el-form-item>
+                            <el-form-item label="阴影颜色">
+                                <el-color-picker v-model="formDataText.shadowColor" show-alpha
+                                    :predefine="predefineColors" />
+                            </el-form-item>
+                            <el-form-item label="阴影模糊度">
+                                <el-input-number v-model="formDataText.shadowBlur" :min="0"
+                                    :max="100"></el-input-number>
+                            </el-form-item>
+                            <el-form-item label="阴影偏移">
+                                <div class="clm-item">
+                                    <div class="title">X:</div>
+                                    <el-input-number v-model="formDataText.shadowOffsetX" :min="-200" :max="200" />
+                                    <div class="title">Y:</div>
+                                    <el-input-number v-model="formDataText.shadowOffsetY" :min="-200" :max="200" />
+                                </div>
                             </el-form-item>
                             <el-form-item>
                                 <label class="clear-ctx">
@@ -190,11 +219,12 @@
                                 </label>
                                 <el-button type="primary" style="width:200px" @click="onClickDrawText()">绘制文本
                                 </el-button>
-                                <el-button type="primary" style="width:200px" @click="onClickSaveText()">保存图片</el-button>
+                                <el-button type="primary" style="width:200px"
+                                    @click="onClickSaveText()">保存图片</el-button>
                             </el-form-item>
-                            
+
                         </el-form>
-                        
+
                     </div>
                 </div>
             </el-tab-pane>
@@ -515,14 +545,25 @@ function onClickDrawBezierFill() {
 
 //#region 绘制文本
 let exTextCtx: CanvasRenderingContext2D | null = null
-const formDataText=ref({
-    clearCtx:true,
-    width: 500,
-    height: 200,
-    text:"",
-    shadowBlur:15
+const formDataText = ref({
+    clearCtx: true,
+    width: 800,
+    height: 400,
+    text: "8203",
+    shadowBlur: 15,
+    fontSize: 256,
+    shadowOffsetX: 10,
+    shadowOffsetY: 5,
+    color: "rgba(255,255,255,1)",
+    backgroundColor: "rgba(0,0,0,0)",
+    shadowColor: "rgba(0, 0, 0, 0.8)",
+    letterSpacing:2,
 })
 function onClickDrawText() {
+    const canvas = <HTMLCanvasElement>document.getElementById("ex_ctx_text")
+    if (canvas) {
+        canvas.style.letterSpacing =`${formDataText.value.letterSpacing}px`;
+    }
     if (exTextCtx == null) {
         exTextCtx = CanvasTools.getCanvasCtx("ex_ctx_text")
     }
@@ -533,30 +574,31 @@ function onClickDrawText() {
     if (formDataRect.value.clearCtx) {
         exTextCtx?.clearRect(0, 0, formDataText.value.width, formDataText.value.height)
     }
-    exTextCtx.fillStyle = 'transparent';
-    // exRectCtx.fillRect(0, 0, 500, 500);
+    exTextCtx.fillStyle = formDataText.value.backgroundColor;
+    exTextCtx.fillRect(0, 0, formDataText.value.width, formDataText.value.height);
     // 设置文字阴影的颜色为黑色，透明度为20%
-    exTextCtx.shadowColor = 'rgba(0, 0, 0, 0.8)';
+    exTextCtx.shadowColor = formDataText.value.shadowColor;
     // 将阴影向右移动15px，向上移动10px
-    exTextCtx.shadowOffsetX = 10;
-    exTextCtx.shadowOffsetY = 5;
+    exTextCtx.shadowOffsetX = formDataText.value.shadowOffsetX;
+    exTextCtx.shadowOffsetY = formDataText.value.shadowOffsetY;
     // 轻微模糊阴影
-    exTextCtx.shadowBlur = 15;
+    exTextCtx.shadowBlur = formDataText.value.shadowBlur;
     // 字号为60px，字体为impact
-    exTextCtx.font = "8em 方正粗活意简体";
+    exTextCtx.font = `${formDataText.value.fontSize}px 方正粗活意简体` //"16em ";
     // 将文本填充为棕色
-    exTextCtx.fillStyle = 'white';
+    exTextCtx.fillStyle = formDataText.value.color;
     // 将文本设为居中对齐
     exTextCtx.textAlign = 'center';
     exTextCtx.textBaseline = 'middle';
+
     // 在canvas顶部中央的位置，以大字体的形式显示文本
-    exTextCtx.fillText(formDataText.value.text, 250, 100);
+    exTextCtx.fillText(formDataText.value.text, formDataText.value.width / 2, formDataText.value.height / 2);
     exTextCtx.restore();
 }
 function onClickSaveText() {
     let theCanvas = <HTMLCanvasElement>document.getElementById("ex_ctx_text");
     // var imgURL = theCanvas?.toDataURL({ format: "image/png", quality: 1, width: 12000, height: 4000 });
-    var imgURL = theCanvas?.toDataURL("image/png",0.92);
+    var imgURL = theCanvas?.toDataURL("image/png", 0.92);
     // console.log(imgURL)
     var dlLink = document.createElement('a');
     dlLink.download = "fileName";
@@ -644,5 +686,14 @@ function onClickSaveText() {
 
 .path_ctrl {
     margin-bottom: 5px;
+}
+
+.clm-item {
+    display: flex;
+    color: black;
+
+    .title {
+        margin-right: 5px;
+    }
 }
 </style>
