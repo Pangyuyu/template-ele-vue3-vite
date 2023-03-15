@@ -3,6 +3,7 @@ import home from "./modules/home";
 import techExample from "./modules/techExample";
 import childWin from "./modules/ex_win_child"
 import more from "./modules/more"
+import webfeatures from "./modules/webfeatures"
 // import Logger from '@/common/logger/logger';
 const routes: Array<RouteRecordRaw> = [
   // **********登录**********
@@ -11,15 +12,11 @@ const routes: Array<RouteRecordRaw> = [
     name: "login",
     component: () => import("@/view/login/login.vue").catch(() => {}),
   },
-  {
-    path: "/",
-    redirect: "/home",
-    component: () => import("@/view/login/login.vue").catch(() => {}),
-  },
   home,
   techExample,
   more,
   childWin,
+  webfeatures,
   // **********404**********
   {
     path: "/:catchAll(.*)",
