@@ -1,5 +1,5 @@
 <template>
-    <div class="vue-page">
+    <div class="vue-page" style="overflow-y: hidden;">
         <el-tabs v-model="activeName" class="xing-tabs" type="card" style="flex-grow:1">
             <el-tab-pane name="ex_canvas_rect">
                 <template #label>
@@ -7,7 +7,7 @@
                         <span :class="getPanelLabelClass('ex_canvas_rect')">绘制矩形</span>
                     </span>
                 </template>
-                <div class="panel-content gradient-content">
+                <div class="panel-content gradient-content"  style="overflow-y: hidden;">
                     <div class="img-outer alpha-background-image">
                         <canvas id="ex_ctx_rect" class="canvas-content" :width="formDataRect.width"
                             :height="formDataRect.height"></canvas>
@@ -181,6 +181,9 @@
                                     <el-input-number v-model="formDataText.height" :min="10" :max="4096" />
                                 </div>
                             </el-form-item>
+                            <el-form-item label="logo">
+                                <el-image class="logo" :src="formDataText.logo" fit="scale-down"></el-image>
+                            </el-form-item>
                             <el-form-item label="背景色">
                                 <el-color-picker v-model="formDataText.backgroundColor" show-alpha
                                     :predefine="predefineColors" />
@@ -192,7 +195,8 @@
                                 <el-input-number v-model="formDataText.fontSize" :min="1" :max="1000"></el-input-number>
                             </el-form-item>
                             <el-form-item label="字体间距(px)">
-                                <el-input-number v-model="formDataText.letterSpacing" :min="1" :max="100"></el-input-number>
+                                <el-input-number v-model="formDataText.letterSpacing" :min="1"
+                                    :max="100"></el-input-number>
                             </el-form-item>
                             <el-form-item label="字体颜色">
                                 <el-color-picker v-model="formDataText.color" show-alpha :predefine="predefineColors" />
@@ -213,6 +217,7 @@
                                     <el-input-number v-model="formDataText.shadowOffsetY" :min="-200" :max="200" />
                                 </div>
                             </el-form-item>
+
                             <el-form-item>
                                 <label class="clear-ctx">
                                     <el-checkbox v-model="formDataText.clearCtx" size="small" /> 绘制之前清空画布
@@ -242,6 +247,7 @@ import XDrawLines from '@/xCanvas/XDrawLines'
 import XDrawArc from '@/xCanvas/XDrawArc'
 import XDrawBezierCurve from '@/xCanvas/XDrawBezierCurve'
 import XDrawQadraticeCurve from '@/xCanvas/XDrawQadraticeCurve'
+import dataImgs from '@/common/data/imgs.json';
 const predefineColors = ref([
     '#ff4500',
     '#ff8c00',
@@ -557,12 +563,13 @@ const formDataText = ref({
     color: "rgba(255,255,255,1)",
     backgroundColor: "rgba(0,0,0,0)",
     shadowColor: "rgba(0, 0, 0, 0.8)",
-    letterSpacing:2,
+    letterSpacing: 2,
+    logo:dataImgs.images.logo
 })
 function onClickDrawText() {
     const canvas = <HTMLCanvasElement>document.getElementById("ex_ctx_text")
     if (canvas) {
-        canvas.style.letterSpacing =`${formDataText.value.letterSpacing}px`;
+        canvas.style.letterSpacing = `${formDataText.value.letterSpacing}px`;
     }
     if (exTextCtx == null) {
         exTextCtx = CanvasTools.getCanvasCtx("ex_ctx_text")
@@ -583,18 +590,29 @@ function onClickDrawText() {
     exTextCtx.shadowOffsetY = formDataText.value.shadowOffsetY;
     // 轻微模糊阴影
     exTextCtx.shadowBlur = formDataText.value.shadowBlur;
-    // 字号为60px，字体为impact
-    exTextCtx.font = `${formDataText.value.fontSize}px 方正粗活意简体` //"16em ";
-    // 将文本填充为棕色
-    exTextCtx.fillStyle = formDataText.value.color;
-    // 将文本设为居中对齐
-    exTextCtx.textAlign = 'center';
-    exTextCtx.textBaseline = 'middle';
+    // // 字号为60px，字体为impact
+    // exTextCtx.font = `${formDataText.value.fontSize}px 方正粗活意简体` //"16em ";
+    // // 将文本填充为棕色
+    // exTextCtx.fillStyle = formDataText.value.color;
+    // // 将文本设为居中对齐
+    // exTextCtx.textAlign = 'center';
+    // exTextCtx.textBaseline = 'middle';
 
     // 在canvas顶部中央的位置，以大字体的形式显示文本
-    exTextCtx.fillText(formDataText.value.text, formDataText.value.width / 2, formDataText.value.height / 2);
-    exTextCtx.restore();
+    // exTextCtx.fillText(formDataText.value.text, formDataText.value.width / 2, formDataText.value.height / 2);
+    // exRectCtx?.drawImage()
+    let logoImg=new Image()
+    logoImg.onload=function(){
+        console.log("图片加载完成")
+        exTextCtx?.drawImage(logoImg,0,0);
+    }
+    logoImg.onerror=function(err){
+        console.log("图片加载失败",err)
+    }
+    logoImg.src=formDataText.value.logo
+    // exTextCtx.restore();
 }
+
 function onClickSaveText() {
     let theCanvas = <HTMLCanvasElement>document.getElementById("ex_ctx_text");
     // var imgURL = theCanvas?.toDataURL({ format: "image/png", quality: 1, width: 12000, height: 4000 });
@@ -617,7 +635,7 @@ function onClickSaveText() {
     flex-direction: row;
     min-height: 620px;
     border: 1px solid #ada9a9;
-
+    overflow-y: hidden;
     .img-setting {
         width: 580px;
         border-left: 1px solid #ada9a9;
@@ -625,6 +643,7 @@ function onClickSaveText() {
         display: flex;
         flex-direction: column;
         padding: 5px;
+        overflow-y: auto;
     }
 
     .img-outer {
@@ -695,5 +714,12 @@ function onClickSaveText() {
     .title {
         margin-right: 5px;
     }
+}
+
+.logo{
+    width: 100px; 
+    height: 100px;
+    background-color: rgb(175, 177, 178);
+    padding: 5px;
 }
 </style>
