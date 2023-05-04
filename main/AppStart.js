@@ -74,7 +74,7 @@ module.exports.AppStart = function () {
         const isDev = process.env.NODE_ENV == "development" ? true : false;
         if (isDev) {
             this.installDevtools()
-            const localUrl = "http://localhost:3000"
+            const localUrl = "http://localhost:3000/#/home"
             log.l("加载地址", localUrl)
             await win.loadURL(localUrl)
             win.maximize()

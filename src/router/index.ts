@@ -7,10 +7,14 @@ import webfeatures from "./modules/webfeatures"
 // import Logger from '@/common/logger/logger';
 const routes: Array<RouteRecordRaw> = [
   // **********登录**********
+  // {
+  //   path: "/login",
+  //   name: "login",
+  //   component: () => import("@/view/login/login.vue").catch(() => {}),
+  // },
   {
-    path: "/login",
-    name: "login",
-    component: () => import("@/view/login/login.vue").catch(() => {}),
+    path: "/",
+    redirect: '/home/index'
   },
   home,
   techExample,
