@@ -1,82 +1,95 @@
 [
-    {
-        "title": "首页",
-        "index": "home",
-        "path": "/home",
-        "icon": "home-filled"
-    },
-    {
-        "title": "构建工具",
-        "index": "buildtools",
-        "hide": true,
-        "icon": "odometer"
-    },
-    {
-        "title": "功能示例",
-        "index": "example",
-        "icon": "aim",
-        "subs": [
-            {
-                "title": "Electron",
-                "index": "/techExample/ex_electron",
-                "path": "/techExample/ex_electron",
-                "icon": "alarm-clock"
-            },
-            {
-                "title": "文件",
-                "index": "/techExample/ex_files",
-                "path": "/techExample/ex_files",
-                "icon": "files"
-            },
-            {
-                "title": "蓝牙",
-                "index": "/techExample/ex_pc_ble",
-                "path": "/techExample/ex_pc_ble",
-                "icon": "Pear"
-            }
-        ]
-    },
-    {
-        "title": "更多功能示例",
-        "index": "more",
-        "icon": "aim",
-        "subs": [
-            {
-                "title": "本地API:Go示例",
-                "index": "/more/ex_local_api",
-                "path": "/more/ex_local_api",
-                "icon": "CoffeeCup"
-            },
-            {
-                "title": "安全存储",
-                "index": "/more/ex_safe_cache",
-                "path": "/more/ex_safe_cache",
-                "icon": "CoffeeCup"
-            },
-            {
-                "title": "JS二进制",
-                "index": "/more/ex_js_binary",
-                "path": "/more/ex_js_binary",
-                "icon": "CoffeeCup"
-            },
-            {
-                "title": "图形图像",
-                "index": "/more/ex_graphic_images",
-                "path": "/more/ex_graphic_images",
-                "icon": "CoffeeCup"
-            },
-            {
-                "title": "Canvas",
-                "index": "/more/ex_canvas",
-                "path": "/more/ex_canvas",
-                "icon": "CoffeeCup"
-            },
-            {
-                "title": "JS交互",
-                "index": "/more/ex_js_exec",
-                "path": "/more/ex_js_exec",
-                "icon": "CoffeeCup"
-            }
-        ]
-    }
+  {
+    "title": "首页",
+    "index": "home",
+    "path": "/home",
+    "icon": "home-filled"
+  },
+  {
+    "title": "构建工具",
+    "index": "buildtools",
+    "hide": true,
+    "icon": "odometer"
+  },
+  {
+    "title": "功能示例",
+    "index": "example",
+    "icon": "aim",
+    "subs": [
+      {
+        "title": "Electron",
+        "index": "/techExample/ex_electron",
+        "path": "/techExample/ex_electron",
+        "icon": "alarm-clock"
+      },
+      {
+        "title": "文件",
+        "index": "/techExample/ex_files",
+        "path": "/techExample/ex_files",
+        "icon": "files"
+      },
+      {
+        "title": "蓝牙",
+        "index": "/techExample/ex_pc_ble",
+        "path": "/techExample/ex_pc_ble",
+        "icon": "Pear"
+      }
+    ]
+  },
+  {
+    "title": "更多功能示例",
+    "index": "more",
+    "icon": "aim",
+    "subs": [
+      {
+        "title": "本地API:Go示例",
+        "index": "/more/ex_local_api",
+        "path": "/more/ex_local_api",
+        "icon": "CoffeeCup"
+      },
+      {
+        "title": "安全存储",
+        "index": "/more/ex_safe_cache",
+        "path": "/more/ex_safe_cache",
+        "icon": "CoffeeCup"
+      },
+      {
+        "title": "JS二进制",
+        "index": "/more/ex_js_binary",
+        "path": "/more/ex_js_binary",
+        "icon": "CoffeeCup"
+      },
+      {
+        "title": "图形图像",
+        "index": "/more/ex_graphic_images",
+        "path": "/more/ex_graphic_images",
+        "icon": "CoffeeCup"
+      },
+      {
+        "title": "Canvas",
+        "index": "/more/ex_canvas",
+        "path": "/more/ex_canvas",
+        "icon": "CoffeeCup"
+      },
+      {
+        "title": "JS交互",
+        "index": "/more/ex_js_exec",
+        "path": "/more/ex_js_exec",
+        "icon": "CoffeeCup"
+      }
+    ]
+  },
+  {
+    "title": "前端语言特性",
+    "index": "webfeatures",
+    "icon": "aim",
+    "subs": [
+      {
+        "title": "JS/TS语言特性",
+        "index": "/webfeatures/jsts",
+        "path": "/webfeatures/jsts",
+        "icon": "CoffeeCup"
+      }
+    ]
+  }
 ]
