@@ -4,6 +4,7 @@ import techExample from "./modules/techExample";
 import childWin from "./modules/ex_win_child"
 import more from "./modules/more"
 import webfeatures from "./modules/webfeatures"
+import webaudio from "./modules/webaudio"
 // import Logger from '@/common/logger/logger';
 const routes: Array<RouteRecordRaw> = [
   // **********登录**********
@@ -21,6 +22,7 @@ const routes: Array<RouteRecordRaw> = [
   more,
   childWin,
   webfeatures,
+  webaudio,
   // **********404**********
   {
     path: "/:catchAll(.*)",

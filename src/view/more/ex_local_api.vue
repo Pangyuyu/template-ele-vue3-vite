@@ -251,8 +251,7 @@ function refreshImg() {
             // tempImgList.value.push(window.URL.createObjectURL(res.data))
         } else if (imgType.value == "url") {//这种方式，频繁访问是有问题的
             const imgUrl = proxy?.$APILOCAL.imageRandomUrl(imgw.value, imgh.value)
-            tempImgUrl.value = imgUrl
-            // tempImgList.value.push(imgUrl)
+            tempImgUrl.value = imgUrl?imgUrl:""
         }
         resolve({})
     })
@@ -311,7 +310,8 @@ async function onClickCreateQr() {
         }
         tempQrUrl.value = `Data:image/jpg;base64,${qrRes.body.data}`
     } else {
-        tempQrUrl.value = proxy?.$APILOCAL.getQrUrl(qrContent.value, qrLevel.value, qrSize.value)
+        const qrUrl=proxy?.$APILOCAL.getQrUrl(qrContent.value, qrLevel.value, qrSize.value)
+        tempQrUrl.value = qrUrl?qrUrl:""
     }
 }
 //#endregion

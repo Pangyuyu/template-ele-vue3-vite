@@ -8,5 +8,30 @@
   <body>
     <div id="app"></div>
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      let GlobalAudioContext;
+      let GloablWhiteNoiseNode;
+      window.onload = () => {
+        console.debug("===windows onload===");
+      };
+      async function GlobalAudioInit() {
+        if (GlobalAudioContext == undefined || GlobalAudioContext == null) {
+          GlobalAudioContext = new AudioContext();
+          const whiteNoiseRes = await GlobalAudioContext.audioWorklet.addModule(
+            "./audios/white-noise-processor.js",
+            {
+              credentials: "omit",
+            }
+          );
+          console.debug("白噪音初始化结果", whiteNoiseRes);
+        }
+        if (GloablWhiteNoiseNode == undefined || GloablWhiteNoiseNode == null) {
+          GloablWhiteNoiseNode = new AudioWorkletNode(
+            GlobalAudioContext,
+            "white-noise-processor"
+          );
+        }
+      }
+    </script>
   </body>
 </html>

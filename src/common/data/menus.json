@@ -91,5 +91,18 @@
         "icon": "CoffeeCup"
       }
     ]
+  },
+  {
+    "title": "web音频接口",
+    "index": "webaudio",
+    "icon": "aim",
+    "subs":[
+      {
+        "title":"基础测试",
+        "index": "/webaudio/basic",
+        "path": "/webaudio/basic",
+        "icon": "CoffeeCup"
+      }
+    ]
   }
 ]
