@@ -195,11 +195,11 @@ async function runDelete(id: string) {
     ModalTool.ShowToast("操作成功", "success")
     onClickGetList()
 }
-function customerOnEditEnd(event) {
+function customerOnEditEnd(event:any) {
     console.log("customerOnEditEnd", event)
     onClickGetList()
 }
-function onClickOpenWindowByUrl(url) {
+function onClickOpenWindowByUrl(url:string) {
     window.EPre.openChildWin("...", url)
 }
 //#endregion
